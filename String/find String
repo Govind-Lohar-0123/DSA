@@ -1,0 +1,29 @@
+
+class Solution{
+     static String ans="";
+    HashMap<String,Integer>map=new HashMap<>();
+    
+    void dfs(String curr,int k){
+        String temp;
+        for(int i=k-1;i>=0;i--){
+            temp=curr.substring(1);
+            temp+=(char)(48+i);
+            if(map.containsKey(temp)==false){
+                ans+=(char)(48+i);
+                map.put(temp,1);
+                dfs(temp,k);
+                break;
+            }
+        }    
+        
+    }
+    public String findString(int n, int k){
+       for(int i=0;i<n;i++)
+           ans+="0";
+        map.put(ans,1);
+        dfs(ans,k);
+        return ans;
+       
+       
+    }
+}
