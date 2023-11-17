@@ -1,0 +1,44 @@
+class SummaryRanges {
+    int stream[]=new int[10000+1];
+    int n=0;
+    public SummaryRanges() {
+        
+    }
+    
+    public void addNum(int value) {
+        stream[value]=1;
+        n=Math.max(value,n);
+        
+    }
+    
+    public int[][] getIntervals() {
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();
+        ArrayList<Integer> temp=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            int val=stream[i];
+            if(val==0 && temp.size()!=0){
+                if(temp.size()==1)
+                  temp.add(temp.get(temp.size()-1));
+                ans.add(temp);temp=new ArrayList<>();
+            }
+            else if(val==1 ) temp.add(i);
+        }
+         
+        if(temp.size()!=0){
+            if(temp.size()==1)
+               temp.add(temp.get(temp.size()-1));
+             ans.add(temp);}
+        int res[][]=new int[ans.size()][2];
+        
+       
+       for(int i=0;i<ans.size();i++){
+            int m=ans.get(i).size()-1;
+            int v1=ans.get(i).get(0);
+            int v2=ans.get(i).get(m);
+               res[i][0]=v1;
+               res[i][1]=v2;
+           
+       }
+       return res;
+     }
+}
