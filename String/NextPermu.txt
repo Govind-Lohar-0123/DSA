@@ -1,0 +1,27 @@
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int idx=-1;   //  1 3 2
+        int max=0;
+        for(int i=0;i<nums.length;i++){
+            if( i< nums.length-1 && nums[i]<nums[i+1]){
+                idx=i;max=i+1;
+            }
+           if(idx!=-1){
+            if(nums[idx]<nums[i])
+                if(nums[i]<nums[max])max=i;
+           }
+        }
+
+        if(idx==-1)
+            Arrays.sort(nums);
+        else {
+            int temp=nums[max];
+            nums[max]=nums[idx];
+            nums[idx]=temp;
+            Arrays.sort(nums,idx+1,nums.length);
+            
+        }
+       
+
+    }
+}
