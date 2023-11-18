@@ -1,0 +1,9 @@
+  while(odd.next!=null && odd.next.next!=null){
+          odd.next=odd.next.next;
+          odd=odd.next;
+          if(odd.next!=null)
+        { even.next=odd.next;even=even.next;}
+        }
+        odd.next=evenHead;
+        even.next=null;
+        return oddHead;
