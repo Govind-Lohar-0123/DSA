@@ -1,0 +1,37 @@
+class Solution
+{
+    static class Pair{
+        long dis;int u;
+        Pair(int u,long dis){
+            this.u=u;this.dis=dis;
+        }
+    }
+    public long MaximumPossibleCost(int n, int m,int[][] rout)
+    {
+        long dis[]=new long[n+1];
+        Arrays.fill(dis,Integer.MIN_VALUE);
+        ArrayList<ArrayList<ArrayList<Integer>>>arr=new ArrayList<>();
+        for(int i=0;i<n+1;i++){
+            arr.add(new ArrayList<>());
+        }
+        
+        for(int [] it : rout)
+            arr.get(it[0]).add(new ArrayList<>(Arrays.asList(it[1],it[2])));
+        PriorityQueue<Pair>pq=new PriorityQueue<>((x,y)->(int)(y.dis-x.dis));
+        pq.add(new Pair(1,0));
+        dis[1]=0;
+
+        while(pq.size()!=0){
+            Pair p=pq.remove();
+            for(ArrayList<Integer> it : arr.get(p.u)){
+                int v=it.get(0);
+                int wt=it.get(1);
+                if(dis[v]<p.dis+wt){
+                    dis[v]=p.dis+wt;
+                    pq.add(new Pair(v,dis[v]));
+                }
+            }
+        }
+        return (dis[n]==Integer.MIN_VALUE) ? -1 : dis[n];
+    }
+}
