@@ -1,0 +1,52 @@
+// abcabcabcabc
+class Solution {
+    public int repeatedStringMatch(String a, String b) {
+        String temp=a;
+        int cnt=1;
+        while(temp.length()<b.length()){
+            temp+=a;
+            cnt++;
+        }
+        fillLPS(b,b.length());
+        if(isMatch(temp,b))return cnt;
+        temp+=a;
+        if(isMatch(temp,b))return cnt+1;
+        return -1;
+    }
+    int LPS[]=null;
+     void fillLPS(String b,int m){
+        LPS =new int[m];
+        int k=1;
+        int suff=1;
+        int preff=0;
+        while(suff<m){
+            if(b.charAt(suff)==b.charAt(preff)){
+                LPS[k++]=preff+1;
+                suff++;preff++;
+            }
+            else {
+                if(preff==0){LPS[k++]=0;suff++;}
+                else preff=LPS[preff-1];
+                
+            }
+        }
+    }
+     boolean isMatch(String a,String b){
+        int n=a.length();
+        int m=b.length();
+        int suff=0;
+        int preff=0;
+        while(suff<n && preff<m){
+            if(a.charAt(suff)==b.charAt(preff)){
+               suff++;preff++;
+            }
+            else {
+                if(preff==0){suff++;}
+                else preff=LPS[preff-1];
+                
+            }
+        }
+        if(preff==m)return true;
+        return false;
+    }
+}
