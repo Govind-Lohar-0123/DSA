@@ -1,0 +1,43 @@
+LinkedHashMap<Integer,ArrayList<Integer>> map=new LinkedHashMap<>();
+		for(int i=0;i<n;i++){int it=arr[i];
+			ArrayList<Integer>temp=new ArrayList<>();
+			temp.add(0);temp.add(-1);temp.add(-1);
+			map.put(it,temp);
+		}
+		for(int i=0;i<n;i++){
+			int it=arr[i];
+			ArrayList<Integer>temp=map.get(it);
+			temp.set(0,temp.get(0)+1);
+			if(temp.get(1)==-1){
+				temp.set(1,i);
+				temp.set(2,i);
+				
+			}
+			if(it==arr[temp.get(1)])temp.set(2,i);
+		}
+		
+		int cnt=0;
+		int diff=n;
+		int el=arr[0];
+		for(Map.Entry<Integer,ArrayList<Integer>> it : map.entrySet()){
+			ArrayList<Integer> v=it.getValue();
+			if(v.get(0)>=cnt){
+				int min=Math.abs(v.get(2)-v.get(1)+1);
+				if(min<diff||cnt<v.get(0)){
+					el=it.getKey();
+					diff=min;
+				}
+				cnt=v.get(0);
+
+			}
+		}
+		// System.out.print(map);
+		int k=0;
+		int e=map.get(el).get(2);
+		int s=map.get(el).get(1);
+		int ans[]=new int[e-s+1];
+		for(int i=s;i<=e;i++){
+			ans[k++]=arr[i];
+		}
+		return ans;
+		
