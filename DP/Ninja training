@@ -1,0 +1,57 @@
+public class Solution {
+   
+    public static int ninjaTraining(int n, int p[][]) {
+       
+            
+        return meritPoint(n,p);
+       
+    }
+
+
+    static int meritPoint(int n,int p[][]){
+        // if(n==0){
+        //     int max=0;
+        //     for(int i=0;i<3;i++)
+        //         if(idx!=i)max=Math.max(max,p[0][i]);
+        //     return max;
+            
+        // }
+        // int max=0;
+        // if( dp[n][idx]!=-1)return dp[n][idx];
+        // for(int i=0;i<3;i++){
+        //     if(idx!=i){
+        //         int temp=p[n][i]+meritPoint(n-1, i, p);
+        //         max=Math.max(max,temp); 
+        //     }
+        // }
+        // return  dp[n][idx]=max;
+        
+        // space optimization
+        int prev[]=new int[4];
+        prev[0]=Math.max(p[0][1],p[0][2]);
+        prev[1]=Math.max(p[0][0],p[0][2]);
+        prev[2]=Math.max(p[0][0],p[0][1]);
+        prev[3]=Math.max(p[0][1],Math.max(p[0][2],p[0][0]));
+
+        for(int day=1;day<n;day++){
+            int temp[]=new int[4];
+            for(int last=0;last<4;last++){
+                temp[last]=0;
+                for(int task=0;task<3;task++){
+                    if(last!=task){
+                        int point=p[day][task]+prev[task];
+                        temp[last]=Math.max(temp[last],point);
+                    }
+                }
+                
+            }
+            prev=temp;
+        }
+        return prev[3];
+        
+       
+
+        
+    }
+
+}
