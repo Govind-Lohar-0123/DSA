@@ -1,1 +1,81 @@
-H
+public class Solution {
+     static class MinHeap {
+        int pq[]=null;
+        int cap=0;
+        int n=0;
+        // Constructor for the class.
+        MinHeap(int size) {
+            cap=size;n=0;
+           pq=new int[size];
+        }
+        int left(int i){return i*2+1;}
+        int right(int i){return i*2+2;}
+        int par(int i){return (i-1)/2;}
+        void swap(int i,int j){
+            int t=pq[i];
+            pq[i]=pq[j];
+            pq[j]=t;
+        }
+
+        void minHeap(int i){
+            int smaller=i;
+            int left=left(i);
+            int right=right(i);
+
+            if(left<n && pq[left]<pq[i])smaller=left;
+            if(right<n && pq[right]<pq[smaller])smaller=right;
+
+            if(smaller!=i){
+                swap(smaller,i);
+                minHeap(smaller);
+            }
+
+        }
+        // Implement the function to remove minimum element.
+        int extractMinElement() {
+           if(n==0)return -1;
+           swap(n-1,0);
+           n--;
+           minHeap(0);
+           return pq[n];
+
+        }
+
+        // Implement the function to delete an element.
+        void deleteElement(int ind) {
+            ind--;
+            if(ind>=n)return ;
+            pq[ind]=Integer.MIN_VALUE;
+            int i=ind;
+            int p=par(i);
+            while(i>=0 && pq[p]>pq[i]){
+            swap(p,i);
+            i=p;
+            p=par(p);}
+            extractMinElement();
+
+        }
+
+        // Implement the function to insert 'val' in the heap.
+        void insert(int data) {
+            if(cap==n)return ;
+            n++;
+            pq[n-1]=data;
+            int i=n-1;
+            int p=par(i);
+            while(i>=0 && pq[p]>pq[i]){
+            swap(p,i);
+            i=p;
+            p=par(p);
+           }
+        }
+
+    }
+};
+
+
+
+
+ 
+
+   
