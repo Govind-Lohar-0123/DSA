@@ -1,0 +1,32 @@
+public class Solution {
+    static void swap(long a[],long b[],int i,int j){
+        if(a[i]>b[j]){
+            long t=a[i];
+            a[i]=b[j];
+            b[j]=t;
+        }
+    }
+    public static void mergeTwoSortedArraysWithoutExtraSpace(long []a, long []b){
+       int n=a.length;
+       int m=b.length;
+        int len=(n+m);
+        int gap=(len/2)+(len%2);
+        while(gap>0){
+            int left=0;
+            int right=gap;
+            while(right<len){
+                if(left<n && right>=n)
+                    swap(a,b,left,right-n);
+                else if(left>=n)
+                    swap(b,b,left-n,right-n);
+                else swap(a,a,left,right);
+                left++;right++;
+            }
+            if(gap==1)break;
+            gap=(gap/2)+(gap%2);
+
+           
+        }
+    
+    }
+}
