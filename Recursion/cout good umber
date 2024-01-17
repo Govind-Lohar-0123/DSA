@@ -1,0 +1,15 @@
+class Solution {
+    long mod=1_000_000_007;
+    public int countGoodNumbers(long n) {
+        long even=(n/2)+(n%2);
+        long odd=(n/2);
+        return (int)(pow(5,even,mod) * pow(4,odd,mod) % mod);
+    
+    }
+    static long pow(long x,long n,long mod){
+        if(n==0)return 1;
+        else if(n%2==0)
+            return pow((x*x)%mod,n/2,mod)%(mod);
+        return (x*pow(x,n-1,mod))%(mod);
+    }
+}
