@@ -1,0 +1,38 @@
+class Solution
+{   class Pair{
+        int first,sec;
+        Pair(int f,int s){
+            first=f;sec=s;
+        }
+    
+}
+    
+    int min_sprinklers(int g[], int n)
+    {   ArrayList<Pair> ans=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(g[i]!=-1)
+             ans.add(new Pair(i-g[i],i+g[i]));
+        }
+        Collections.sort(ans,(a,b)->a.first-b.first);
+        
+        int cnt=0;
+        int tar=0;
+        int max=0;int i=0;
+        while(tar<n){
+            if(i==ans.size() || ans.get(i).first>tar)return -1;
+            max=ans.get(i).sec;
+            while(i+1<ans.size() && ans.get(i+1).first<=tar){
+                i++;
+                max=Math.max(max,ans.get(i).sec);
+            }
+            cnt++;
+            tar=max+1;
+            i++;
+            
+        }
+        return cnt;
+        
+      
+        
+    }
+}
