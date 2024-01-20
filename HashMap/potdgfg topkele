@@ -1,0 +1,42 @@
+
+class Solution {
+    static class Pair implements Comparable<Pair>{
+        int first,sec;
+        Pair(int f,int s){
+            first=f;sec=s;
+        }
+        public int compareTo(Pair b){
+            if(this.sec==b.sec)return this.first-b.first;
+            return b.sec-this.sec;
+        }
+    }
+    
+     public static ArrayList<ArrayList<Integer>> kTop(int[] arr, int N, int k) {
+        
+        ArrayList<ArrayList<Integer>> ans=new ArrayList<>();
+        HashMap<Integer,Integer>map=new HashMap<>();
+        for(int it : arr){
+            map.put(it,map.getOrDefault(it,0)+1);
+            
+            ArrayList<Pair> temp=new ArrayList<>();
+            
+            for(Map.Entry<Integer,Integer> it1 :  map.entrySet())
+                temp.add(new Pair(it1.getKey(),it1.getValue()));
+                
+            Collections.sort(temp);
+            ArrayList<Integer> t=new ArrayList<>();
+            if(temp.size()>k){
+                for(int i=0;i<k;i++)
+                    t.add(temp.get(i).first);
+            }
+            else {
+                for(int i=0;i<temp.size();i++)
+                    t.add(temp.get(i).first);
+            }
+            
+            ans.add(t);
+        }   
+        return ans;
+    }
+}
+        
