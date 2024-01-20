@@ -1,0 +1,67 @@
+
+class Solution{
+    
+   static int dp[][]=null;
+    static int seqOfSeq(int n,int m){
+        // 01: BACKTRACKING APPROACH
+        
+        // if(n==0){
+            
+        //     if(arr.length==1)return m;
+        //     int cnt=0;
+        //     for(int i=1;i<=m;i++){
+        //         if(i*2<=arr[1])cnt++;
+        //         else break;
+        //     }
+            
+        //     return cnt;
+        // }
+        // int cnt=0;
+        // for(int i=m;i>=1;i--){
+        //     if(arr.length-1==n){
+        //         arr[n]=i;
+        //         cnt+=seqOfSeq(arr,n-1,i/2);
+        //         arr[n]=0;
+        //     }
+        //     else if(i*2<=arr[n+1]){
+        //         arr[n]=i;
+        //         cnt+=seqOfSeq(arr,n-1,i/2);
+        //         arr[n]=0;
+        //     }
+        // }
+        // return cnt;
+        
+        
+        // DP Approach
+        // if(dp[n][m]!=-1)return dp[n][m];
+        // if(m<=0)return 0;
+        // if(n==0)return m;
+        // return dp[n][m]=(seqOfSeq(n-1,m/2)+seqOfSeq(n,m-1));
+        
+        
+        //TABLULATION
+      
+       for(int i=1;i<=m;i++)dp[0][i]=i;
+       for(int i=1;i<n;i++){
+           for(int j=m;j>=1;j--){
+               dp[i][j]=((j/2>0)?dp[i-1][j/2]:0)+((j-1>0)?dp[i][j-1]:0);
+           }
+       }
+    //   for(int it[]:dp){
+    //       for(int it1:it)
+    //         System.out.print(it1+" ");
+    //     System.out.println();
+    //   }
+        
+        return dp[n-1][m];
+        
+    }
+    static int numberSequence(int m, int n)
+    {   dp=new int[n][m+1];
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<=m;j++)
+        //     {dp[i][j]=-1;}
+        // }
+        return seqOfSeq(n,m);
+    }
+}
