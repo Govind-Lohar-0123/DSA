@@ -1,0 +1,63 @@
+class Solution {
+    int mod=(1000000000+7);
+    int dp[][]=null;
+    // int solve(int n,int k){
+    //     if(n<=0)return 0;
+    //     if(k==0)return 1;
+    //     if(dp[n][k]!=-1)return dp[n][k];
+    //    int temp=0;
+    //     for(int i=0;i<=Math.min(n-1,k);i++)
+    //          temp=(temp+solve(n-1,k-i))%mod;
+    //     return  dp[n][k]=temp;
+    // }
+
+    // tabulation
+
+    int solve(int n,int k){
+        // if(n==0)return 0;
+        // if(k==0)return 1;
+        // if(dp[n][k]!=-1)return dp[n][k];
+        // int temp=0;
+        // for(int i=0;i<=Math.min(n-1,k);i++)
+        //      temp=(temp+solve(n-1,k-i))%mod;
+        // return  dp[n][k]=temp;
+        for(int i=0;i<=k;i++)dp[0][i]=0;
+        for(int i=0;i<=n;i++)dp[i][0]=1;
+        int l=k;
+        // for(int i=1;i<=n;i++){
+        //     for( k=1;k<=l;k++){
+        //         int temp=0;
+        //         for(int j=0;j<=Math.min(i-1,k);j++)
+        //             temp=(temp+dp[(i-1)][k-j])%mod;
+        //         dp[i][k]=temp;
+        //     }
+        // }
+       // return dp[n][l];
+
+    //     int prev[]=new int[l+1];
+    //     int curr[]=new int[l+1];
+    //     prev[0]=1;
+    //    for(int i=1;i<=n;i++){
+    //        curr=new int[l+1];
+    //         for(k=0;k<=l;k++){
+    //             int temp=0;
+    //             for(int j=0;j<=Math.min(i-1,k);j++)
+    //                 temp=(temp+prev[k-j])%mod;
+    //             curr[k]=temp;
+    //         }
+    //         prev=curr;
+    //     }
+    //    return curr[l];
+    }
+
+
+
+
+    public int kInversePairs(int n, int k) {
+        dp=new int[n+1][k+1];
+        for(int i=0;i<n+1;i++){
+            for(int j=0;j<k+1;j++)dp[i][j]=-1;
+        }
+        return solve(n,k);
+    }
+}
