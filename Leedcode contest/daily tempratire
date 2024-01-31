@@ -1,0 +1,18 @@
+class Solution {
+    public int[] dailyTemperatures(int[] temp) {
+        int top=temp.length-1;int ans[]=new int[temp.length];
+        ans[temp.length-1]=0;
+        for(int i=temp.length-2;i>=0;i--){
+            top=i+1;
+           while(temp[top]<=temp[i]){
+                if(ans[top]==0){
+                     top=0;break;
+                }
+                else top+=ans[top];
+            }
+            ans[i]=(top==0)?0:top-i;
+          
+        }
+        return ans;
+    }
+}
