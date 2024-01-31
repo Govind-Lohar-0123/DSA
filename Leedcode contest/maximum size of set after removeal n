@@ -1,0 +1,24 @@
+class Solution {
+    
+    
+    
+    
+    
+    public int maximumSetSize(int[] nums1, int[] nums2) {
+        
+            HashSet<Integer> set1=new HashSet<>();
+            HashSet<Integer> set2=new HashSet<>();
+            for(int i=0;i<nums1.length;i++){
+                set1.add(nums1[i]);set2.add(nums2[i]);
+            }
+            int c=0;
+            int n=nums1.length;
+          int m=nums2.length;
+            for(int it : set1)
+                if(set2.contains(it))c++;
+        
+            return Math.min(n,Math.min(set1.size()-c,n/2)+Math.min(set2.size()-c,m/2)+c);
+        
+          
+    }
+}
