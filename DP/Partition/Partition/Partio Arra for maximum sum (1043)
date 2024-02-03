@@ -1,0 +1,78 @@
+class Solution {
+    int dp[]=null;
+    // public int solve(int arr[],int idx,int m){
+    //     if(idx==arr.length)return 0;
+    //      if(dp[idx]!=-1)return dp[idx];
+    //     int maxEl=0;
+    //     int result=0;
+    //     int temp=0;
+    //     for(int k=idx;(((k-idx+1)<=m) && k<arr.length);k++){
+    //         maxEl=Math.max(maxEl,arr[k]);
+    //          temp=solve(arr,k+1,m)+((k-idx+1)*maxEl);
+    //          result=Math.max(result,temp);
+    //     }
+    //     return dp[idx]=result;
+    // }
+
+    //  public int solve(int arr[],int idx,int m){
+    //     if(idx==0)return arr[0];
+    //     if(idx<0)return 0;
+    //      if(dp[idx]!=-1)return dp[idx];
+    //     int maxEl=0;
+    //     int result=0;
+    //     int temp=0;
+    //     for(int k=idx;(((idx-k+1)<=m) && k>=0);k--){
+    //         maxEl=Math.max(maxEl,arr[k]);
+    //          temp=solve(arr,k-1,m)+((idx-k+1)*maxEl);
+    //          result=Math.max(result,temp);
+    //     }
+    //     return dp[idx]=result;
+    // }
+            // Tablulation
+    //   public int solve(int arr[],int idx,int m){
+        
+    //    for(int i=0;i<=idx;i++){
+    //         if(i==0)dp[i]=arr[0];
+    //         else {
+    //             int maxEl=0;
+    //             int result=0;
+    //             int temp=0;
+    //             for(int k=i;(((i-k+1)<=m) && k>=0);k--){
+    //                 maxEl=Math.max(maxEl,arr[k]);
+    //                 temp=((k-1>=0)?dp[k-1]:0 )+((i-k+1)*maxEl);
+    //                 result=Math.max(result,temp);
+    //             }
+    //             dp[i]=result;
+    //         }
+    //    }
+    //    return dp[idx];
+    // }
+        
+    //         // Tablulation
+    //   public int solve(int arr[],int idx,int m){
+        
+    //    for(int i=arr.length;i>=0;i--){
+    //         if(i==arr.length)dp[i]=0;
+    //         else {
+    //             int maxEl=0;
+    //             int result=0;
+    //             int temp=0;
+    //             for(int k=i;(((k-i+1)<=m) && k<arr.length);k++){
+    //                 maxEl=Math.max(maxEl,arr[k]);
+    //                 temp=dp[k+1]+((k-i+1)*maxEl);
+    //                 result=Math.max(result,temp);
+    //             }
+    //             dp[i]=result;
+    //         }
+    //    }
+    //    return dp[idx];
+    // }
+
+    
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        dp=new int[arr.length+1];
+        Arrays.fill(dp,-1);
+        // return solve(arr,0,k);
+        return solve(arr,0,k);
+    }
+}
