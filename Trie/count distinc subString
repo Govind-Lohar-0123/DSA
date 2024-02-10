@@ -1,0 +1,51 @@
+
+import java.util.*;
+
+public class Solution
+
+{
+	static class Node {
+		boolean eow;
+		Node child[]=new Node[26];
+
+	}
+
+	static Node root = new Node();
+
+	static int countSubStr(Node root) {
+		if (root == null)
+			return 0;
+		int temp = 0;
+		for (Node child : root.child) {
+			if (child == null)
+				continue;
+			temp += countSubStr(child) + 1;
+		}
+		return temp;
+	}
+
+	static void insert(String s, int n) {
+		Node curr = root;
+		for (int i = 0; i < n; i++) {
+			char ch = s.charAt(i);
+			if(curr.child[ch-'a']==null)
+				curr.child[ch - 'a'] = new Node();
+			curr=curr.child[ch-'a'];
+		}
+		curr.eow = true;
+	}
+
+	static void generateSub(String s) {
+		String temp = "";
+		for (int i = s.length()-1; i >= 0; i--) {
+			temp= s.charAt(i)+temp;
+			insert(temp, temp.length());
+		}
+	}
+
+	public static int countDistinctSubstrings(String s) {
+		root = new Node();
+		generateSub(s);
+		return countSubStr(root)+1;
+	}
+}
