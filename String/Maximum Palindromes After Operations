@@ -1,0 +1,41 @@
+class Solution {
+    public int maxPalindromesAfterOperations(String[] words) {
+        int []wordsLen= new int[words.length];
+        for(int i=0;i<words.length;i++){
+            wordsLen[i]=words[i].length();
+        }
+        Arrays.sort(wordsLen);
+        int map[]=new int[26];
+        for(String it : words){
+            for(int i=0;i<it.length();i++){
+                map[it.charAt(i)-'a']++;
+            }
+        }
+        int even=0;int odd=0;
+        for(int it : map){
+            even+=it/2;
+            odd+=it%2;
+        }
+        int ans=0;
+        for(int it : wordsLen){
+             if(it%2==0 && even>=it/2)
+             { ans++;even-=it/2;}
+             else if(it%2!=0){
+                 if(even>=it/2){
+                     even-=it/2;
+                     if(odd>=1){
+                         odd--;
+                     }
+                     else {
+                         odd++;even--;
+                     }
+                     ans++;
+                 }
+             }
+                 
+             
+        }
+        return ans;
+        
+        
+    }
