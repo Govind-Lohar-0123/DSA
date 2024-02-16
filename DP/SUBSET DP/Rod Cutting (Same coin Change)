@@ -1,0 +1,27 @@
+import java.util.*;
+public class Solution {
+	static int dp[][]=new int[110][110];
+	 public static int cutRod(int price[], int n) {
+       for(int i=0;i<110;i++)
+	   { for(int j=0;j<110;j++)
+	       dp[i][j]=-1;
+	   }
+		return solve(price,price.length-1,n);
+		
+		
+    }
+    
+    static int solve(int price[],int n,int rod){
+        if(rod==0)return 0;
+        if(n==0){
+            return (rod%(n+1)==0)?(price[0]*(rod/(n+1))):Integer.MIN_VALUE;
+        }
+		if(dp[n][rod]!=-1)return dp[n][rod];
+        if(n+1<=rod)
+           {  dp[n][rod]=price[n]+solve(price,n,rod-(n+1));}
+        return dp[n][rod]=Math.max(dp[n][rod],solve(price,n-1,rod));
+    }
+
+
+    
+}
