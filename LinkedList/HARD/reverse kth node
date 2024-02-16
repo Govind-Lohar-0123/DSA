@@ -1,0 +1,66 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+
+    ListNode findKthNode(ListNode head,int k){
+        k--;
+        while(head!=null && k-->0)head=head.next;
+        return head;
+    }
+    void reverse(ListNode head){
+        ListNode prev=null;
+        
+        while(head!=null){
+            ListNode next=head.next;
+            head.next=prev;
+            prev=head;
+            head=next;
+        }
+       
+
+    }
+   
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode temp=head;
+        ListNode nextNode=null;
+        ListNode prevNode=null;
+        while(temp!=null){
+            ListNode kthNode=findKthNode(temp,k);
+            if(kthNode==null){
+                if(prevNode!=null)prevNode.next=temp;
+                break;
+            }
+            nextNode=kthNode.next;
+            kthNode.next=null;
+            reverse(temp);
+            if(head==temp)
+                head=kthNode;
+            else prevNode.next=kthNode;
+            prevNode=temp;
+            temp=nextNode;
+
+        }
+        return head;
+    }
+}
+
+
+//Recursive
+public ListNode solve(ListNode head, int k) {
+            ListNode kthNode=findKthNode(head,k);
+            if(kthNode==null)
+              return head;
+            ListNode next=kthNode.next;
+            kthNode.next=null;
+             reverse(head);
+            head.next=solve(next,k);
+            return kthNode;}
+}
