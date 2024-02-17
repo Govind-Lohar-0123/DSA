@@ -1,0 +1,15 @@
+ public static int minSwap (int arr[], int n, int w) {
+        int k=0;
+        for(int it : arr)k+=(it<=w)?1:0;
+        int i=0,j=0;int el=0;
+        int min=k;
+        
+        while(j<n){
+            if(arr[j]<=w)el++;
+            if(k==(j-i+1)){
+                min=Math.min(min,k-el);
+                if(arr[i]<=w)el--;
+                i++;}
+            j++;}
+       return min;
+    }
