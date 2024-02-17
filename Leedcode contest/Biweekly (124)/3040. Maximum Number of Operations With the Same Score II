@@ -1,31 +1,37 @@
-
-
-          Approach 1
-          
 class Solution {
-    HashMap<String,Integer>map=new HashMap<>();
+    int dp[][]=null;
     int solve(int i,int j,int d,int nums[]){
+        if(i>=j)return 0;
+        int op1=0,op2=0,op3=0;
+       
+        if(dp[i][j]!=-1)return dp[i][j];
+        if( d==nums[i]+nums[i+1])
+            op1=solve(i+2,j,nums[i]+nums[i+1],nums)+1;
+        if( d==nums[j]+nums[j-1])
+            op2=solve(i,j-2,nums[j]+nums[j-1],nums)+1;
+        if(d==nums[i]+nums[j])
+            op3=solve(i+1,j-1,nums[i]+nums[j],nums)+1;
         
-        // if(j-i+1==2)return (nums[i]+nums[j]==d)?1:0;
-        // if(j-i+1<=1)return 0;
-        // int op1=0,op2=0,op3=0;
-        // String s=i+"#"+j+"#"+d;
-        // if(map.containsKey(s))return map.get(s);
-        // if(d==0 || d==nums[i]+nums[i+1])
-        //     op1=solve(i+2,j,nums[i]+nums[i+1],nums)+1;
-        // if(d==0 || d==nums[j]+nums[j-1])
-        //     op2=solve(i,j-2,nums[j]+nums[j-1],nums)+1;
-        // if(d==0 || d==nums[i]+nums[j])
-        //     op3=solve(i+1,j-1,nums[i]+nums[j],nums)+1;
-        // int ans=Math.max(op1,Math.max(op2,op3));
-        // map.put(s,ans);
-        // return ans;
+        return dp[i][j]=Math.max(op1,Math.max(op2,op3));
+       
     }
     
     public int maxOperations(int[] nums) {
-        if(nums.length==2)return 1;
-        map=new HashMap<>();
+      
+        fillDp(nums);
+        int ans=solve(0,nums.length-1,nums[0]+nums[1],nums);
+        fillDp(nums);
+        ans=Math.max(ans,solve(0,nums.length-1,nums[0]+nums[nums.length-1],nums));
+        fillDp(nums);
+        ans=Math.max(ans,solve(0,nums.length-1,nums[nums.length-2]+nums[nums.length-1],nums));
+        return ans;
         
-       return solve(0,nums.length-1,0,nums);
+        
+    }
+    void fillDp(int nums[]){
+       dp=new int[nums.length][nums.length];
+        for(int i=0;i<nums.length;i++){
+            for(int j=0;j<nums.length;j++){dp[i][j]=-1;}
+        }
     }
 }
