@@ -1,0 +1,26 @@
+import java.util.ArrayList;
+public class Solution
+{
+    public static int maximumOnesRow(ArrayList<ArrayList<Integer>> mat, int n, int m)
+    {
+        int row=-1;int cnt=0;
+        for(int i=0;i<n;i++){
+            int count=count_1(i,m,mat);
+            if(count>cnt){
+                row=i;cnt=count;
+            }
+        }
+        return row;
+
+    }
+    static int count_1(int r,int m,ArrayList<ArrayList<Integer>> mat){
+        int left=0;
+        int right=m-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(mat.get(r).get(mid)==1)right=mid-1;
+            else left=mid+1;
+        }
+        return (left!=m)?(m-left+1):0;
+    }
+}
