@@ -1,0 +1,33 @@
+class Solution {
+    
+    int findRow(int mat[][],int x){
+        int left=0;
+        int right=mat.length-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(mat[mid][0]==x)return mid;
+            else if(mat[mid][0]>x)right=mid-1;
+            else left=mid+1;
+        }
+        return right;
+    }
+     int findCol(int mat[][],int row,int x){
+        int left=0;
+        int right=mat[0].length-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(mat[row][mid]==x)return mid;
+            else if(mat[row][mid]>x)right=mid-1;
+            else left=mid+1;
+        }
+        return -1;
+    }
+    public boolean searchMatrix(int[][] matrix, int target) {
+        
+        int row=findRow(matrix,target);
+        if(row<0)return false;
+        int col=findCol(matrix,row,target);
+        if(col<0)return false;
+        return true;
+    }
+}
