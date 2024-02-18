@@ -1,0 +1,44 @@
+
+class Solution
+{   
+    static class Pair{
+        int el,row,col;
+        Pair(int r,int c,int e){
+            row=r;col=c;el=e;
+        }
+    }
+    
+	static int[] findSmallestRange(int[][] arr,int n,int k)
+	{
+	   PriorityQueue<Pair>mh=new PriorityQueue<>((a,b)->(a.el-b.el));
+	   int min1=Integer.MAX_VALUE ,max1=0;
+	   
+	   for(int i=0;i<k;i++){
+	       
+	       mh.add(new Pair(i,0,arr[i][0]));
+	       min1=Math.min(min1,arr[i][0]);
+	       max1=Math.max(max1,arr[i][0]);
+	   }
+	   int range=max1-min1;
+	   int min2=min1;
+	   int max2=max1;
+	   //    [1 3 5 7 9]
+    //     B:[0 2 4 6 8]
+    //     C:[2 3 5 7 11]
+	   while(mh.size()!=0){
+	       Pair it= mh.remove();
+	     
+	       if(it.col+1<n)
+	           mh.add(new Pair(it.row,it.col+1,arr[it.row][it.col+1]));
+	       min2=it.el;
+	        if((max2-min2)<range){
+	          min1=min2;
+	           max1=max2;
+	           range=(max2-min2);
+	       }
+	       if(it.col+1>=n)break;
+	       else max2=Math.max(max2,arr[it.row][it.col+1]);
+	   }
+	   return new int[]{min1,max1};
+	}
+}
