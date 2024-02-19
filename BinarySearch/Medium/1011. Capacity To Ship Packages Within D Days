@@ -1,0 +1,34 @@
+class Solution {
+    int canShipp(int wt[],int cap){
+        int day=1;int load=0;
+        for( int i=0;i<wt.length;i++){
+            
+            if(wt[i]+load>cap){
+                day++;
+                load=wt[i];
+            }
+            else load+=wt[i];
+        }
+        return day;
+       
+    }
+    public int shipWithinDays(int[] weights, int days) {
+        
+        int right=0;int left=0;
+        for(int it : weights){
+            right+=it;
+            left=Math.max(it,left);
+        }
+        
+        
+        // [1,2,3,1,1]
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(canShipp(weights,mid)<=days)
+                right=mid-1;
+            
+            else left=mid+1;
+        }
+        return left;
+    }
+}
