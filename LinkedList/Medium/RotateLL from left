@@ -25,6 +25,7 @@ class Solution{
     
 }
 Approach 2
+ Make last pomiter keep adding at last
 ode* rotate(Node* head, int k) 
 { 
     // let us consider the example 
