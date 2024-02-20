@@ -1,0 +1,55 @@
+class Solu {
+    int low[]=new int[100000+1];
+    int time[]=new int[100000+1];
+    boolean vis[]=new boolean [1000000+1];
+    boolean mark[]=null;
+    
+   ArrayList<Integer> ans=new ArrayList<>();
+    int timer=0;
+    ArrayList<Integer> dfs(int u,int p,ArrayList<ArrayList<Integer>> grid ){
+        vis[u]=true;
+        timer++;
+        low[u]=time[u]=timer;
+        int child=0;
+        for(int it : grid.get(u)){
+             
+            if(it==p)continue;
+            if(vis[it]==false){child++;
+                dfs(it,u,grid);
+                low[u]=Math.min(low[u],low[it]);
+                if(time[u]<=low[it] && p!=-1)
+             mark[u]=true;
+            }
+            else low[u]=Math.min(low[u],time[it]);
+          
+            
+            
+        }
+        if(p==-1 && child>1)
+           mark[u]=true;
+           
+        
+        return ans;
+    }
+    
+}
+
+class Solution
+{
+    //Function to return Breadth First Traversal of given graph.
+    public ArrayList<Integer> articulationPoints(int V,ArrayList<ArrayList<Integer>> adj)
+    {
+            Solu s=new Solu();
+          s.mark=new boolean[V+1];
+            
+        ArrayList<Integer> t=new ArrayList<>();
+        s.dfs(0,-1,adj);
+        
+        
+       
+        for(int i=0;i<V;i++){
+            if(s.mark[i])t.add(i);
+        } if(t.size()==0)t.add(-1);
+        return t;
+    }
+}
