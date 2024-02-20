@@ -1,0 +1,63 @@
+class Pair{
+    int timeStamp,twitterId,userId;
+    Pair(int t,int tw,int user){
+        timeStamp=t;twitterId=tw;userId=user;
+    }
+}
+class Twitter {
+    int timer=1;
+    HashMap<Integer,HashMap<Integer,Integer>>map=new HashMap<>();
+    
+    PriorityQueue<Pair>pq=new PriorityQueue<>((a,b)->(b.timeStamp-a.timeStamp));
+    ArrayList<Pair> post=new ArrayList<>();
+    public Twitter() {
+        map=new HashMap<>(); timer=1;
+        pq=new PriorityQueue<>((a,b)->(b.timeStamp-a.timeStamp));
+        post=new ArrayList<>();
+    }
+    
+    public void postTweet(int userId, int tweetId) {
+        post.add(new Pair(timer++,tweetId,userId));
+    }
+    
+    public List<Integer> getNewsFeed(int userId) {
+        // pq=new PriorityQueue<>((a,b)->(b.timeStamp-a.timeStamp));
+        // for(Pair it :post)pq.add(it);
+        List<Integer> ans=new ArrayList<>();
+        int n=0;
+        Collections.sort(post,(a,b)->(b.timeStamp-a.timeStamp));
+        // while(pq.size()!=0 && n<10){
+        //     Pair post=pq.remove();
+        //     if(userId==post.userId ||(map.containsKey(userId) && map.get(userId).containsKey(post.userId)))
+        //     {
+        //         ans.add(post.twitterId);n++;
+        //     }
+        // }
+
+        // for(Pair it : post){
+        //     if(n==10)break;
+        //     if(userId==it.userId ||(map.containsKey(userId) && map.get(userId).containsKey(it.userId)))
+        //     {
+        //         ans.add(it.twitterId);n++;
+        //     }
+        // }
+        
+        return ans;
+    }
+    
+    public void follow(int follId, int followerId) {
+        if(!map.containsKey(follId))
+            map.put(follId,new HashMap<>());
+
+         map.get(follId).put(followerId,1);
+        
+            
+        
+    }
+    
+    public void unfollow(int followerId, int followeeId) {
+         if(map.containsKey(followerId))
+            map.get(followerId).remove(followeeId);
+    }
+}
+
