@@ -1,0 +1,13 @@
+int max=0;int size=0;
+		int map[]=new int[26];int i=0;
+		for(int j=0;j<str.length();j++){
+			map[str.charAt(j)-'a']++;
+			if(map[str.charAt(j)-'a']==1)size++;
+			while(i<str.length() && size>k){
+				map[str.charAt(i)-'a']--;
+				if(map[str.charAt(i)-'a']==0)size--;
+				i++;
+			}
+			max=Math.max(max,j-i+1);
+		}
+		return max;
