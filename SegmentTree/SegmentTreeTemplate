@@ -1,0 +1,72 @@
+import java.util.*;
+
+
+
+public class Main{
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+
+        SGTree sg=new SGTree(4*n+1);
+        sg.buildSGTree(0,0,n-1,arr);
+        // System.out.print(sg.query(0,0,n-1,2,2,arr));
+        sg.update(0,0,n-1,2,-1,arr);
+          System.out.print(sg.query(0,0,n-1,1,2,arr));
+    }
+}
+
+
+
+class SGTree{
+    int seg[]=null;
+    SGTree(int n){
+        seg=new int[n];
+    }
+
+    public void buildSGTree(int idx,int left,int right,int arr[]){
+        if(left==right){
+            seg[idx]=arr[left];
+            return;
+        }
+
+        int mid=(left+right)/2;
+        buildSGTree(2*idx+1,left,mid,arr);
+        buildSGTree(2*idx+2,mid+1,right,arr);
+        seg[idx]=Math.min(seg[2*idx+1],seg[2*idx+2]);
+    }
+
+    int query(int idx,int left,int right,int l,int r,int arr[]){
+            //no overlap
+        //[left,right][l,r] || [l,r][left,right]//
+        if(right<l || r<left)return Integer.MAX_VALUE;
+
+                //complete oeverlap
+        // [left[l,r]right]
+        else if(left>=l && right<=r)return seg[idx];
+        int mid=(left+right)/2;
+        int L=query(2*idx+1,left,mid,l,r,arr);
+        int R=query(2*idx+2,mid+1,right,l,r,arr);
+        return Math.min(L,R);
+    }
+    void  update(int idx,int left,int right,int i,int val,int arr[]){
+          
+          if(left==right){
+            seg[idx]=val;
+            return ;
+          }
+          
+          int mid=(left+right)/2;
+          if(i<=mid)update(2*idx+1,left,mid,i,val,arr);
+          else update(2*idx+2,mid+1,right,i,val,arr);
+          seg[idx]=Math.min(seg[2*idx+1],seg[2*idx+2]);
+    }
+    
+    
+
+}
+
