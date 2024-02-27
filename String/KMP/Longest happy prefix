@@ -11,7 +11,11 @@ Approaches :-
     sp:-((n(n+1)/2)*(n(n+1)/2)*len(s));
 
 3]I can reduce (n(n+1)/2) tc by using hashmap;tc:-((n(n+1)/2)*len(s))
-
+5] Using trie smae question as (longest prefix ) geerate all suffix and make trie with preffix by using generate suffix o(n^2)
+then iterate from 0->n and check longest preffix in trie o(n^2)
+//we can do reverse process generating pefix make trie and cjeck fromt n-1 to n
+tc->o(n^2)->for bothe generating and chekcing 
+sc->o(n*(n+1)/2)->for suffix genrate
 4]kmp algorithm same only grnerate lps return lps[n-1];
     tc-o(n);sc->o(n);
 
