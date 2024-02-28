@@ -1,0 +1,81 @@
+
+/* Approaches:-
+1] go each node find height and check which max and go there then return val
+    TC->O(N^2) 
+2] USE THE CONCEPT OF HEIGHT LIKE DIATEMETER AND CHECK FROM LEFT AND FROM RIGHT WHICH HEIGH IS MAX
+THEN TAKE MAX HEIGHT VAL 
+TC->O(N)
+3]Horizontal apporach left(lvl+1) right(lvl+1); tc->o(n)
+4]high level order traversal tc->o(n) sc->o(n)
+5]low level order traversal tc->o(n)
+*/
+class Solution {
+    // int[] height(TreeNode root){
+    //     if(root==null)return new int[]{0,0};
+    //     if(root.right==null && root.left==null)
+    //         return new int[]{root.val,1};
+    //     int []left=height(root.left);
+    //     int []right=height(root.right);
+    //     if(left[1]<right[1]){
+    //         right[1]++;
+    //         return right;
+    //     }
+    //     left[1]++;
+    //     return left;
+        
+    // }
+    // int ans=0;int max=0;
+    // int horizontal(TreeNode root,int lvl){
+    //     if(root==null)return ans;
+    //     if(root.left==null && root.right==null)
+    //     {
+    //         if(max<lvl){ans=root.val;max=lvl;}return ans ;
+    //     }
+    //     horizontal(root.left,lvl+1);
+    //     horizontal(root.right,lvl+1);
+    //     return ans;
+    // }
+
+    Queue<TreeNode> q=new LinkedList<>();
+    // int highlevel(TreeNode root){
+    //     int ans=0;
+    //     q.add(root);
+    //     while(q.size()!=0){
+    //         int size=q.size();
+    //         boolean flag=true;
+
+    //         while(size-->0){
+    //             TreeNode node=q.remove();
+    //             if(flag){
+    //                 ans=node.val;flag=false;
+    //             }
+    //             if(node.left!=null)q.add(node.left);
+    //             if(node.right!=null)q.add(node.right);
+    //         }
+    //     }
+    //         return ans;
+    // }
+
+//     int lowlevel(TreeNode root){
+//         int ans=0;
+//         q.add(root);
+//        while(q.size()!=0){
+//                 TreeNode node=q.remove();
+//                 ans=node.val;
+//                 if(node.right!=null)q.add(node.right);
+//                 if(node.left!=null)q.add(node.left);
+                
+//             }
+//         return ans;
+//     }
+//     public int findBottomLeftValue(TreeNode root) {
+        
+//         // return height(root,0);
+//         // ans=root.val;
+//         // max=0;
+//         // return horizontal(root,0);
+//         q=new LinkedList<>();
+//         // return highlevel(root);
+//         return lowlevel(root);
+//     }
+// }
