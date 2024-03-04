@@ -1,0 +1,19 @@
+class Solution {
+    public int[] resultArray(int[] nums) {
+        int first=0;int last=nums.length-1;
+        int ans[]=new int[nums.length];
+        ans[0]=nums[0];ans[last]=nums[1];
+        for(int i=2;i<nums.length;i++){
+           if(ans[first]>ans[last])
+            ans[++first]=nums[i];
+           else ans[--last]=nums[i];
+        }
+        int i=last,j=nums.length-1;
+        while(i<=j){
+            int t=ans[i];
+            ans[i]=ans[j];
+            ans[j]=t;i++;j--;
+        }
+        return ans;
+    }
+}
