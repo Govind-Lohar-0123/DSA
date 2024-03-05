@@ -1,0 +1,35 @@
+
+//////////////////// first //////////////
+
+class Solution {
+    public int minOperations(int[] nums, int k) {
+     int ans=0;
+        for(int it : nums){
+            if(it<k)ans++;
+        }
+        return ans;
+    }
+}
+
+
+
+
+
+//////////second////////
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        PriorityQueue<Long>pq=new PriorityQueue<>();
+        for(long it : nums)
+            pq.add(it);
+        int ans=0;
+        while(pq.size()>1){
+            long a=pq.remove();
+            long b=pq.remove();
+            if(a>=k)return ans;
+            long c=Math.max(a,b)+(Math.min(a,b)*2);
+            ans++;
+            pq.add(c);
+        }
+        return ans;
+    }
+}
