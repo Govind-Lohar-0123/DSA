@@ -1,3 +1,5 @@
+              OPTIMAL TRIE APROACH
+
 class Node{
        int count=0; 
        HashMap<Integer,Node>map=new HashMap<>();
