@@ -1,3 +1,39 @@
+
+                                prefix sum Approach
+
+class Solution {
+
+     public int numSubmatrixSumTarget(int[][] arr, int target) {
+       int n=arr.length;
+       int m=arr[0].length;
+       int ans=0;
+       for(int k=0;k<m;k++){
+             int []temp=new int[n];
+           for(int j=k;j<m;j++){
+               int sum=0;
+               HashMap<Integer,Integer>map=new HashMap<>();
+             
+               map.put(0,1);
+               for(int i=0;i<n;i++){
+                   temp[i]= arr[i][j] + ((j>0)?temp[i]:0);
+                   sum+=temp[i];
+                   if(map.containsKey(sum-target))
+                    ans+=map.get(sum-target);
+                map.put(sum,map.getOrDefault(sum,0)+1);
+               }
+           }
+       }
+       return ans;
+    }
+}
+
+
+
+
+
+
+
+
 class Solution {
 
     int matrixSum(int mat[][],int x1,int x2,int y1,int y2){
