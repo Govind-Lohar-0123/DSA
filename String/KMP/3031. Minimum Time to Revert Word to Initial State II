@@ -1,3 +1,14 @@
+
+Approaches:-
+1]  recursion o(26^k)
+2]  KMP Algorithm
+
+
+
+
+
+
+
 class Solution {
     
     void LPS(int lps[],int n,String s){
