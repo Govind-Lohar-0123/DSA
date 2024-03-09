@@ -1,0 +1,13 @@
+appraches:-
+
+1]kmp algorithm how
+we connsider -1 0 1  as (a ,b, c)
+[1,2,3,4,5,6] patter[1,1] as [aa]
+find difference
+[  1  2  3  4  5  6  ]
+     1  1  1  1  1
+      a  a  a  a  a
+use kmp alithm for arra with patter
+s=[a a a a a]   patter[a a]  find op->4
+
+
