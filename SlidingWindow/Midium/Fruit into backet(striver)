@@ -1,0 +1,43 @@
+class Solution {
+    public int totalFruit(int[]arr) {
+        // HashMap<Integer,Integer>map=new HashMap<>();
+        // int cnt=0;
+        // int ans=0;
+        // int i=0,j=0;
+        // while(j<arr.length){
+        //     map.put(arr[j],map.getOrDefault(arr[j],0)+1);
+        //     cnt++;
+        //     while(map.size()>2){
+        //         cnt--;
+        //         map.put(arr[i],map.get(arr[i])-1);
+        //         if(map.get(arr[i])==0)
+        //             map.remove(arr[i]);
+        //         i++;
+        //     }
+        //     j++;
+        //     ans=Math.max(cnt,ans);
+        // }
+        // return ans;   
+        // [0,1,2,2]
+        int i=0,j=0,cnt1=0,cnt2=0,el1=0,el2=0;
+        int ans=0;
+        while(j<arr.length){
+            if(cnt1==0 || (el1==arr[j])){cnt1++;el1=arr[j];}
+            else if(cnt2==0 || (el2==arr[j])){el2=arr[j];cnt2++;}
+            else {
+                while(cnt1!=0 && cnt2!=0){
+                    if((el1==arr[i]))cnt1--;
+                    else if((el2==arr[i]))cnt2--;
+                    i++;
+                }
+                j--;
+            }
+             ans=Math.max(ans,cnt1+cnt2);
+             j++;
+        }
+return ans;
+        
+     }
+
+
+}
