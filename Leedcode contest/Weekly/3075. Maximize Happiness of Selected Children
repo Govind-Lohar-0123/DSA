@@ -1,0 +1,24 @@
+
+Approaches:-
+1] By Sorting simple all array 
+2] By Heap klogk
+
+
+class Solution {
+    public long maximumHappinessSum(int[] h, int k) {
+        PriorityQueue<Integer>pq=new PriorityQueue<>();
+        long sum=0;int n=h.length;
+        for(int i=0;i<n;i++){
+            pq.add(h[i]);
+            if(pq.size()>k)pq.remove();
+        }
+        int i=pq.size()-1;
+        while(pq.size()!=0){
+            int val=pq.remove();
+            sum+=(val-i>=0)?val-i:0;
+            
+            i--;
+        }
+        return sum;
+    }
+}
