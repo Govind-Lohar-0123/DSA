@@ -1,1 +1,45 @@
 
+class Solution {
+    
+    boolean isPrime(int n){
+        if(n==2 || n==3)return true;
+        if(n%2==0 || n%3==0)return false;
+        for(int i=5;i*i<=n;i+=6){
+            if(n%i==0 ||n%(i+2)==0)return false;
+        }
+        return true;
+    }
+    public int mostFrequentPrime(int[][] mat) {
+        int r[]={1,0,-1,0,-1,-1,1,1};
+        int c[]={0,-1,0,1,1,-1,-1,1};
+        int n=mat.length;
+        int ans=0;
+        int freq=0;
+        int m=mat[0].length;
+        HashMap<Integer,Integer>map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int num=0;
+                for(int k=0;k<8;k++){
+                    int x=i;
+                    int y=j;
+                    num=0;
+                    while(x>=0 && y>=0 && x<n && y<m){
+                        num=(num*10)+mat[x][y];
+                        if(num>10 && isPrime(num))
+                        {
+                         map.put(num,map.getOrDefault(num,0)+1);
+                         if(map.get(num)>freq){freq=map.get(num);ans=num;}
+                         else if(map.get(num)==freq && num>ans){ans=num;}
+                               
+                         } 
+                        
+                        x=r[k]+x;
+                        y=c[k]+y;
+                    }
+                }
+            }
+        }
+        return (ans==0)?-1 :ans;
+    }
+}
