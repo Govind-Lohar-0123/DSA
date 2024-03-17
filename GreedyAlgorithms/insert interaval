@@ -1,0 +1,39 @@
+class Solution {
+    int[][] mergeInteraval(int a[][],int n){
+        int idx=0;
+        for(int i=0;i<n;i++){
+            int last=a[idx][1];
+            if(last>=a[i][0]){
+                a[idx][0]=Math.min(a[idx][0],a[i][0]);
+                a[idx][1]=Math.max(a[idx][1],a[i][1]);
+            }
+            else {
+                idx++;
+                a[idx]=a[i];
+            }
+        }
+        int ans[][]=new int[idx+1][2];
+        
+        for(int i=0;i<idx+1;i++)ans[i]=a[i];
+        return ans;
+
+    }
+    public int[][] insert(int[][] a, int[] b) {
+        int n=a.length;
+        int ans[][]=new int[n+1][2];
+        if(n==0)return new int[][]{b};
+       
+        
+        if(a[n-1][0]<=b[0])ans[n]=b;
+        
+        int idx=0;boolean flag=false;
+        for(int i=0;i<n;i++){
+            if(a[i][0]>b[0] && flag==false)
+               { ans[idx++]=b;flag=true;}
+            ans[idx++]=a[i];
+        }
+      
+        return mergeInteraval(ans,n+1);
+        
+    }
+}
