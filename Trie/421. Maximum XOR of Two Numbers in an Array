@@ -1,0 +1,59 @@
+class Node{
+    Node links[]=new Node[2];
+
+     boolean containsKey(int bit){
+        return links[bit]!=null;
+    }
+     Node get(int bit){
+        return links[bit];
+    }
+     void put(int bit){
+        links[bit]= new Node();
+    }
+}
+
+class Trie{
+    
+    
+    Node root=null;
+    Trie(){
+        root=new Node();
+    }
+
+    void insert(int nums){
+        Node curr=root;
+        for(int i=31;i>=0;i--){
+            int bit=(nums>>i) & 1;
+            if(!curr.containsKey(bit))
+                curr.put(bit);
+            curr=curr.get(bit);
+        }
+    }
+    
+    int getMax(int nums){
+         Node curr=root;
+         int maxNum=0;
+         for(int i=31;i>=0;i--){
+            int bit=(nums>>i) & 1;
+            if(curr.containsKey(1-bit))
+              {  maxNum=(maxNum|(1<<i));
+                curr=curr.get(1-bit);}
+            else curr=curr.get(bit);
+        }
+        return maxNum;
+       
+    }
+}
+
+
+class Solution {
+    public int findMaximumXOR(int[] nums) {
+        int ans=0;
+        Trie tr=new Trie();
+        for(int it : nums)
+            tr.insert(it);
+        for(int it : nums)
+            ans=Math.max(tr.getMax(it),ans);
+        return ans;
+    }
+}
