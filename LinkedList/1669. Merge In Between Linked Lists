@@ -1,0 +1,41 @@
+
+class Solution {
+    public ListNode mergeInBetween(ListNode list1, int a, int b, ListNode list2) {
+        ListNode curr=list1;
+    
+        ListNode end2=list2;
+        while(end2.next!=null)end2=end2.next;
+
+        ListNode start1=list1;
+        ListNode end1=list1;
+
+        //a==b && b==lsit1
+        if(a==b && a==0){
+            end2.next=list1.next;
+            return list2;
+        }
+        //a==list1 && b!=a;
+        int i=0;
+        if(a==0){
+            
+            while(i<b-1){end1=end1.next;i++;}
+            end2.next=end1.next.next;
+            return list2;
+        }
+
+        // last case
+       
+        while(i<b-1){
+            if(i==a-1)start1=end1;
+            end1=end1.next;
+            i++;
+        }
+        if(a==b)start1=end1;
+        end1=end1.next.next;
+        start1.next=list2;
+        end2.next=end1;
+        
+        return list1;
+
+    }
+}
