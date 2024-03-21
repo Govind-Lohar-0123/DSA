@@ -1,1 +1,45 @@
+1 approach
 
+class Solution {
+   HashMap<String,Integer>map=new HashMap<>();
+    boolean marked[]=null;
+    int solve(int i,int mark,int nums[],int changeIdx[]){
+       String temp=i+""+mark+Arrays.toString(nums)+Arrays.toString(marked)+"";
+        if(mark==nums.length)return i;
+        if(i==changeIdx.length)return 3000;
+       // if(map.containsKey(temp))return map.get(temp);
+        //marked choice
+        int ans=3000;
+        if(nums[changeIdx[i]-1]==0)
+        {   if(marked[changeIdx[i]-1])
+                ans=solve(i+1,mark,nums,changeIdx);
+            else {
+                marked[changeIdx[i]-1]=true;
+                ans=solve(i+1,mark+1,nums,changeIdx);
+                marked[changeIdx[i]-1]=false;
+            }
+        }  
+         
+      
+            for(int k=0;k<nums.length;k++){
+                if(nums[k]>0){
+                    nums[k]--;
+                    ans=Math.min(ans,solve(i+1,mark,nums,changeIdx));
+                    nums[k]++;
+                }
+            }
+        
+        map.put(temp,ans);
+        return ans;
+    }
+    
+    
+    public int earliestSecondToMarkIndices(int[] nums, int[] changeIdx) {
+      marked=new boolean[nums.length];
+     map=new HashMap<>();
+     
+        int ans=solve(0,0,nums,changeIdx);
+         System.out.print(map);
+        return (ans==3000)?-1:ans;
+    }
+}
