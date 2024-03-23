@@ -1,0 +1,42 @@
+
+class Solution {
+
+    ListNode reverseLL(ListNode head){
+        ListNode prev=null;
+        ListNode curr=head;
+        while(curr!=null){
+            ListNode next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+    public void reorderList(ListNode head) {
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode prev=head;
+        while(fast!=null && fast.next!=null){
+            fast=fast.next.next;
+            prev=slow;
+            slow=slow.next;
+        }
+        if(slow==fast)return ;
+        prev.next=null;
+        ListNode right=reverseLL(slow);
+        ListNode left=head;
+      
+        while(left!=null && right!=null){
+            ListNode next1=left.next;
+            ListNode next2=right.next;
+            left.next=right;
+            left=next1;
+           
+            if(next1!=null){
+                right.next=next1;
+            }
+            right=next2;
+        }
+    
+    }
+}
