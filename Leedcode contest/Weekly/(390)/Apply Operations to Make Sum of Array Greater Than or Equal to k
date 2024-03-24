@@ -1,1 +1,19 @@
-
+class Solution {
+    public int minOperations(int k) {
+        int val=1;
+      
+        int ans=0;
+        int lastAdd=0;
+        int increase=0;
+        while(true){
+            
+            lastAdd=(k/val);
+            if((k%val)==0)lastAdd--;
+            increase=(int)Math.ceil(k/(val+1));
+            if(lastAdd<=increase)return ans+lastAdd;
+            if(val>=k)return ans;
+            ans++;val++;
+        }
+        
+    }
+}
