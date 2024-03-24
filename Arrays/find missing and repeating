@@ -1,0 +1,18 @@
+       long n=nums.length;
+       long sum=(n*(n+1))/2;
+       long sqr=((n*(n+1))*(2*n+1))/6;
+       long s1=0;
+       long s2=0;
+        for(int it : nums){
+            s1+=(long)it;
+            s2+=(long)it*(long)it;
+        }
+        sqr-=s2;
+        sum-=s1;
+        
+        if(sum==0)return 0;
+        long xy=(sqr/sum);
+        long x=(xy-sum)/2;
+        System.out.print(sqr);
+        return (int)x;
+        
