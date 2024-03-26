@@ -1,0 +1,67 @@
+1]trie 
+
+
+class Trie{
+    Node root=null;
+    Trie(){
+        root=new Node();
+    }
+   
+    class Node{
+        ArrayList<Integer>idxArr=null;
+        Node child[]=null;
+        Node(){
+            child=new Node[26];
+            idxArr=new ArrayList<>();
+        }
+    }
+    public int findIdx(ArrayList<Integer>idxArr,String wc[]){
+        int idx=idxArr.get(0);
+        for(int it : idxArr){
+            if(wc[it].length()<wc[idx].length())idx=it;
+        }
+        return idx;
+    }
+   public void insert(String word,int idx){
+    Node curr=root;
+    for(int i=word.length()-1;i>=0;i--){
+        int ch=word.charAt(i)-'a';
+        if(curr.child[ch]==null)curr.child[ch]=new Node();
+        curr.child[ch].idxArr.add(idx);
+        curr=curr.child[ch];
+    }
+   }
+   public int findLCS(String word,String wc[]){
+     Node curr=root;
+     ArrayList<Integer> tmp=null;
+    for(int i=word.length()-1;i>=0;i--){
+        int ch=word.charAt(i)-'a';
+        if(curr.child[ch]==null)break;
+        tmp=curr.child[ch].idxArr;
+        curr=curr.child[ch];
+    }
+    System.out.println(tmp);
+    int idx=0;
+    if(tmp==null){
+        for(int i=0;i<wc.length;i++){
+            if(wc[i].length()<wc[idx].length())idx=i;
+        }
+        return idx;
+    }
+    return findIdx(tmp,wc);
+   }
+}
+
+
+class Solution {
+    public int[] stringIndices(String[] wordsContainer, String[] wordsQuery) {
+        Trie tr=new Trie();
+        
+        for(int i=0;i<wordsContainer.length;i++)tr.insert(wordsContainer[i],i);
+        int ans[]=new int[wordsQuery.length];
+        for(int i=0;i<wordsQuery.length;i++){
+            ans[i]=tr.findLCS(wordsQuery[i],wordsContainer);
+        }
+        return ans;
+    }
+}
