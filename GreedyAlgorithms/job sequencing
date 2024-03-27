@@ -1,0 +1,37 @@
+GRREDY APPROACH
+class Solution
+{
+   
+    int[] JobScheduling(Job arr[], int n)
+    {   
+        Arrays.sort(arr,new Comparator<Job>(){
+            public int compare(Job a,Job b){
+                return b.profit-a.profit;
+            }
+        });
+        
+       HashMap<Integer,Integer>map=new HashMap<>();
+    //   for(int i=0;i<=100000;i++)map.put(i,i);
+        int jobs[]=new int[100000+1];
+       for(int i=0;i<=100000;i++)jobs[i]=-1;
+       int ans[]={0,0};
+        for(Job it : arr){
+            int dl=it.deadline;
+            for(int i=dl;i>0;i--){
+                if(jobs[i]==-1){
+                    ans[0]++;
+                    jobs[i]=it.id;
+                    ans[1]+=it.profit;break;
+                }
+            }
+            
+            // while(map.get(dl)!=dl)dl=map.get(dl);
+            // if(dl!=0){
+            //     ans[0]++;
+            //     ans[1]+=it.profit;
+            //     map.put(dl,map.get(dl)-1);
+            // }
+        }
+       return ans;
+    }
+}
