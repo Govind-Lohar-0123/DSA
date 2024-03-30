@@ -1,0 +1,72 @@
+1]Simple appraoch if no negative Number [1 N]
+i]Can Make Equation to Find (Missing AND Duplicate one El)
+ii] Sum 1 to N Can be
+
+              442. Find All Duplicates in an Array
+  
+class Solution {
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer>ans=new ArrayList<>();
+        for(int i=0;i<nums.length;i++){
+            int it=Math.abs(nums[i]);
+            if(nums[it-1]<0)
+                ans.add(it);
+            nums[it-1]=-1*nums[it-1];
+        }
+        return ans;
+    }
+}
+
+2]simple approach but negative val so we have to take value n+1 or inside range not -1 beaceuse it will becaome postive
+    
+
+3]Cycle Sort very imp can apply on any value -ve +ve to --->(Find Missing Element to Main el at index)
+                
+                      41. First Missing Positive
+ 
+class Solution {
+    public int firstMissingPositive(int[] nums) {
+        //cycle sort Algorithm
+        
+        for(int i=0;i<nums.length;i++){
+            while(nums[i]>=1 && nums[i]<=nums.length && nums[i]!=nums[nums[i]-1])
+                {
+                    int temp=nums[i];
+                    nums[i]=nums[nums[i]-1];
+                    nums[temp-1]=temp;
+                }
+        }
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=i+1)return i+1;
+        }
+        return nums.length+1;
+    }
+}
+
+4]Hare And Totoi (Slow and Fast) with two Condition -->(To Find Duplicate Element)
+i]Duplicate Element Must be 
+ii]Idex Must be
+
+            287. Find the Duplicate Number
+
+
+class Solution {
+    public int findDuplicate(int[] arr) {
+        int slow=0;
+        int fast=0;
+        
+        while(true){
+            slow=arr[slow];
+            fast=arr[arr[fast]];
+            if(slow==fast)break;
+        }
+        slow=0;
+        while(slow!=fast){
+            slow=arr[slow];
+            fast=arr[fast];
+        }
+        return slow;
+    }
+}
+
+5]
