@@ -1,0 +1,27 @@
+//[0 0 1 0 1 0] Count the subbary whose sum is==k
+1]Using PrfixSum(Subarray Sum is equal to K) ---> tc-O(N) S->O(N)   When sum must be qual with any value -ve or +ve and Duplicate
+
+2]Using Sliding Window (k & k-1) Approach  -----> tc-O(N) S->O(N)   When Option Either Shrink or Expand                   
+3]Using Sliding Window with Count zero  --------> tc-O(N) S->O(N)   When Option Either Shrink or Expand with Count Optimal        
+
+// Both 2 and 3 can not be used with -ve value in case sum but  k window can use with -ve 
+
+
+
+
+
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        HashMap<Integer,Integer>map=new HashMap<>();
+        int sum=0;int ans=0;
+        map.put(0,1);
+        for(int it : nums){
+            sum+=it;
+            if(map.containsKey(sum-goal)){
+                ans+=map.get(sum-goal);
+            }
+            map.put(sum,map.getOrDefault(sum,0)+1);
+        }
+        return ans;
+    }
+}
