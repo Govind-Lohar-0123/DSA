@@ -1,0 +1,106 @@
+// Trie -->O(N*slen^2)
+
+
+
+import java.util.*;
+
+public class Trie
+
+{
+	static class Node {
+		int count=0;boolean eow;
+		Node child[]=new Node[26];
+
+	}
+    Trie(){root = new Node();}
+
+	static Node root = new Node();
+
+	
+    static String findUnCommonSub(String s,int i, int n) { //  --> O(slen)
+		Node curr = root;String temp="";
+		for ( ;i < n; i++) {
+			char ch = s.charAt(i);
+            temp+=ch;
+			if(curr.child[ch-'a']==null)
+				return temp;
+			curr=curr.child[ch-'a'];
+            if(curr.count==0)return temp;
+        }
+        return "";
+		
+	}
+	static void insert(String s, int n) {  --//O(slen)
+		Node curr = root;
+		for (int i = 0; i < n; i++) {
+			char ch = s.charAt(i);
+			if(curr.child[ch-'a']==null)
+				curr.child[ch - 'a'] = new Node();
+			curr=curr.child[ch-'a'];
+            curr.count++;
+		}
+		curr.eow = true;
+	}
+	static void deleteSub(String s, int n) {    //O(slen)
+		Node curr = root;
+		for (int i = 0; i < n; i++) {
+			char ch = s.charAt(i);
+			curr=curr.child[ch-'a'];
+            curr.count--;
+		}
+		curr.eow = true;
+	}
+
+	static void generateSub(String s,boolean flag) {   //O(slen)^2
+		String temp = "";
+		for (int i = s.length()-1; i >= 0; i--) {
+			temp= s.charAt(i)+temp;
+            // if(i<s.length()-1 && s.charAt(i)==s.charAt(i+1))continue;
+			if(flag)insert(temp, temp.length());
+            else deleteSub(temp,temp.length());
+		}
+	}
+
+	
+}
+
+class Solution {
+    
+    String isMin(String a,String b){  //O(slen)
+       
+        int i=0,j=0;
+        while(i<a.length()&& a.charAt(i)==b.charAt(j)){
+            i++;j++;
+        }
+        if(i>=a.length())return a;
+        if(a.charAt(i)>b.charAt(j))return b;
+        else return a;
+    }
+    public String[] shortestSubstrings(String[] arr) {
+        Trie tr=new Trie();
+        for(String it : arr)tr.generateSub(it,true);  //-->(N)*(slen)^2
+        
+        String []ans= new String[arr.length];
+        String res="";
+        int k=0;
+        for(String it : arr){      //-->(N)
+            res="";
+           tr.generateSub(it,false);  //(slen)^2
+            for(int i=0;i<it.length();i++){  //  (slen)^2
+                
+                String temp=tr.findUnCommonSub(it,i,it.length());
+                System.out.println(temp);
+                if(res=="" || (temp.length()<res.length() && temp!=""))
+                    res=temp;
+                else if(temp.length()==res.length()){
+                    res=isMin(res,temp);
+                }
+            }
+            tr.generateSub(it,true);
+            ans[k++]=res;
+            
+        }
+        
+        return ans;
+    }
+}
