@@ -1,0 +1,43 @@
+1]with space 
+2]withour space two pass
+3]withour space one pass
+
+
+
+class Solution
+{
+    public static void rearrange(Node odd)
+    {   if(odd==null || odd.next==null)return ;
+    //     Node head=odd;
+    //     Node even=odd.next;
+    //     Node prev=null;
+    //     while(odd.next!=null && even.next!=null){
+    //         Node temp=odd.next.next;
+    //         even.next=prev;
+    //         prev=even;
+    //         odd.next=temp;
+    //         odd=odd.next;
+    //         if(temp!=null)even=temp.next;
+    //     }
+    //     odd.next=null;
+    //     if(even!=null)
+    //     { even.next=prev;prev=even;}
+        
+    //     odd.next=prev;
+        // odd=head;
+        Node head=odd;
+        Node even=odd.next;
+        odd.next=odd.next.next;
+        even.next=null;
+        odd=odd.next;
+        while(odd!=null && odd.next!=null){
+            Node temp=odd.next.next;
+            odd.next.next=even;
+            even=odd.next;
+            odd.next=temp;
+            if(temp!=null)odd=temp;
+        }
+        odd.next=even;
+        odd=head;
+    }
+}
