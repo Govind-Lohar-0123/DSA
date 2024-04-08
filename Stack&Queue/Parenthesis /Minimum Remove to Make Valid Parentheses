@@ -1,1 +1,26 @@
+class Solution {
+    public String minRemoveToMakeValid(String s) {
+        Stack<Integer> st= new Stack<>();
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            if(ch=='(' || ch==')'){
+                if(st.size()!=0 && ch==')'){
+                    map.put(st.peek(),i);
+                    map.put(i,st.pop());
+                }
+                else if(ch=='(')st.push(i);
+            }
+        }
+        String ans="";
+        for(int i=0;i<s.length();i++){
+            char ch=s.charAt(i);
+            if((ch==')' && map.containsKey(i) )|| (ch=='(' && map.containsKey(i)))ans+=ch;
+            else if(ch!=')' && ch!='(')ans+=ch;
+                
+            
+        }
+        return ans;
+    }
+}
 
