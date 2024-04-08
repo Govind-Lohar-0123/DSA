@@ -1,7 +1,7 @@
 class Solution {
-    HashMap<String,Integer>map=new HashMap<>();
+    // HashMap<String,Integer>map=new HashMap<>();
     
-    int mod=(int)(1000000000+7);
+    int mod=(int)(1000000007);
     // int dp[][]=new int[10000+1][10000+1];
     // int solve(String s,int i,int j){
     //     if(i==j)return 1;
@@ -9,7 +9,7 @@ class Solution {
     //     //both are same
     //     int val=0;
     //     // if(dp[i][j]!=-1)return dp[i][j];
-    //     String str=i+"&"+j;                                                          //runnnig mod problem
+    //     String str=i+"&"+j;                          //runnnig mod problem
     //     if(map.containsKey(str))return map.get(str);
     //     if(s.charAt(i)==s.charAt(j))val=(solve(s,i+1,j)+solve(s,i,j-1)+1)%mod;
     //     //both are not dsame
@@ -18,6 +18,23 @@ class Solution {
         
     //     return val;
     // }
+
+     int solve(String s,int i,int j){
+        int dp[][]=new int[1000+1][1000+1];
+        for(int gap=0;gap<s.length();gap++){
+            for( i=0,j=gap;j<s.length();i++,j++){
+                if(i==j)dp[i][j]=1;
+                // else if(j<i)dp[i][j]=0; optional
+                else if(gap==1)dp[i][j]=(s.charAt(i)==s.charAt(j))?3:2;
+                else if(s.charAt(i)==s.charAt(j)){
+                    dp[i][j]=(dp[i+1][j]+dp[i][j-1]+1)%mod;
+                }
+                else dp[i][j]=((dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1])%mod+mod)%mod;
+            }
+        }
+        return dp[0][s.length()-1];
+        
+    }
     public int countPalindromes(String s) {
        
         // for(int i=0;i<=10000;i++){
@@ -25,9 +42,8 @@ class Solution {
         //         dp[i][j]=-1;
         //     }
         // }
-        
-    int ans= solve(s,0,s.length()-1);
-    System.out.print(map);return ans;
+    return solve(s,0,s.length()-1);
+    
     }
 
 }
