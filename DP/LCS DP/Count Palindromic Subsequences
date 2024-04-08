@@ -1,0 +1,33 @@
+class Solution {
+    HashMap<String,Integer>map=new HashMap<>();
+    
+    int mod=(int)(1000000000+7);
+    // int dp[][]=new int[10000+1][10000+1];
+    // int solve(String s,int i,int j){
+    //     if(i==j)return 1;
+    //     if(j<i)return 0;
+    //     //both are same
+    //     int val=0;
+    //     // if(dp[i][j]!=-1)return dp[i][j];
+    //     String str=i+"&"+j;                                                          //runnnig mod problem
+    //     if(map.containsKey(str))return map.get(str);
+    //     if(s.charAt(i)==s.charAt(j))val=(solve(s,i+1,j)+solve(s,i,j-1)+1)%mod;
+    //     //both are not dsame
+    //     else val=((solve(s,i+1,j)+solve(s,i,j-1)-solve(s,i+1,j-1))%mod+mod)%mod;
+    //     map.put(str,val);
+        
+    //     return val;
+    // }
+    public int countPalindromes(String s) {
+       
+        // for(int i=0;i<=10000;i++){
+        //     for(int j=0;j<=10000;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+        
+    int ans= solve(s,0,s.length()-1);
+    System.out.print(map);return ans;
+    }
+
+}
