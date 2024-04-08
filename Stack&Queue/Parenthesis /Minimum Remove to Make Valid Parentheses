@@ -1,3 +1,5 @@
+LEFT TO RIGHT RIGHT TO LEFT APPRAOCH
+
 class Solution {
     public String minRemoveToMakeValid(String s) {
         Stack<Integer> st= new Stack<>();
