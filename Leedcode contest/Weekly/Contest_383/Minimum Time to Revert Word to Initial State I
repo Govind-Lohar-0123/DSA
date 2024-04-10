@@ -1,1 +1,46 @@
+class Solution {
+    
+    void LPS(int lps[],int n,String s){
+        int i=0,j=1;
+        lps[0]=0;
+        while(j<n){
+            if(s.charAt(i)==s.charAt(j)){
+                i++;
+                lps[j]=i;
+                j++;
+            
+            }
+            else {
+                if(i==0)lps[j++]=0;
+                else i=lps[i-1];
+            }
+        }
 
+    }
+    
+    boolean isMatch(String s,int j){
+        int i=0;
+        while(j<s.length()){
+            if(s.charAt(i)!=s.charAt(j))return false;
+            i++;j++;
+        }return true;
+    }
+    public int minimumTimeToInitialState(String word, int k) {
+        
+        int j=k;
+        int lps[]=new int[word.length()];
+        LPS(lps,word.length(),word);
+        int ans=1;
+        
+            System.out.print(lps[word.length()-1]);
+       while(j<word.length()){                      
+           int last=word.length()-j;
+           if(lps[word.length()-1]==last )return ans;
+           if(lps[word.length()-1]>last && isMatch(word,j))return ans;
+            ans++;
+            j+=k;
+            
+        }
+        return ans;
+    }
+}
