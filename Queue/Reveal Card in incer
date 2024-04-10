@@ -1,3 +1,28 @@
+
+class Solution {
+    public int[] deckRevealedIncreasing(int[] deck) {
+        // 1]using Queue
+        // 2]using Pointer
+
+
+        // Arrays.sort(deck);
+        // int ans[]=new int[deck.length];
+        // int i=0,j=0;boolean skip=false;
+        // while(i<deck.length){
+        //     if(skip==true && ans[j]==0)
+        //         skip=false;
+        //     else if(skip==false && ans[j]==0){
+        //         ans[j]=deck[i++];
+        //         skip=true;
+        //     }
+        //     j=(j+1)%deck.length;
+        // }
+        // return ans;
+
+    }
+}
+
+
 class Solution {
     public int[] deckRevealedIncreasing(int[] deck) {
         Arrays.sort(deck);
