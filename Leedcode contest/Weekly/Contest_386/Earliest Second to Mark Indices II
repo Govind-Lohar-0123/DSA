@@ -1,0 +1,49 @@
+1]Greedy+sortinng+binarysearch+hashmap
+
+class Solution {
+    class Pair{
+        int el, last;
+        
+        Pair(int e,int i){
+            el=e;last=i;
+        }
+    }
+    
+    boolean canMark(int sec,int[]chIdx,int nums[]){
+        
+        ArrayList<Pair> sortedLastPos=new ArrayList<>();
+        for(int i=0;i<nums.length+1;i++)sortedLastPos.add(new Pair(-1,-1));
+        for(int i=0;i<sec+1;i++){
+            sortedLastPos.get(chIdx[i]).last=i+1;
+            sortedLastPos.get(chIdx[i]).el=chIdx[i];
+        }
+        Collections.sort(sortedLastPos,(a,b)->a.last-b.last);
+        
+        int time=0;
+        for(int i=1;i<sortedLastPos.size();i++){
+            Pair it=sortedLastPos.get(i);
+          if(it.last==-1)return false;
+            int req_time=nums[it.el-1]+1;
+            if(req_time+time>it.last)return false;
+            time+=req_time;
+         }
+         return true;
+    }
+    public int earliestSecondToMarkIndices(int[] nums, int[] chIdx) {
+        int ans=-1;
+        int left=0;
+        int right=chIdx.length-1;
+        while(left<=right){
+            int mid=(left+right)/2;
+            boolean allMarked=canMark(mid,chIdx,nums);
+            System.out.print(allMarked+" "+mid);
+           
+            if(allMarked){
+                ans=mid;
+                right=mid-1;
+            }
+            else left=mid+1;
+        }
+        return (ans!=-1)?ans+1:-1;
+    }
+}
