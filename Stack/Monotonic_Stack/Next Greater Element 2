@@ -1,0 +1,41 @@
+
+
+class Solution {
+
+    void fillNGR(int ngr[],int n,int arr[]){
+       ngr[n-1]=-1;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i]<arr[(i+1)])ngr[i]=(i+1);
+            else {int j=ngr[i+1];
+                while(j!=-1 && arr[j]<=arr[i])
+                    j=ngr[j];
+                ngr[i]=j;
+            }
+        }
+    }
+    void fillNGRAgain(int ngr[],int n,int arr[]){
+      
+        for(int i=n-1;i>=0;i--){
+            if(arr[i]<arr[(i+1)%n])ngr[i]=(i+1)%n;
+            else {int j=ngr[(i+1)%n];
+                while(j!=-1 && arr[j]<=arr[i])
+                    j=ngr[j];
+                ngr[i]=j;
+            }
+        }
+    }
+
+    
+    public int[]  nextGreaterElements(int[] nums2) {
+        int ngr[]=new int[nums2.length];
+        fillNGR(ngr,nums2.length,nums2);
+        fillNGRAgain(ngr,nums2.length,nums2);
+       
+       
+        for(int i=0;i<nums2.length;i++){
+           
+           ngr[i]=(ngr[i]==-1)?-1:nums2[ngr[i]];
+        }
+        return ngr;
+    }   
+}
