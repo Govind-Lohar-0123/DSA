@@ -1,0 +1,27 @@
+class Solution {
+    public String removeKdigits(String nums, int k) {
+      StringBuilder sb=new StringBuilder();
+      int n=nums.length();int j=1;
+      if(n<=k)return "0";
+      sb.append(nums.charAt(0));
+      while(j<n){
+        
+        while(k!=0 && sb.length()!=0 && sb.charAt(sb.length()-1)-'0'> nums.charAt(j)-'0'){
+            sb.deleteCharAt(sb.length()-1);
+            k--;
+        }
+       
+       sb.append(nums.charAt(j));
+       j++;
+      }
+      
+       while(k-->0)sb.deleteCharAt(sb.length()-1);
+      int i=0;
+      while(i<sb.length() && sb.charAt(i)-'0'==0)i++;
+      if(i>=sb.length())return "0";
+      return sb.substring(i).toString();
+      
+      
+        
+    }
+}
