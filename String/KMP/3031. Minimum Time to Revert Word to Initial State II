@@ -1,13 +1,9 @@
-
-Approaches:-
-1]  recursion o(26^k)
-2]  KMP Algorithm
-
-
-
-
-
-
+// 1]using (n^2)but simple 
+// 2]using kmp (n^2) why beaceuse len>last then we have to check ->
+// i]baba
+// ii]aaaaaaaaaaaaaab  check with you wil undersatnd
+// 3]using kmp (n) because we will backtrck with value whe last is minim
+4]recusrion(26^k)
 
 class Solution {
     
@@ -42,9 +38,8 @@ class Solution {
         int lps[]=new int[word.length()];
         LPS(lps,word.length(),word);
         int ans=1;
-        
-            System.out.print(lps[word.length()-1]);
-       while(j<word.length()){                      
+        System.out.print(lps[word.length()-1]);
+        while(j<word.length()){                      
            int last=word.length()-j;
            if(lps[word.length()-1]==last )return ans;
            if(lps[word.length()-1]>last && isMatch(word,j))return ans;
