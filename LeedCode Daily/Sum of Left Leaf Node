@@ -1,0 +1,19 @@
+1]simple 
+2]level order traversal
+3]with true false flag simple
+class Solution {
+    int solve(TreeNode root){
+        if(root==null)return 0;
+        int left=0;
+        if(root.left!=null){
+            if(root.left.left==null && root.left.right==null)
+                left+=root.left.val;
+        }
+        left+=solve(root.left);
+        int right=solve(root.right);
+        return left+right;
+    }
+    public int sumOfLeftLeaves(TreeNode root) {
+        return solve(root);
+    }
+}
