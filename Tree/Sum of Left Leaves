@@ -1,0 +1,43 @@
+1]simple 
+2]level order traversal
+3]with true false flag simple
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int solve(TreeNode root,boolean flag){
+        if(root==null)return 0;
+       
+       
+        int left=solve(root.left,true);
+        int right=solve(root.right,false);
+        if(flag==true && root.left==null && root.right==null)return root.val;
+        return left+right;
+    }
+    // int solve(TreeNode root){
+    //     if(root==null)return 0;
+    //     int left=0;
+    //     if(root.left!=null){
+    //         if(root.left.left==null && root.left.right==null)
+    //             left+=root.left.val;
+    //     }
+    //     left+=solve(root.left);
+    //     int right=solve(root.right);
+    //     return left+right;
+    // }
+    public int sumOfLeftLeaves(TreeNode root) {
+        return solve(root,false);
+    }
+}
