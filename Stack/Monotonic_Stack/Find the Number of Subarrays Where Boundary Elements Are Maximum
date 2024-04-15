@@ -1,0 +1,54 @@
+Approach 1 Steps
+1] Monotoic stack why beacer to find ranger of range
+2] Map<Int ,ArrayLisy> -> beacuse of how element contrinute in rabge and with sorted index 
+3]when sorted inded mean s we can us binary search 
+
+
+class Solution {
+    HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
+    int countContributeEle(int maxIdx,int el){
+        
+        int left=0;
+        int right=map.get(el).size()-1;
+        
+        while(left<=right){
+            int mid=(left+right)/2;
+            if(map.get(el).get(mid)>maxIdx)right=mid-1;
+            else left=mid+1;
+        }
+        return left;
+
+    }
+     int []NLL(int []nums){
+        
+        int m=nums.length;
+        int nsl[]=new int[m];
+        nsl[0]=-1;
+        for(int i=1;i<m;i++){
+            if(nums[i-1]>nums[i])nsl[i]=i-1;
+            else {
+                int j=nsl[i-1];
+                while(j>=0 && nums[i]>=nums[j])
+                    j=nsl[j];
+                nsl[i]=j;
+            }
+        }
+        return nsl;
+    }
+    public long numberOfSubarrays(int[] nums) {
+        int leftMax[]=NLL(nums);
+        
+        long ans=0;
+        for(int i=0;i<nums.length;i++){
+            int el=nums[i];
+            int nearestLeftMax=leftMax[i];
+            int cnt=0;
+            if(map.containsKey(el)==true)
+               cnt=map.get(el).size()-countContributeEle(nearestLeftMax,el);
+            ans+=cnt+1;
+            if(map.containsKey(el)==false)map.put(el,new ArrayList<>());
+            map.get(el).add(i);
+        }
+        return ans;
+    }
+}
