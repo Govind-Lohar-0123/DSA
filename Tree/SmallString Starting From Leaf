@@ -1,0 +1,45 @@
+
+
+
+
+class Solution {
+    String ans="";
+    String findSmaller(String a,String b){
+       
+        int n=a.length();
+        int m=b.length();
+        int i=n-1,j=m-1;
+        while(i>=0 && j>=0 && a.charAt(i)==b.charAt(j)){
+            i--;j--;
+        }
+       if(i>=0 && j>=0){
+            if(a.charAt(i)>b.charAt(j))return b;
+            return a;
+       } 
+       else if(i>=0)return b;
+       else if(j>=0)return a;
+       return a;
+        
+    }
+
+
+    String solve(TreeNode root,String op){
+        if(root==null)return ans;
+        
+        op=op+""+(char)(root.val+'a');
+       
+        
+        solve(root.left,op);
+        solve(root.right,op);
+       if(root.left==null && root.right==null){
+        
+           if(ans!="")
+            ans=findSmaller(ans,op);
+           else ans=op;
+        }
+        return ans;
+    }
+    public String smallestFromLeaf(TreeNode root) {
+        return new StringBuilder(solve(root,"")).reverse().toString();
+    }
+}
