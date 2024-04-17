@@ -1,0 +1,36 @@
+class Solution {
+    public String minimizeStringValue(String s) {
+        
+        HashMap<Character,Integer>map=new HashMap<>();
+        String ans="";
+        String temp="";
+         for(int i=0;i<s.length();i++){ //O(N)
+             map.put(s.charAt(i),map.getOrDefault(s.charAt(i),0)+1);
+         }
+        for(int i=0;i<s.length();i++){ //O(N)
+            
+            char ch=s.charAt(i);
+            if(s.charAt(i)=='?'){
+                 ch='a';
+                for(char j='a';j<='z';j++){ 26
+                    if(map.containsKey(j)==false){
+                        ch=j;
+                        break;
+                    }
+                    else if(map.get(j)<map.get(ch))
+                        ch=j;
+                }
+               map.put(ch,map.getOrDefault(ch,0)+1);
+                temp+=ch;
+            }
+         
+        }
+        char charArr[]=temp.toCharArray();
+        Arrays.sort(charArr);int idx=0; //O(N)log(N)
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='?')ans+=charArr[idx++];         //why is problem because time complexity is 
+            else ans+=s.charAt(i);
+        }
+        return ans;
+    }
+}
