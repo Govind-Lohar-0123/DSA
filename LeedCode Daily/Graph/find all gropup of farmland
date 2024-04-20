@@ -1,0 +1,177 @@
+
+
+1]dfs and bfs and simple
+
+class Solution {
+    public int[][] findFarmland(int[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+        ArrayList<int[]>ans=new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1)
+                {   
+                    int temp[]=new int[4];
+                    temp[0]=i;
+                    temp[1]=j;
+                    int l=0,k=j;
+                    while(k<m && grid[i][k]==1){
+                        l=i;
+                        while(l<n && grid[l][k]==1){
+                            grid[l][k]=0;
+                            l++;
+                        }
+                       k++;
+                       
+                    }
+                    temp[2]=l-1;
+                    temp[3]=k-1;
+
+
+                    ans.add(temp);
+                }
+            }
+        }
+
+        int res[][]=new int[ans.size()][4];
+        for(int i=0;i<ans.size();i++)
+        {
+            res[i]=ans.get(i);
+        }
+        return res;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class Solution {
+
+//      int [] dfs(int [][]grid,int row,int col,int n,int m,int ans[]){
+//         grid[row][col]=2;
+//         if((row+1>=n ||grid[row+1][col]==0) && (col+1>=m || grid[row][col+1]==0)){
+//             ans[2]=row;
+//             ans[3]=col;
+//         }
+//         int nr[]={0,1,0,-1};
+//         int nc[]={1,0,-1,0};
+//         for(int i=0;i<4;i++)
+//         {
+//             int r=nr[i]+row;
+//             int c=nc[i]+col;
+//             if(r<n && r>=0 && c<m && c>=0 && grid[r][c]==1){
+//                 dfs(grid,r,c,n,m,ans);
+//             }
+//         }
+//         return ans;
+
+//      }
+   
+//     public int[][] findFarmland(int[][] grid) {
+//         int n=grid.length;
+//         int m=grid[0].length;
+//         ArrayList<int[]>ans=new ArrayList<>();
+
+//         for(int i=0;i<n;i++){
+//             for(int j=0;j<m;j++){
+//                 if(grid[i][j]==1)
+//                 {   
+//                     int temp[]=new int[4];
+//                     temp[0]=i;
+//                     temp[1]=j;
+//                     ans.add(dfs(grid,i,j,n,m,temp));
+//                 }
+//             }
+//         }
+
+//         int res[][]=new int[ans.size()][4];
+//         for(int i=0;i<ans.size();i++)
+//         {
+//             res[i]=ans.get(i);
+//         }
+//         return res;
+//     }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+// class Solution {
+//     int [] bfs(int [][]grid,int r,int c,int n,int m){
+//         Queue<int[]>q=new LinkedList<>();
+//         q.add(new int[]{r,c});
+//         int ans[]=new int[4];
+//         ans[0]=r;ans[1]=c;
+//         grid[r][c]=0;
+
+//         while(q.size()!=0){
+//             int it[]=q.remove();
+//             if(q.size()==0){
+//                 ans[2]=it[0];
+//                 ans[3]=it[1];
+//             }
+//             int nr[]={0,1,0,-1};
+//             int nc[]={1,0,-1,0};
+//             for(int i=0;i<4;i++)
+//             {
+//                 r=nr[i]+it[0];
+//                 c=nc[i]+it[1];
+//                 if(r<n && r>=0 && c<m && c>=0 && grid[r][c]==1){
+//                     grid[r][c]=0;
+//                     q.add(new int[]{r,c});
+//                 }
+//             }
+
+//         }
+        
+//         return ans;
+
+
+//     }
+
+//     public int[][] findFarmland(int[][] grid) {
+//         int n=grid.length;
+//         int m=grid[0].length;
+//         ArrayList<int[]>ans=new ArrayList<>();
+//         for(int i=0;i<n;i++){
+//             for(int j=0;j<m;j++){
+//                 if(grid[i][j]==1)
+//                 {   
+                    
+//                     ans.add(bfs(grid,i,j,n,m));
+//                 }
+//             }
+//         }
+
+//         int res[][]=new int[ans.size()][4];
+//         for(int i=0;i<ans.size();i++)
+//         {
+//             res[i]=ans.get(i);
+//         }
+//         return res;
+//     }
+// }
