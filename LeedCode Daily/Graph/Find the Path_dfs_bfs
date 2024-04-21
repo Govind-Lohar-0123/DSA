@@ -1,0 +1,21 @@
+class Solution {
+    boolean vis[]=new boolean[2*100000];
+    void dfs(ArrayList<ArrayList<Integer>>grid,int u){
+        vis[u]=true;
+        for(int v : grid.get(u)){
+            if(vis[v]==false)dfs(grid,v);
+        }
+    }
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        ArrayList<ArrayList<Integer>>grid=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            grid.add(new ArrayList<>());
+        }
+        for(int it[] : edges){
+            grid.get(it[0]).add(it[1]);
+            grid.get(it[1]).add(it[0]);
+        }
+        dfs(grid,source);
+        return (vis[destination]);
+    }
+}
