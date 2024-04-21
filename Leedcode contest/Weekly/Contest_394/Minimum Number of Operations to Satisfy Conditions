@@ -1,0 +1,32 @@
+class Solution {
+    int dp[][]=new int[1000+1][10];
+    int solve(int grid[][],int m,int dgt){
+        if(m<0)return 0;
+        if(dp[m][dgt]!=-1)return dp[m][dgt];
+
+        int cost=0;
+        int ans=Integer.MAX_VALUE;
+        for(int i=0;i<grid.length;i++){
+             if(grid[i][m]!=dgt)
+                cost++;
+        }
+        for(int i=0;i<=9;i++){
+            if(dgt!=i)ans=Math.min(ans,cost+solve(grid,m-1,i));
+        }
+        return dp[m][dgt]=ans;
+    }
+    public int minimumOperations(int[][] grid) {
+        
+        int ans=Integer.MAX_VALUE;
+        for(int d=0;d<=9;d++){
+            for(int i=0;i<=1000;i++){
+                for(int j=0;j<10;j++){
+                    dp[i][j]=-1;
+                }
+            }
+            ans=Math.min(ans,solve(grid,grid[0].length-1,d));
+        }
+        
+        return ans;
+    }
+}
