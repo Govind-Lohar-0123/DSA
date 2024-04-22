@@ -1,0 +1,62 @@
+1] whenever we have number or character 
+2]we are allowed to cahnge num or char
+3] we have reach at target 
+4]with minimum changes
+always use bfs
+problem
+1]word ladder
+2]ope the lock
+3]
+
+
+
+
+
+
+
+
+
+
+class Solution {
+    public int openLock(String[] deadends, String target) {
+        Queue<StringBuilder> pq=new LinkedList<>();
+        HashMap<String,Integer> map=new HashMap<>();
+
+        for(String it : deadends){
+            map.put(it,0);
+        }
+      
+        
+        pq.add(new StringBuilder("0000"));
+        if(map.containsKey(target) || map.containsKey("0000"))return -1;
+        int lvl=0;  map.put("0000",0);
+        while(pq.size()!=0){
+            int size=pq.size();
+            while(size-->0){
+                StringBuilder s=pq.remove();
+                System.out.print(s+" ");
+                if(s.toString().equals(target))return lvl;
+                for(int i=0;i<4;i++){
+                    int n=s.charAt(i)-'0';
+                    StringBuilder temp1=new StringBuilder(s);
+                    StringBuilder temp2=new StringBuilder(s);
+                    if(n==0)temp1.setCharAt(i,(char)(9+'0'));
+                    else temp1.setCharAt(i,(char)(n-1+'0'));
+                    temp2.setCharAt(i,(char)((n+1)%10+'0'));
+                   
+                    if(map.containsKey(temp2.toString())==false)
+                       pq.add(new StringBuilder(temp2));
+                    
+                    if(map.containsKey(temp1.toString())==false)
+                        pq.add(new StringBuilder(temp1));
+                         
+                      
+                    map.put(temp1.toString(),0);
+                    map.put(temp2.toString(),0);
+                } 
+            }
+            lvl++;
+        }
+        return -1;
+    }
+}
