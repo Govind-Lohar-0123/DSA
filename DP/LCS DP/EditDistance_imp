@@ -1,0 +1,65 @@
+important 
+1]4 aproach
+
+
+
+class Solution {
+    int dp[][]=new int[500+5][500+5];
+    int solve(String a,String b,int n,int m){
+        // if(n<0)return m+1;
+        // if(m<0)return n+1;
+        // if(dp[n][m]!=-1)return dp[n][m];
+        // if(a.charAt(n)==b.charAt(m))return solve(a,b,n-1,m-1);
+        // int add=solve(a,b,n-1,m);
+        // int rem=solve(a,b,n,m-1);
+        // int rep=solve(a,b,n-1,m-1);
+        // int ans= Math.min(add,Math.min(rem,rep))+1;
+        // return dp[n][m]=ans;
+
+        // for(int i=0;i<=n;i++){
+        //     for(int j=0;j<=m;j++){
+        //         if(i==0)dp[i][j]=j;
+        //         else if(j==0)dp[i][j]=i;
+        //         else if(a.charAt(i-1)==b.charAt(j-1))dp[i][j]=dp[i-1][j-1];
+        //         else {
+        //             int add=dp[i-1][j];
+        //             int rem=dp[i][j-1];
+        //             int rep=dp[i-1][j-1];
+        //             int ans= Math.min(add,Math.min(rem,rep))+1;
+        //             dp[i][j]=ans;
+        //         }
+        //     }
+        // }
+        // return dp[n][m];
+        int prev[]=new int[m+1];
+        int curr[]=new int[m+1];
+
+        for(int i=0;i<=n;i++){
+            curr=new int[m+1];
+            for(int j=0;j<=m;j++){
+                if(i==0)curr[j]=j;
+                else if(j==0)curr[j]=i;
+                else if(a.charAt(i-1)==b.charAt(j-1))curr[j]=prev[j-1];
+                else {
+                    int add=prev[j];
+                    int rem=curr[j-1];
+                    int rep=prev[j-1];
+                    int ans= Math.min(add,Math.min(rem,rep))+1;
+                    curr[j]=ans;
+                }
+            }
+            prev=curr;
+        }
+        return curr[m];
+    }
+    public int minDistance(String word1, String word2) {
+        // for(int i=0;i<=500;i++){
+        //     for(int j=0;j<=500;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+        return solve(word1,word2,word1.length(),word2.length());
+    }
+}
+
+
