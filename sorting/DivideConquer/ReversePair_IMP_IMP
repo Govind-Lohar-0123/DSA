@@ -1,0 +1,44 @@
+class Solution {
+    int count=0;
+    void mergeSort(int s,int e,int nums[]){
+        if(s>=e)return ;
+        int mid=(s+e)/2;
+        mergeSort(s,mid,nums);
+        mergeSort(mid+1,e,nums);
+        merge(nums,s,mid,mid+1,e);
+    }
+
+    void merge(int nums[],int s1,int n,int s2,int m){
+        
+        int temp[]=new int[m-s1+1];
+        int k=0;int i=s1,j=s2;
+
+        int cnt=1;
+        for(;i<=n;i++){
+             while(j<=m && (long)nums[i]>(long)nums[j]*2){
+               j++;cnt++;
+            }count+=(cnt-1);
+        }
+        i=s1;j=s2;
+        
+        while(i<=n && j<=m ){
+           
+            if(nums[i]<=nums[j])temp[k++]=nums[i++];
+            else temp[k++]=nums[j++];
+        }
+        while(i<=n)temp[k++]=nums[i++];
+        while(j<=m)temp[k++]=nums[j++];
+        
+        for(i=s1;i<=m;i++)nums[i]=temp[i-s1];
+        
+    }   
+
+
+
+    public int reversePairs(int[] nums) {
+        count=0;
+        mergeSort(0,nums.length-1,nums);
+        // System.out.print(Arrays.toString(nums));
+        return count;
+    }
+}
