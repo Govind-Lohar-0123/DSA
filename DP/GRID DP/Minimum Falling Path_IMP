@@ -1,3 +1,32 @@
+
+
+
+
+
+
+    --------------------------------- Appraches----------------------------------------------------
+1] Simple Recusion 
+    t->O(m^n*n*n)
+    s->O(n)
+2] dp+memoazie
+    t->O(n^3)
+    s->O(n*m)
+3]dp+bottom
+    t->O(N^3)
+    s->O(n*m)
+4]dp+bottom
+    t->O(N^3)
+    s->O(m) in one arrays
+4]bottom+remove 3rd loop because it find only min el so we will make min and secmin to remve that loop
+    t->O(N^2)
+    s->O(m)
+5]bottom+remove 3rd loop as well as remove 1 d arrys  dp by compution pre (min,secmin) && curr(min,secmin)
+    t->O(N^2)
+    s->O(1)
+
+
+
+
 class Solution {
     int dp[][]=new int[201][201];
     int solve(int grid[][],int n,int m){
