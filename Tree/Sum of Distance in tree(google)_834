@@ -1,0 +1,45 @@
+class Solution {
+    int dis[]=new int[40000];
+    int childs[]=new int[40000];
+    
+    int count=0;
+
+    
+    int dfs(ArrayList<ArrayList<Integer>>grid,int u,int cnt,int par){
+        int child=0;
+        
+        for(int v : grid.get(u)){
+            if(par==v)continue;
+            child+=dfs(grid,v,cnt+1,u)+1;
+        }
+        childs[u]=child+1;
+        count+=cnt;
+        return child;
+     }
+     
+    void solve(ArrayList<ArrayList<Integer>>grid,int u,int par,int n){
+        if(u!=0)dis[u]=dis[par]-childs[u]+(n-childs[u]);
+        for(int v : grid.get(u)){
+            if(par==v)continue;
+            solve(grid,v,u,n);
+        }
+       
+    }
+     
+    public int[] sumOfDistancesInTree(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            grid.add(new ArrayList<>());
+        }
+        for(int it[] : edges)
+         {   grid.get(it[0]).add(it[1]);
+            grid.get(it[1]).add(it[0]);
+         }
+        dis=new int[n];
+        dfs(grid,0,0,-1);
+        dis[0]=count;
+        solve(grid,0,-1,n);
+
+        return dis;
+    }
+}
