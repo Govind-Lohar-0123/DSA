@@ -1,1 +1,13 @@
-
+class Solution {
+    public long minEnd(long n, long x) {
+        n--;
+       
+    for(int bit=0;bit<64 ;bit++){
+            if((1 & (x >> bit))==1)continue;
+            long lastBit=(n & 1);
+            x=(x | (lastBit<<bit));
+            n>>=1;
+    }
+       return x;
+    }
+}
