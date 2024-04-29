@@ -1,0 +1,54 @@
+class Solution {
+    int dp[][]=new int[101][101];
+    int getMinStep(int ringIdx,int keyIdx,int n){
+        int anty=Math.abs(keyIdx-ringIdx);
+        int clock=n-anty;
+        return Math.min(clock,anty);
+    }
+    
+    int solve(String ring,String key,int ringIdx,int keyIdx){ 
+        int n=ring.length();
+        int m=key.length();
+        int next[]=new int [n+1];
+        int curr[]=new int [n+1];
+        for(int i=m-1;i>=0;i--){
+            curr=new int[n+1];
+            for(int j=0;j<n;j++){
+                int ans=Integer.MAX_VALUE;
+                for(int k=0;k<n;k++){
+                    if(ring.charAt(k)!=key.charAt(i))continue;
+                    int temp=next[k]+getMinStep(j,k,ring.length());
+                    ans=Math.min(ans,temp);
+                   
+                }
+                curr[j]=ans;
+            }
+            next=curr;
+        }
+        for(int it[] : dp){
+            System.out.println(Arrays.toString(it));
+        }
+        return curr[0];
+        
+        
+        // if(keyIdx>=key.length())return 0;
+        // int ans=Integer.MAX_VALUE;
+        // if(dp[ringIdx][keyIdx]!=-1)return dp[ringIdx][keyIdx];
+        // for(int i=0;i<ring.length();i++){
+        //     if(ring.charAt(i)!=key.charAt(keyIdx))continue;
+           
+        //    int temp=solve(ring,key,i,keyIdx+1)+getMinStep(ringIdx,i,ring.length());
+        //    ans=Math.min(ans,temp);
+        // }
+        // return dp[ringIdx][keyIdx]=ans;
+    }
+
+    public int findRotateSteps(String ring, String key) {
+        // for(int i=0;i<101;i++){
+        //     for(int j=0;j<101;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+        return solve(ring,key,0,0)+key.length();
+    }
+}
