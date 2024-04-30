@@ -6,7 +6,7 @@
 
     --------------------------------- Appraches----------------------------------------------------
 1] Simple Recusion 
-    t->O(m^n*n*n)
+    t->O(m^n*n)
     s->O(n)
 2] dp+memoazie
     t->O(n^3)
@@ -27,58 +27,136 @@
 
 
 
+// Approaches
+
+
+
+
+
+
+
+
+
+// class Solution {
+//     int dp[][]=new int[201][201];
+//     int solve(int grid[][],int n,int m){
+//         // if(n==0)return grid[n][m];
+//         // int ans=10000;
+//         // if(dp[n][m]!=-1)return dp[n][m];
+//         // for(int i=0;i<grid[0].length;i++){
+//         //     if(i==m)continue;
+//         //     int temp=solve(grid,n-1,i)+grid[n][m];
+//         //     ans=Math.min(temp,ans);
+//         // }
+//         // return dp[n][m]=ans;//you can add grid[n][m]here
+//         int prev[]=new int[200+1];
+//         int curr[]=new int[200+1];
+//         for(int i=0;i<=n;i++){
+//             curr=new int[200+1];
+//             for(int j=0;j<grid[0].length;j++){
+//                 if(i==0)curr[j]=grid[i][j];
+//                 else {
+//                     int ans=Integer.MAX_VALUE;
+//                     for(int k=0;k<grid[0].length;k++){
+//                         if(k==j)continue;
+//                         int temp=prev[k]+grid[i][j];
+//                         ans=Math.min(temp,ans);
+//                     }
+//                     curr[j]=ans;
+//                 }
+
+//             }
+//             prev=curr;
+//         }
+//         int ans=Integer.MAX_VALUE;
+//         for(int i=0;i<=n;i++){
+//             // System.out.print(grid[n][i]);
+//             ans=Math.min(ans,curr[i]);
+//         }
+//         return ans;
+//     }
+//     public int minFallingPathSum(int[][] grid) {
+//         int ans=Integer.MAX_VALUE;
+
+//         // for(int i=0;i<grid[0].length;i++)
+//         // {   
+//         //     // for(int j=0;j<201;j++){
+//         //     //     for(int k=0;k<201;k++){
+//         //     //         dp[j][k]=-1;
+//         //     //     }
+//         //     // }
+            
+//             ans=Math.min(ans,solve(grid,grid.length-1,0));
+//         // }
+//         return ans;
+//     }
+// }
+
+
 class Solution {
-    int dp[][]=new int[201][201];
     int solve(int grid[][],int n,int m){
-        // if(n==0)return grid[n][m];
-        // int ans=10000;
-        // if(dp[n][m]!=-1)return dp[n][m];
-        // for(int i=0;i<grid[0].length;i++){
-        //     if(i==m)continue;
-        //     int temp=solve(grid,n-1,i)+grid[n][m];
-        //     ans=Math.min(temp,ans);
-        // }
-        
-// return dp[n][m]=ans;//you can add grid[n][m]here
         int prev[]=new int[200+1];
         int curr[]=new int[200+1];
-        for(int i=0;i<=n;i++){
-            curr=new int[200+1];
-            for(int j=0;j<grid[0].length;j++){
-                if(i==0)curr[j]=grid[i][j];
-                else {
-                    int ans=Integer.MAX_VALUE;
-                    for(int k=0;k<grid[0].length;k++){
-                        if(k==j)continue;
-                        int temp=prev[k]+grid[i][j];
-                        ans=Math.min(temp,ans);
-                    }
-                    curr[j]=ans;
-                }
-
-            }
-            prev=curr;
-        }
-        int ans=Integer.MAX_VALUE;
-        for(int i=0;i<=n;i++){
-            // System.out.print(grid[n][i]);
-            ans=Math.min(ans,curr[i]);
-        }
-        return ans;
-    }
-    public int minFallingPathSum(int[][] grid) {
         int ans=Integer.MAX_VALUE;
 
-        // for(int i=0;i<grid[0].length;i++)
-        // {   
-        //     // for(int j=0;j<201;j++){
-        //     //     for(int k=0;k<201;k++){
-        //     //         dp[j][k]=-1;
-        //     //     }
-        //     // }
-            
-            ans=Math.min(ans,solve(grid,grid.length-1,0));
+    // --------bottom up remove 3rd loop because it only finding min value so we can mai----
+        // for(int i=0;i<n;i++){
+        //     ans=Integer.MAX_VALUE;
+        //     curr=new int[200+1];
+        //     int firstMin=-1;
+        //     int secMin=-1;
+        //     for(int j=0;j<grid[0].length;j++){
+        //         if(i==0)curr[j]=grid[i][j];
+        //         else  {
+        //             if(firstMin==-1 || prev[firstMin]>prev[j]){
+        //                 secMin=firstMin;
+        //                 firstMin=j;
+        //             }
+        //             else if(secMin==-1 || prev[j]<prev[secMin])secMin=j;
+        //         }
+             
+        //     }
+
+        //     //we are basically storing the min 
+        //      for(int j=0;( j<grid[0].length && i!=0);j++){
+        //         if(firstMin!=j)curr[j]=prev[firstMin]+grid[i][j];
+        //         else if(secMin!=-1)curr[j]=prev[secMin]+grid[i][j];
+        //         ans=Math.min(ans,curr[j]);
+        //     }
+        //     prev=curr;
         // }
-        return ans;
+
+        // --------------bottom up to remove prev as well as 3rd loop------------
+         
+        int prevFirst[]={0,-1};
+        int prevSec[]={0,-1};
+        for(int i=0;i<n;i++){
+            ans=Integer.MAX_VALUE;
+            int currFirst[]={Integer.MAX_VALUE,-1};
+            int currSec[]={Integer.MAX_VALUE,-1};
+
+            for(int j=0;j<grid[0].length;j++){
+                int minToTake[]=(j!=prevFirst[1])?prevFirst:prevSec;
+                
+                if(minToTake[0]+grid[i][j]<currFirst[0]){
+                    currSec=currFirst;
+                    currFirst=new int[]{minToTake[0]+grid[i][j],j};
+                }
+                else if(minToTake[0]+grid[i][j]<currSec[0])
+                    currSec=new int[]{minToTake[0]+grid[i][j],j};
+                
+                if(i==n-1)ans=Math.min(ans,currFirst[0]);
+            }
+            System.out.print(Arrays.toString(currFirst)+" "+Arrays.toString(currSec));
+            prevFirst=currFirst;
+            prevSec=currSec;
+               
+        }
+
+        return (ans==Integer.MAX_VALUE)?prev[0]:ans;
+    }
+    
+    public int minFallingPathSum(int[][] grid) {
+       return solve(grid,grid.length,grid[0].length);
     }
 }
