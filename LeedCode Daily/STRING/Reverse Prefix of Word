@@ -1,0 +1,13 @@
+class Solution {
+    public String reversePrefix(String word, char ch) {
+        String ans="";boolean isFoundCh=false;
+        for(int i=0;i<word.length();i++){
+            if(isFoundCh==false){
+                if(ch==word.charAt(i))isFoundCh=true;
+                ans=word.charAt(i)+ans;
+            }
+            else ans+=word.charAt(i);
+        }
+        return (isFoundCh==true)?ans:word;
+    }
+}
