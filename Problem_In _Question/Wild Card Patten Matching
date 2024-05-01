@@ -1,0 +1,56 @@
+
+
+class Solution {
+
+    int lps[]=new int[20001];
+    void kmp(String p){
+        int n=p.length();
+        lps=new int[n];
+        int i=0,j=1;
+        while(j<n){
+            if(p.charAt(j)==p.charAt(i)){
+                i++;
+                lps[j]=i;
+                j++;
+            }
+            else {
+                if(i==0)lps[j++]=0;
+                else i=lps[i-1];
+            }
+        }
+        System.out.println(Arrays.toString(lps));
+    }
+
+    int dp[][]=new int[2001][2001];
+    boolean solve(int n,int m,String s,String p){
+        if(n==0 && m==0)return true;
+        if(m==0 )return false;
+        if(n==0){
+           int i=0;
+           int j=m-1;
+            if(p.charAt(m-1)!='*' ||lps[m-1]!=m-1)return false;
+           return true;
+        }
+        if(dp[n][m]!=-1)return (dp[n][m]==0)?false:true;          //doubt is basically O(N^2)but why it 
+                                                                    //giving  tle i am using kmp O(1) intead o(N) to check all * from m-1 to 0
+        char ch=p.charAt(m-1);                                    //containgt is 1<=n,m<=2000
+        boolean isMatch=false;
+        if(ch!='*' && ch!='?' ){
+            if(ch!=s.charAt(n-1))return false;
+            isMatch=solve(n-1,m-1,s,p);
+        }
+        else if(ch=='?')isMatch=solve(n-1,m-1,s,p);
+        else isMatch=(solve(n-1,m-1,s,p) || solve(n,m-1,s,p)||solve(n-1,m,s,p));
+        dp[n][m]=(isMatch==true)? 1 : 0;
+        return isMatch;
+    }
+    public boolean isMatch(String s, String p) {
+        for(int i=0;i<2001;i++){
+            for(int j=0;j<2001;j++){
+                dp[i][j]=-1;
+            }
+        }
+        kmp(p);
+        return solve(s.length(),p.length(),s,p);
+    }
+}
