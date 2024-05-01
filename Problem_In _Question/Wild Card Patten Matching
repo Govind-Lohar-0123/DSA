@@ -33,7 +33,7 @@ class Solution {
         }
         if(dp[n][m]!=-1)return (dp[n][m]==0)?false:true;          //doubt is basically O(N^2)but why it 
                                                                     //giving  tle i am using kmp O(1) intead o(N) to check all * from m-1 to 0
-        char ch=p.charAt(m-1);                                    //containgt is 1<=n,m<=2000
+        char ch=p.charAt(m-1);                                    //containgt is 1<=n,m<=2000  but is working at coding ninja
         boolean isMatch=false;
         if(ch!='*' && ch!='?' ){
             if(ch!=s.charAt(n-1))return false;
