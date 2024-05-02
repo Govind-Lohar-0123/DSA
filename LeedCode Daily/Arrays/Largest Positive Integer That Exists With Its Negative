@@ -1,0 +1,15 @@
+class Solution {
+    public int findMaxK(int[] nums) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int max=-1;
+
+        for(int it : nums){
+            if(map.containsKey(it*-1)==true)
+                max=Math.max(max,Math.abs(it));
+            map.put(it,0);
+            
+        }
+        return max;
+        
+    }
+}
