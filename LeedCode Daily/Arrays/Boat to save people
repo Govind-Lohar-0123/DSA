@@ -1,0 +1,31 @@
+class Solution {
+    public int numRescueBoats(int[] people, int limit) {
+       int req_boat=0;
+    //    for(int i=0;i<people.length;i++){
+    //     if(people[i]==-1)continue;
+    //         int idx=-1;
+    //         for(int j=i+1;j<people.length;j++){
+    //             if(people[i]+people[j]<=limit && people[j]!=-1){
+    //                 if(idx==-1 || (people[i]+people[idx]<people[i]+people[j]))
+    //                     idx=j;
+    //             }
+    //         }
+    //         if(idx!=-1){
+    //             people[idx]=-1;
+    //         }
+    //         req_boat++;
+    //    }
+    //    return req_boat;
+        Arrays.sort(people);
+        int i=0,j=people.length-1;
+        while(i<=j){
+            if(people[i]+people[j]<=limit){
+              i++;j--;
+            }
+            else j--;
+            req_boat++;
+        }
+        return req_boat;
+
+    }
+}
