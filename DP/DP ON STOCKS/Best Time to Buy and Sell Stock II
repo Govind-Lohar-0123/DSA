@@ -22,20 +22,13 @@ public class Solution {
         // }
         // return dp[0][0];
 
-        // long zero=0;
-        // long one=0;
-        // for(i=arr.length-1;i>=0;i--){
-        //     for(int j=0;j<=1;j++){
-        //          long ans=0;
-        //         if(j==0) ans=Math.max(-arr[i]+one,zero);
-        //         else ans=Math.max(one,zero+(arr[i]));
-               
-        //         if(j==0)zero=ans;
-        //         else one=ans;
-
-        //     }
-        // } 
-        // return zero;
+        long zero=0;
+        long one=0;
+        for(i=arr.length-1;i>=0;i--){
+                zero=Math.max(-arr[i]+one,zero);
+                one=Math.max(one,zero+(arr[i]));
+        } 
+        return zero;
     }
     public static long getMaximumProfit (int n, long[] values) {
      dp=new long[100000+1][2];
