@@ -1,7 +1,22 @@
 public class Solution {
-    static int dp[][][] = null;
+    static int dp[][] = null;
 
-    static int solve(int i, int buy, int cnt, int[] arr) {
+    //we can make dp[n][4] why
+    //becasue 1 2 3 4
+                    // b s b s when sell increase by 1 
+
+   static int solve(int i, int trans, int[] arr) {
+        //base condition
+        if(i==arr.length || trans==4)return 0;
+
+        //all stuffs
+        if(dp[i][trans]!=-1)return dp[i][trans];
+        int ans=0;
+        if(trans%2==0) ans=Math.max(-arr[i]+solve(i+1,trans+1,arr),solve(i+1,trans,arr));
+        else ans=Math.max(solve(i+1,trans,arr), solve(i+1,trans+1,arr)+(arr[i]));
+        return dp[i][trans]=ans;
+   }
+    // static int solve(int i, int buy, int cnt, int[] arr) {
         // //base condition
         // if(i==arr.length || cnt==2)return 0;
 
@@ -27,45 +42,45 @@ public class Solution {
         // }
         // return dp[0][0][0];
 
-        int zero[]=new int[3];
-        int one[]=new int[3];
-        for (i = arr.length - 1; i >= 0; i--) {
+        // int zero[]=new int[3];
+        // int one[]=new int[3];
+        // for (i = arr.length - 1; i >= 0; i--) {
 
-            for (int j = 0; j <= 1; j++) {
-                for (int k = 0; k <2; k++) {
-                        int  ans = 0;
-                        if (j == 0)
-                            ans = Math.max(-arr[i] + one[k], zero[k]);
-                        else
-                            ans = Math.max(one[k], zero[k+1] + (arr[i]));
-                        if(j==0)zero[k]=ans;
-                        else one[k]=ans;
+        //     for (int j = 0; j <= 1; j++) {
+        //         for (int k = 0; k <2; k++) {
+        //                 int  ans = 0;
+        //                 if (j == 0)
+        //                     ans = Math.max(-arr[i] + one[k], zero[k]);
+        //                 else
+        //                     ans = Math.max(one[k], zero[k+1] + (arr[i]));
+        //                 if(j==0)zero[k]=ans;
+        //                 else one[k]=ans;
                        
-                }
-
-            }
-        }
-        return zero[0];
-
-        // long zero=0;
-        // long one=0;
-        // for(i=arr.length-1;i>=0;i--){
-        // zero=Math.max(-arr[i]+one,zero);
-        // one=Math.max(one,zero+(arr[i]));
-        // }
-        // return zero;
-    }
-
-    public static int maxProfit(int[] values) {
-        dp = new int[values.length+1][2][3];
-        // for (int i = 0; i <= 1000000; i++) {
-        //     for (int j = 0; j < 2; j++) {
-        //         for (int k = 0; k <= 2; k++) {
-        //             dp[i][j][k] = -1;
         //         }
 
         //     }
         // }
-        return (solve(0, 0, 0, values));
+        // return zero[0];
+
+        
+    // }
+
+    public static int maxProfit(int[] values) {
+        // dp = new int[values.length+1][2][3];
+        dp = new int[values.length+1][4];
+        for (int i = 0; i <values.length+1 ; i++) {
+            // for (int j = 0; j < 2; j++) {
+            //     for (int k = 0; k <= 2; k++) {
+            //         dp[i][j][k] = -1;
+            //     }
+
+            // }
+            for (int j = 0; j < 4; j++) {
+               dp[i][j]=-1;
+
+            }
+        }
+        // return (solve(0, 0, 0, values));
+        return (solve(0, 0, values));
     }
 }
