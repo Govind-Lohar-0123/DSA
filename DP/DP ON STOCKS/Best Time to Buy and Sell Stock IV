@@ -1,0 +1,35 @@
+import java.util.*;
+import java.io.*;
+----------------same as stock iii--------------------
+public class Solution {
+    static int dp[][] = null;
+   static int m=0;
+    static int solve(int i, int trans, int[] arr) {
+        // base condition
+        if (i == arr.length || trans == m)
+            return 0;
+
+        // all stuffs
+        if (dp[i][trans] != -1)
+            return dp[i][trans];
+        int ans = 0;
+        if (trans % 2 == 0)
+            ans = Math.max(-arr[i] + solve(i + 1, trans + 1, arr), solve(i + 1, trans, arr));
+        else
+            ans = Math.max(solve(i + 1, trans, arr), solve(i + 1, trans + 1, arr) + (arr[i]));
+        return dp[i][trans] = ans;
+    }
+
+    public static int maximumProfit(int[] values, int n, int k) {
+         dp = new int[values.length+1][k*2];
+         m=2*k;
+        for (int i = 0; i <values.length+1 ; i++) {
+          for (int j = 0; j < k*2; j++) {
+               dp[i][j]=-1;
+
+            }
+        }
+      
+        return (solve(0, 0, values));
+    }
+}
