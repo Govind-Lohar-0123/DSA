@@ -1,0 +1,71 @@
+public class Solution {
+    static int dp[][][] = null;
+
+    static int solve(int i, int buy, int cnt, int[] arr) {
+        // //base condition
+        // if(i==arr.length || cnt==2)return 0;
+
+        // //all stuffs
+        // if(dp[i][buy][cnt]!=-1)return dp[i][buy][cnt];
+        // int ans=0;
+        // if(buy==0) ans=Math.max(-arr[i]+solve(i+1,1,cnt,arr),solve(i+1,0,cnt,arr));
+        // else ans=Math.max(solve(i+1,1,cnt,arr), solve(i+1,0,cnt+1,arr)+(arr[i]));
+        // return dp[i][buy][cnt]=ans;
+
+        // for (i = arr.length - 1; i >= 0; i--) {
+        //     for (int j = 0; j <= 1; j++) {
+        //         for (int k = 0; k <2; k++) {
+        //                 int  ans = 0;
+        //                 if (j == 0)
+        //                     ans = Math.max(-arr[i] + dp[i + 1][1][k], dp[i + 1][0][k]);
+        //                 else
+        //                     ans = Math.max(dp[i + 1][1][k], dp[i + 1][0][k+1] + (arr[i]));
+        //                 dp[i][j][k] = ans;
+        //         }
+
+        //     }
+        // }
+        // return dp[0][0][0];
+
+        int zero[]=new int[3];
+        int one[]=new int[3];
+        for (i = arr.length - 1; i >= 0; i--) {
+
+            for (int j = 0; j <= 1; j++) {
+                for (int k = 0; k <2; k++) {
+                        int  ans = 0;
+                        if (j == 0)
+                            ans = Math.max(-arr[i] + one[k], zero[k]);
+                        else
+                            ans = Math.max(one[k], zero[k+1] + (arr[i]));
+                        if(j==0)zero[k]=ans;
+                        else one[k]=ans;
+                       
+                }
+
+            }
+        }
+        return zero[0];
+
+        // long zero=0;
+        // long one=0;
+        // for(i=arr.length-1;i>=0;i--){
+        // zero=Math.max(-arr[i]+one,zero);
+        // one=Math.max(one,zero+(arr[i]));
+        // }
+        // return zero;
+    }
+
+    public static int maxProfit(int[] values) {
+        dp = new int[values.length+1][2][3];
+        // for (int i = 0; i <= 1000000; i++) {
+        //     for (int j = 0; j < 2; j++) {
+        //         for (int k = 0; k <= 2; k++) {
+        //             dp[i][j][k] = -1;
+        //         }
+
+        //     }
+        // }
+        return (solve(0, 0, 0, values));
+    }
+}
