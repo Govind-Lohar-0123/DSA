@@ -1,0 +1,35 @@
+import java.util.ArrayList;
+public class Solution {
+   static int isPossibe(ArrayList<Integer> arr,int mid){
+        int stu=1,sum=0;
+        for(int it : arr){
+            sum+=it;
+            if(sum>mid){
+                stu++;
+                sum=it;
+            }
+        }
+        return stu;
+    }
+    public static int findPages(ArrayList<Integer> arr, int n, int m) {
+        int left=0;
+        int right=0;
+        for(int it : arr){
+            left=Math.max(left,it);
+            right+=it;
+        }
+        if(n<m)return -1;
+        int ans=-1;
+
+        while(left<=right){
+            int mid=(left+right)>>1;
+            int stu=isPossibe(arr, mid);
+            if(stu<=m){
+                ans=mid;
+                right=mid-1;
+            }
+            else left=mid+1;
+        }
+        return ans;
+    }
+}
