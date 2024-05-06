@@ -1,0 +1,56 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+
+ Appraoches 
+ 1]O(N^2)
+ 2]O(N) s->o(N)-stack ngr
+ 3]O(N) s->o(N)->stack with recursion and simple
+ 4]o(N)->reverse+remove+reverse
+ 5]o(N)->reverse+remove as well as reverse
+class Solution {
+    ListNode reverse(ListNode head){
+        ListNode prev=null;
+        ListNode curr=head;
+        while(curr!=null ){
+            ListNode next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+    // ListNode solve(ListNode head){
+    //     if(head==null || head.next==null) return head;
+    //     ListNode right=solve(head.next);
+    //     if(head.val>=right.val){
+    //         head.next=right;
+    //         return head;
+    //     }
+    //     return right;
+    // }
+    public ListNode removeNodes(ListNode head) {
+        // return solve(head);
+        ListNode prev=head;
+        if(head==null||head.next==null)return head;
+        ListNode curr=reverse(head);
+        ListNode temp=curr;
+        while(curr!=null && curr.next!=null){
+            prev=curr;
+            if(curr.val<=curr.next.val)curr=curr.next;
+            else curr.next=curr.next.next;
+            prev=curr;
+           
+        }
+       prev.next=null;
+        return curr=reverse(temp);
+
+    }
+}
