@@ -1,0 +1,108 @@
+
+class Solu {
+    static long dp[][]=null;
+    static long solve(int i, int buy, int[] arr, int fee) {
+        // //base condition
+        // if (i >= arr.length)
+        //     return 0;
+
+        // // all stuffs
+        // if (dp[i][buy] != -1)
+        //     return dp[i][buy];
+        // long ans = 0;
+        // if (buy == 0)
+        //     ans = Math.max(-arr[i] + solve(i + 1, 1, arr, fee), solve(i + 1, 0, arr, fee));
+        // else
+        //     ans = Math.max(solve(i + 1, 1, arr, fee), solve(i + 1, 0, arr, fee) + (arr[i] - fee));
+        // return dp[i][buy] = ans;
+
+        // for(i=arr.length-1;i>=0;i--){
+        // for(int j=0;j<=1;j++){
+        // long ans=0;
+        // if(j==0) ans=Math.max(-arr[i]+dp[i+1][1],dp[i+1][0]);
+        // else ans=Math.max(dp[i+1][1],((i+2>=arr.length)?0:dp[i+2][0]) +arr[i]);
+        // dp[i][j]=ans;
+
+        // }
+        // }
+        // return dp[0][0];
+        // int next[][]=new int[2][2];
+        // int curr[][]=new int[2][2];
+
+        // for(i=arr.length-1;i>=0;i--){
+        // curr=new int[2][2];
+        // for(int j=0;j<=1;j++){
+        // int ans=0;
+        // if(j==0) ans=Math.max(-arr[i]+next[0][1],next[0][0]);
+        // else ans=Math.max(next[0][1],next[1][0]+arr[i]);
+        // curr[0][j]=ans;
+
+        // }
+        // int o=next[0][1];
+        // int z=next[0][0];
+
+        // next=curr;
+        // next[1][0]=z;next[1][1]=o;
+        // }
+        // return curr[0][0];
+
+        // int next[]=new int[2];
+        // int curr[]=new int[2];
+        // int two=0;
+        // for(i=arr.length-1;i>=0;i--){
+        // curr=new int[2];
+        // for(int j=0;j<=1;j++){
+        // int ans=0;
+        // if(j==0) ans=Math.max(-arr[i]+next[1],next[0]);
+        // else ans=Math.max(next[1],two+arr[i]);
+        // curr[j]=ans;
+
+        // }
+
+        // two=next[0];
+        // next=curr;
+
+        // }
+        // return curr[0];
+
+        // int next[]=new int[2];
+        // int curr[]=new int[2];
+        // int two=0;
+        // for(i=arr.length-1;i>=0;i--){
+        // curr=new int[2];
+        // int ans=0;
+        // curr[0]=ans=Math.max(-arr[i]+next[1],next[0]);
+        // curr[1]=ans=Math.max(next[1],two+arr[i]);
+        // two=next[0];
+        // next=curr;
+        // }
+        // return curr[0];
+
+        long zero=0;
+        long one=0;
+       
+        for(i=arr.length-1;i>=0;i--){
+       
+            zero=Math.max(-arr[i]+one,zero);
+            one=Math.max(one,zero+(arr[i]-fee));
+       
+        }
+        return zero;
+    }
+
+    public static long solve(int[] values, int fee) {
+        // dp = new long[10000 + 1][2];
+        // for (int i = 0; i <= 10000; i++) {
+        //     for (int j = 0; j < 2; j++) {
+        //         dp[i][j] = -1;
+        //     }
+        // }
+        return solve(0, 0, values, fee);
+    }
+}
+
+public class Solution {
+    public static int maximumProfit(int[] prices, int n, int fee) {
+        return (int) Solu.solve(prices, fee);
+    }
+}
