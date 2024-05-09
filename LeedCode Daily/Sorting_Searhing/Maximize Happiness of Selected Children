@@ -13,3 +13,42 @@ class Solution {
         return ans;
     }
 }
+
+
+
+class Solution {
+    long solve(int n,int child,int k,int arr[] ){
+        if(child==k)return 0;
+        if(n<0)return (long)(-1e9);
+        long val=0;
+        if(arr[n]>child)val=arr[n]-child;
+        else val=0;
+       
+        long take=solve(n-1,child+1,k,arr)+(val);
+        long notTake=solve(n-1,child,k,arr);
+        return Math.max(take,notTake);
+    }
+    public long maximumHappinessSum(int[] happiness, int k) {
+        return solve(happiness.length-1,0,k,happiness);
+    }
+}
+
+
+
+
+there is some problem 
+// class Solution {
+//     public long maximumHappinessSum(int[] arr, int k) {
+      
+//         long ans=0;
+//         Arrays.sort(arr);
+//         for(int i=arr.length-1;i>=(arr.length-k);i--){
+//             int n=(arr.length-(i+1));
+            
+//             if(arr[i]>n)arr[i]-=n;
+//             else arr[i]=0;
+//             ans+=arr[i];
+//         }
+//         return ans;
+//     }
+// }
