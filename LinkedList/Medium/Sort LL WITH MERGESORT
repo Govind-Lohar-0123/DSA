@@ -1,0 +1,43 @@
+
+class Solution {
+    ListNode mergeSort(ListNode head){
+        if(head==null || head.next==null)return head;
+        ListNode mid=getMedian(head);
+        ListNode next=mid.next;
+        mid.next=null;
+        ListNode left=mergeSort(head);
+        ListNode right=mergeSort(next);
+        return merge(left,right);
+        
+
+    }
+
+    ListNode getMedian(ListNode head){
+        ListNode slow=head;
+        ListNode fast=head.next;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return slow;
+
+    }
+    ListNode merge(ListNode a,ListNode b){
+       if(a==null)return b;
+       if(b==null)return a;
+       ListNode result=null;
+       if(a.val<=b.val){
+        result=a;
+        result.next=merge(a.next,b);
+        }
+       else {
+        result=b;
+        result.next=merge(a,b.next);
+    }
+        return result;
+
+    }
+    public ListNode sortList(ListNode head) {
+       return mergeSort(head);
+    }
+}
