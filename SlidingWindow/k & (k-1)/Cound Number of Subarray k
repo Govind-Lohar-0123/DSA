@@ -1,0 +1,25 @@
+lass Solution
+
+{
+    long solve(String s,int k){
+        long ans=0;
+        int i=0,j=0;
+        int map[]=new int[26];
+        int size=0;
+        while(j<s.length()){
+            int ch=(s.charAt(j)-'a');
+            map[ch]++;
+            if(map[ch]==1)size++;
+            while(i<=j && size>k){
+                ch=(s.charAt(i)-'a');
+                map[ch]--;
+                if(map[ch]==0)size--;
+                i++;
+            }
+            ans+=(j-i+1);
+        }
+        return ans;
+    }
+    long substrCount (String S, int k) {
+      return (solve(S,k)-solve(S,k-1));
+    }
