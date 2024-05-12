@@ -1,0 +1,27 @@
+class Solution {
+    public double mincostToHireWorkers(int[] q, int[] wage, int k) {
+        // finding th raito
+        ArrayList<double[]>ratio=new ArrayList<>();
+
+        for(int i=0;i<q.length;i++){
+            double r=(wage[i]/(double)q[i]);
+            ratio.add(new double[]{r,q[i]});
+        }
+        Collections.sort(ratio,(a,b)->((a[0]<b[0])?-1:(a[0]==b[0])?0:1));
+        
+        double ans=Integer.MAX_VALUE;
+        int sum=0;
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        for(int i=0;i<q.length;i++){
+            int qlt=(int)ratio.get(i)[1];
+            sum+=qlt;
+            pq.add(qlt);
+            if(pq.size()>k)sum-=pq.remove();
+            if(i>=k-1){
+                
+               ans=Math.min(ans,(sum*ratio.get(i)[0]));
+            }
+        }
+        return ans;
+    }
+}
