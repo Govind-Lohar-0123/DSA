@@ -1,0 +1,25 @@
+class Solution {
+    int dp[]=new int[1000+1];
+    int solve(String s,int i,int []map){
+        if(i>=s.length())return 0;
+        int ans=s.length();
+       if(dp[i]!=-1)return dp[i];
+      
+        for(int j=i;j<s.length();j++){
+            map[s.charAt(j)-'a']++;
+            
+            int max=map[s.charAt(j)-'a'];
+            int k=0;
+            for(;k<26;k++){
+                if(max!=map[k] && map[k]!=0)break;
+            }
+            if(j==i || (k==26))
+             ans=Math.min(ans,solve(s,j+1,new int[26])+1);
+        }
+        return dp[i]=ans;
+    }
+    public int minimumSubstringsInPartition(String s) {
+        Arrays.fill(dp,-1);
+        return solve(s,0,new int[26]);
+    }
+}
