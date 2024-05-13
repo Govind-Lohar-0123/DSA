@@ -2,32 +2,16 @@ class Solution {
     public int matrixScore(int[][] grid) {
         int n=grid.length;
         int m=grid[0].length;
-        for(int i=0;i<n;i++){
-            if(grid[i][0]==0){
-                for(int j=0;j<m;j++){
-                    grid[i][j]=(grid[i][j]==0)?1:0;
-                }
-            }
-        }
-         for(int j=0;j<m;j++){
-            int ones=0;
-           for(int i=0;i<n;i++)
-                ones+=grid[i][j];
-           
-           if(ones<(n-ones)){
-                for(int i=0;i<n;i++){
-                    grid[i][j]=(grid[i][j]==0)?1:0;
-                }
-           }
-        }
         int ans=0;
-        for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
             int temp=0;
-            for(int j=0;j<m;j++){
-                temp+=((1<<(m-j-1))*grid[i][j]);
-            }
+            int ones=0;
+            for(int i=0;i<n;i++)if(grid[i][j]==grid[i][0])ones++;
+            int val=Math.max(ones,(n-ones));
+            temp+=((1<<m-j-1)*val);
             ans+=temp;
         }
+       
         return ans;
     }
 }
