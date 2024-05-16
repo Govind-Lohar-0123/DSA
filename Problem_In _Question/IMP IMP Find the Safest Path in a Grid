@@ -1,3 +1,107 @@
+
+
+class Solution {
+    Queue<int[]>q=new ArrayDeque();
+
+    int fillNearestOnes(List<List<Integer>> grid){
+        int n=grid.size();
+        int ones=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid.get(i).get(j)==1){
+                    q.add(new int[]{i,j});
+                    grid.get(i).set(j,0);
+                    ones++;
+                }
+                else  grid.get(i).set(j,Integer.MAX_VALUE);
+            }
+        }
+        if(ones==0)return 0;
+        while(q.size()!=0){
+            int it[]=q.poll();
+            int dis=grid.get(it[0]).get(it[1]);
+            int nr[]={0,1,0,-1};
+            int nc[]={-1,0,1,0};
+            for(int i=0;i<4;i++){
+                int r=it[0]+nr[i];
+                int c=it[1]+nc[i];
+                if(r<n && c<n && r>=0 && c>=0 && grid.get(r).get(c)==Integer.MAX_VALUE){
+                    grid.get(r).set(c,dis+1);
+                    q.add(new int[]{r,c});
+                }
+            }
+        }
+        
+        return -1;
+    }
+
+    boolean getMaxDis(int n,int m,List<List<Integer>> grid,int k){
+        // if(n<0 || m<0 || grid.get(n).get(m)<k)return 0;
+        // if(n==0 && m==0)return 1;             why dp is not working
+        // if(dp[n][m]!=-1)return dp[n][m]; 
+        // int left=getMaxDis(n,m-1,grid,k);
+        // int top=getMaxDis(n-1,m,grid,k);
+        // return dp[n][m]=Math.max(left,top);
+
+        // i WILL USE BFS 
+        boolean [][]vis=new boolean[400+1][400+1];
+
+        q.add(new int[]{n,m});
+        vis[n][m]=true;        
+        if(grid.get(n).get(m)<k)return false;    why did you not check this condition
+        while(q.size()!=0){
+            int it[]=q.poll();
+        
+            if(it[0]==0 && it[1]==0)return true;
+            int nr[]={0,1,0,-1};
+            int nc[]={-1,0,1,0};
+            for(int i=0;i<4;i++){
+                int r=it[0]+nr[i];
+                int c=it[1]+nc[i];
+                if(r<=n && c<=n && r>=0 && c>=0 && vis[r][c]==false && 
+                grid.get(r).get(c)>=k){
+                    vis[r][c]=true;
+                    q.add(new int[]{r,c});
+                }
+            }
+        }
+        return false;
+        
+    }
+    public int maximumSafenessFactor(List<List<Integer>> grid) {
+       
+       if(grid.get(0).get(0)==1)return 0;
+       if(grid.get(grid.size()-1).get(grid.size()-1)==1)return 0;
+       if(fillNearestOnes(grid)==0)return 0;
+       int l=0,r=16000;
+     
+       while(l<=r){
+        int mid=(l+r)>>1;
+        
+        boolean isPossible=getMaxDis(grid.size()-1,grid.size()-1,grid,mid);
+      
+        if(isPossible==false)r=mid-1;
+        else l=mid+1;
+        
+       }
+       return r;
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Solution {
     Queue<int[]>q=new ArrayDeque();
     int dp[][]=new int[400+1][400+1];
