@@ -1,0 +1,27 @@
+class Solution {
+    boolean solve(int nums[],int l,int r,int li,int ri){
+        if(l>r)return true;
+        if(l==r){
+            int i=l;
+             if(nums[i]%2==0 ){
+                if((i>li && nums[i-1]%2==0) || (i+1<ri && nums[i+1]%2==0))
+                    return false;
+            }
+            if(nums[i]%2!=0 ){
+                if((i>li && nums[i-1]%2!=0) || (i+1<ri && nums[i+1]%2!=0))
+                    return false;
+            }
+            return true;
+        }
+
+        int mid=(l+r)>>1;
+        return solve(nums,l,mid,li,ri) && solve(nums,mid+1,r,li,ri);
+    }
+    public boolean[] isArraySpecial(int[] nums, int[][] q) {
+        boolean ans[]=new boolean[q.length];
+        for(int i=0;i<q.length;i++){
+            ans[i]=solve(nums,q[i][0],q[i][1],q[i][0],q[i][1]);
+        }
+        return ans;
+    }
+}
