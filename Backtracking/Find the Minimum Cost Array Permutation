@@ -1,0 +1,59 @@
+class Solution {
+    int perm[]=null;
+    int temp[]=null;
+    int minCost=Integer.MAX_VALUE;
+    void swap(int i,int j,int nums[]){
+        int t=nums[i];
+        nums[i]=nums[j];
+        nums[j]=t;                //TLE BUT NOT C++ CODE 
+    }
+    void getMin(int nums[],int sum){
+    
+       
+      
+         
+        if(sum<minCost){
+          
+            for(int i=0;i<nums.length;i++)perm[i]=nums[i];
+            minCost=sum;
+        }
+        else if(minCost==sum){
+            for(int i=0;i<nums.length;i++){
+           
+                if(nums[i]==perm[i])continue;
+                else if(nums[i]<perm[i]){
+                    for(int j=0;j<nums.length;j++)perm[j]=nums[j];
+                    return ;
+                }
+               return ;
+            }
+            
+        }
+    }
+    void solve(int idx,int sum,int nums[]){
+        if(sum>minCost)return ;
+        if(idx>=nums.length){
+            sum+=Math.abs((nums[temp.length-1]-temp[nums[0]]));
+            getMin(nums,sum);
+            return ;
+        }
+        for(int i=idx;i<nums.length;i++){
+            swap(i,idx,nums);
+            int tmp=0;
+            if(idx>=1)tmp=Math.abs((nums[idx-1]-temp[nums[idx]]));
+            solve(idx+1,sum+tmp,nums);
+            swap(i,idx,nums);
+        }
+    }
+    public int[] findPermutation(int[] nums) {
+       perm=new int[nums.length];
+       temp=new int[nums.length];
+       for(int i=0;i<nums.length;i++){
+        perm[i]=nums[i];
+        temp[i]=nums[i];
+       }
+       solve(0,0,nums);
+     
+       return perm;
+    }
+}
