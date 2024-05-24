@@ -1,0 +1,40 @@
+class Solution {
+    int freq[]=new int[26];
+    void removeFreq(int []map,String a){
+        for(int i=0;i<a.length();i++){
+            int ch=a.charAt(i)-'a';
+            map[ch]--;
+        }
+    }
+    int isValid(int []map,int score[],String a){
+        int sum=0;
+        boolean flag=true;
+        for(int i=0;i<a.length();i++){
+            int ch=a.charAt(i)-'a';
+            if(map[ch]+1>freq[ch])flag=false;
+            map[ch]++;
+            sum+=(score[ch]);
+        }
+        if(flag==false){
+            removeFreq(map,a);
+            return -1;
+        }
+        return sum;
+    }
+    int solve(int i,String words[],int map[],int score[]){
+        if(i>=words.length)return 0;
+        int ans=solve(i+1,words,map,score);
+        int val=isValid(map,score,words[i]);
+        if(val!=-1){
+            ans=Math.max(ans,val+solve(i+1,words,map,score));
+            removeFreq(map,words[i]);
+        }
+        return ans;
+    }
+    public int maxScoreWords(String[] words, char[] letters, int[] score) {
+        for(char ch : letters){
+            freq[ch-'a']++;
+        }
+        return solve(0,words,new int[26],score);
+    }
+}
