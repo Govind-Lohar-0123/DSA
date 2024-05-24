@@ -1,0 +1,38 @@
+class Solution {
+    int nsr[]=null;
+    void fillNSR(int arr[]){
+        int n=arr.length;
+        nsr=new int[n];
+        nsr[n-1]=n;
+        for(int i=n-2;i>=0;i--){
+            if(arr[i]>arr[i+1])nsr[i]=i+1;
+            else {
+                int j=nsr[i+1];
+                while(j!=n && arr[i]<=arr[j])
+                    j=nsr[j];
+                nsr[i]=j;
+                
+            }
+        }
+    }
+
+    public int sumSubarrayMins(int[] arr) {
+        fillNSR(arr);
+        
+        int mod=(1000000007);
+        int sum=0;
+        for(int i=0;i<arr.length;i++){
+            int j=nsr[i];
+            int k=i;
+            while(j!=arr.length){
+                int temp=((j-k)*arr[k])%mod;
+                sum=(sum+temp)%mod;
+                k=j;
+                j=nsr[j];
+            }
+            int temp=((j-k)*arr[k])%mod;
+            sum=(sum+temp)%mod;
+        }
+        return sum;
+    }
+}
