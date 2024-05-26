@@ -1,0 +1,16 @@
+class Solution {
+    public String compressedString(String word) {
+        String comp="";
+        int i=0,j=0;
+        while(j<word.length()){
+             i=j;
+            char ch=word.charAt(j);
+            int cnt=0;
+            while(j<word.length() && cnt<9 && ((j==i)||(word.charAt(j-1)==word.charAt(j)))){
+                cnt++;j++;
+            }
+            comp=comp+""+cnt+ch;
+        }
+        return comp;
+    }
+}
