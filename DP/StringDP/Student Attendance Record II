@@ -1,0 +1,44 @@
+class Solution {
+    int mod=(1000000007);
+    int dp[][][]=new int[100000+1][2][3];
+    int solve(int n,int A,int L){
+        // if(n==0)return 1;
+        // int ans=0;
+        // if(dp[n][A][L]!=-1)return dp[n][A][L];
+        // if(A==0)ans=solve(n-1,1,0)%mod;
+        // if(L<2)ans=(ans+solve(n-1,A,L+1))%mod;
+        // ans=(ans+solve(n-1,A,0))%mod;
+        // return dp[n][A][L]=ans%mod;
+        int prev[][]=new int[2][3];
+        int curr[][]=new int[2][3];
+        for(int i=0;i<=n;i++){
+            curr=new int[2][3];
+            for(int j=0;j<2;j++){
+                for(int k=0;k<3;k++){
+                    if(i==0)curr[j][k]=1;
+                    else{
+                        int ans=0;
+                    
+                        if(j==0)ans=prev[1][0]%mod;
+                        if(k<2)ans=(ans+prev[j][k+1])%mod;
+                        ans=(ans+prev[j][0])%mod;
+                        curr[j][k]=ans%mod;
+                    }
+                }
+            }
+            prev=curr;
+        }
+        return curr[A][L];
+
+    }
+    public int checkRecord(int n) {
+        // for(int i=0;i<100000+1;i++){
+        //     for(int j=0;j<2;j++){
+        //         for(int k=0;k<3;k++){
+        //             dp[i][j][k]=-1;
+        //         }
+        //     }
+        // }
+        return solve(n,0,0);
+    }
+}
