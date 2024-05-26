@@ -1,1 +1,24 @@
+class Solution {
+    public long numberOfPairs(int[] nums1, int[] nums2, int k) {
+        long ans=0;
+        HashMap<Integer,Integer>map1=new HashMap<>();
+        HashMap<Integer,Integer>map2=new HashMap<>();
+        for(int it : nums1)
+            map1.put(it,map1.getOrDefault(it,0)+1);
+        for(int it : nums2)
+            map2.put(it,map2.getOrDefault(it,0)+1);
+        
+        for(Map.Entry<Integer,Integer> it1 : map2.entrySet()){
+            long dvs=it1.getKey()*k;
+            for(Map.Entry<Integer,Integer> it2 : map1.entrySet()){
+                long dvd=it2.getKey();
+                if(dvd%dvs==0){
+                    ans+=(it1.getValue()*it2.getValue());
+                }
+            }
 
+        }
+        return ans;
+        
+    }
+}
