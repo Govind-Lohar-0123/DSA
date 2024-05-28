@@ -1,0 +1,45 @@
+class Solution {
+    int mod=(1000000007);
+    long dp[]=new long[100000];
+    long solve(int i,int nums[]){
+        if(i>=nums.length)return 0;
+        // if(dp[i]!=-1)return dp[i];
+        // long ans=solve(i+1,nums)%mod;
+        // ans=Math.max(ans,solve(i+2,nums)+nums[i])%mod;
+        // return dp[i]=ans%mod;
+
+        for( i=nums.length-1;i>=0;i--){
+            
+            long ans=dp[i+1]%mod;
+            ans=Math.max(ans,dp[i+2]+nums[i])%mod;
+            dp[i]=ans%mod;
+        }
+       return dp[0];
+
+
+
+    }
+    long divideAndConquer(int l,int r,int nums[]){
+        if(l==r){
+            long ans=dp[l+1]%mod;
+            ans=Math.max(ans,dp[l+2]+nums[l])%mod;
+            dp[l]=ans%mod;
+            return ans;
+        }
+        int mid=(l+r)>>1;
+       
+        divideAndConquer(mid+1,r,nums);
+         divideAndConquer(l,mid,nums);                       //why it is (logn)
+        return dp[0];
+    }
+    public int maximumSumSubsequence(int[] nums, int[][] q) {
+        long ans=0;
+        solve(0,nums);
+        for(int it[] : q){
+            nums[it[0]]=it[1];
+            
+            ans=(ans+divideAndConquer(0,it[0],nums))%mod;
+        }
+        return (int)ans;
+    }
+}
