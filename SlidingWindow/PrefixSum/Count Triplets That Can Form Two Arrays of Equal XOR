@@ -1,0 +1,32 @@
+class Solution {
+    public int countTriplets(int[] arr) {
+        int ans=0;
+        int n=arr.length;
+        HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
+        
+        int xor=0;
+        map.put(0,new ArrayList<>(Arrays.asList(-1)));
+        for(int j=0;j<n;j++){
+            xor^=arr[j];
+            if(map.containsKey(xor)==true){
+                for(int it : map.get(xor))
+                    ans+=(j-it-1);
+            }
+            else map.put(xor,new ArrayList<>() );
+            map.get(xor).add(j);
+        }
+        return ans;
+        
+
+        // for(int i=0;i<n;i++){
+        //     int xor=0;
+        //     for(int j=i;j<n;j++){
+        //         xor^=arr[j];
+        //         if(xor==0)ans+=j-i;
+               
+        //     }
+        // }
+
+        // return ans;
+    }
+}
