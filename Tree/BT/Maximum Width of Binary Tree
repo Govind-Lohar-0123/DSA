@@ -1,0 +1,36 @@
+
+ 
+class Solution {
+    class Pair{
+        long idx;
+        TreeNode root;
+        Pair(long p,TreeNode r){
+            root=r;
+            idx=p;
+        }
+    }
+    public int widthOfBinaryTree(TreeNode root) {
+        Deque<Pair>q=new LinkedList<>();
+        
+        q.add(new Pair(0,root));
+        long ans=0;
+       
+      
+        while(q.size()!=0){
+            long size=q.size();
+            long min=q.peek().idx;
+            long temp=q.getLast().idx;
+            long max=Long.MIN_VALUE;
+            while(size-->0){
+                Pair it=q.remove();
+                if(max<it.idx)max=it.idx;
+                if(it.root.left!=null)q.add(new Pair(it.idx*2+1,it.root.left));
+                if(it.root.right!=null)q.add(new Pair(it.idx*2+2,it.root.right));
+            }
+            System.out.println(temp+" "+max);
+            ans=Math.max(ans,max-min+1);
+        }
+        return (int)ans;
+        
+    }
+}
