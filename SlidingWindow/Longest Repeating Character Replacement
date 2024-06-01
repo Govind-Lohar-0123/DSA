@@ -7,6 +7,73 @@
 3](N+N) WITH HASMAP BUT IN WHUCH WE NOT UPDATE MAXFREQ BECASE we need more than maximu if upadate it only decrease the value
 4]O(N) with hashmap we know the size 
 
+class Solution {
+    
+    
+        
+    
+    public int characterReplacement(String s, int k) {
+        // int ans=0;
+        // for(char ch='A';ch<='Z';ch++){
+        //     int i=0,j=0;
+        //     int k=m;
+        //     while(j<s.length()){
+        //         if(ch!=s.charAt(j))k--;
+        //         while(i<=j && k<0)
+        //             if(ch!=s.charAt(i++))k++;
+        //         ans=Math.max(ans,j-i+1);
+        //          j++;
+        //     }
+           
+            
+
+        // }
+        // return ans;
+
+        // int map[]=new int[26];
+        // int i=0,j=0,ans=0,max=0;
+        // while(j<s.length()){
+        //     map[s.charAt(j)-'A']++;
+        //     max=Math.max(max,map[s.charAt(j)-'A']);
+        //     while((j-i+1)-max>k){
+        //          map[s.charAt(i++)-'A']--;
+        //          max=0;
+        //          for(char ch='A';ch<='Z';ch++){
+        //             max=Math.max(max,map[ch-'A']);
+        //          }
+        //     }
+        //     ans=Math.max((j-i+1),ans);
+        //     j++;
+        // }
+        // return ans;
+
+
+        int map[]=new int[26];
+        int i=0,j=0,ans=0,max=0;
+        // while(j<s.length()){
+        //     map[s.charAt(j)-'A']++;
+        //     max=Math.max(max,map[s.charAt(j)-'A']);
+        //     while((j-i+1)-max>k){
+        //          map[s.charAt(i++)-'A']--;
+        //     }
+        //     ans=Math.max((j-i+1),ans);
+        //     j++;
+        // }
+        // return ans;
+
+        while(j<s.length()){
+            map[s.charAt(j)-'A']++;
+            max=Math.max(max,map[s.charAt(j)-'A']);
+            if((j-i+1)-max>k)map[s.charAt(i++)-'A']--;
+            ans=Math.max((j-i+1),ans);
+            j++;
+        }
+        return ans;
+
+    }
+}
+
+
 
 class Solution {
     public int characterReplacement(String s, int m) {
