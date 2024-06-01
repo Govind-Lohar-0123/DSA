@@ -1,7 +1,11 @@
 1]O(N^26)*N
 2]O(N^2*26)
-3]O(N^2)
-4]O(N*26)
+3]O(N*26)
+
+1]O(N^2) with hashmap with max value generate all subaary
+2]O(N+N)*26 with hashmap to find max value in map when (len-maxFEQ>=K)
+3](N+N) WITH HASMAP BUT IN WHUCH WE NOT UPDATE MAXFREQ BECASE we need more than maximu if upadate it only decrease the value
+4]O(N) with hashmap we know the size 
 
 
 class Solution {
