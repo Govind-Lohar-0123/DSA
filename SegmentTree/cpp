@@ -1,0 +1,74 @@
+import java.util.*;
+class Pair{
+    int open,close,full;
+    Pair(int o,int c,int f){
+        open=o;close=c;full=f;
+    }
+}
+class SegmentTree{
+    Pair seg[]=null;
+    SegmentTree(int n){
+        seg=new Pair[n*4+1];
+
+    }
+    Pair merge(Pair l,Pair r){
+        int full=l.full+r.full+Math.min(l.open,r.close);
+        int open=l.open+r.open-Math.min(l.open,r.close);
+        int close=l.close+r.close-Math.min(l.open,r.close);
+        return new Pair(open,close,full);
+    }
+
+    public void build(int i,int left,int right,String s){
+        if(left==right){
+            if(s.charAt(left)=='(') seg[i]=new Pair(1,0,0);
+            else seg[i]=new Pair(0,1,0);
+            return;
+        }
+        int mid=(left+right)>>1;
+        build(2*i+1,left,mid,s);
+        build(2*i+2,mid+1,right,s);
+        seg[i]=merge(seg[2*i+1],seg[2*i+2]);
+    }
+    public Pair getCount(int i,int left,int right,int l,int r){
+        //[left,right][l,r] or[l,r][left,right];
+        if(right<l ||r<left)return new Pair(0,0,0);
+        //complete overlap left>=l && right<=r
+        if(left>=l && right<=r)return seg[i];
+
+        int mid=(left+right)>>1;
+        Pair ll=getCount(2*i+1,left,mid,l,r);
+        Pair rh=getCount(2*i+2,mid+1,right,l,r);
+        return merge(ll,rh);
+        
+    }
+
+    
+}
+
+
+
+
+public class HelloWorld{
+    public static void main(String args[]){
+       
+        Scanner sc=new Scanner(System.in);
+        // System.out.print("Enter N=");
+        int n=12;
+        SegmentTree st=new SegmentTree(n);
+        String s="())(())(())(";
+        // while(n-->0){
+        //     System.out.print("Enter ch=");
+        //     s+=sc.next().charAt(0);
+        // }
+        st.build(0,0,n-1,s);
+        int m=sc.nextInt();
+        
+        while(m-->0){
+            System.out.print("Enter i=");
+            int i=sc.nextInt();
+            System.out.print("Enter j=");
+            int j=sc.nextInt();
+            System.out.print(st.getCount(0,0,n-1,i,j).full*2);
+     }
+    }
+}
