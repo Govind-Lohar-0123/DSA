@@ -21,10 +21,10 @@ public void build(int i,int low,int high,int freq[])
 }
 public void update(int i,int l,int r,int low,int high,int v){
     if(lazy[i]!=0){
-        if(lazy[i]==1)seg[i]=(high-low+1)-seg[i];
+        seg[i]=(high-low+1)-seg[i];
         if(low!=high){
-            lazy[2*i+1] ^=lazy[i];
-            lazy[2*i+2] ^=lazy[i];
+            lazy[2*i+1] =!lazy[2*i+1];
+            lazy[2*i+2] =!lazy[2*i+2];
         }
         lazy[i]=0;
         
@@ -33,10 +33,10 @@ public void update(int i,int l,int r,int low,int high,int v){
     
     if(high<l || r<low)return ;
     else if(low>=l && high<=r){
-        if((lazy[i] ^ v)==1)seg[i]=(high-low+1)-seg[i];
+        seg[i]=(high-low+1)-seg[i];
         if(low!=high){
-            lazy[2*i+1] ^=v;
-            lazy[2*i+2] ^=v;
+            lazy[2*i+1] =!lazy[2*i+1];
+            lazy[2*i+2] =!lazy[2*i+2]
         }
      return ;
     }
@@ -51,10 +51,10 @@ public int getRangeSum(int i,int l,int r,int low,int high){
    
     
    if(lazy[i]!=0){
-        if(lazy[i]==1)seg[i]=(high-low+1)-seg[i];
+       seg[i]=(high-low+1)-seg[i];
         if(low!=high){
-            lazy[2*i+1] ^=lazy[i];
-            lazy[2*i+2] ^=lazy[i];
+            lazy[2*i+1] =!lazy[2*i+1];
+            lazy[2*i+2] =!lazy[2*i+2]
         }
         lazy[i]=0;
     }
