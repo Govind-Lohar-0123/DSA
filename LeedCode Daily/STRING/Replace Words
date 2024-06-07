@@ -1,42 +1,130 @@
-class Solution {
-    public String replaceWords(List<String> dictionary, String a) {
-    //     int i=0;
-    //     HashMap<String,Integer> map=new HashMap<>();
-    //     for(String it :dictionary )map.put(it,0);
-    //     // String tokens[]=a.split(" ",0);
-    //    String ans="";
-    //     while(i<a.length()){
-    //         String temp="";
-    //         while(i<a.length() && a.charAt(i)!=' '){
-    //             temp+=a.charAt(i++);
-    //             if(map.containsKey(temp)==true)break;
-    //         }
-    //         while(i<a.length() && a.charAt(i)!=' ')
-    //            i++;
-    //        if(i==a.length())ans+=temp;
-    //        else ans=ans+temp+" ";
-    //         i++;
-    //     }
-    //     return ans;
+// class Node{
+//     Node child[];
+//         boolean eow;
+//         Node (){
+//             eow=false;
+//             child=new Node[26];
+//         }
+//     public boolean containsKey(int v){
+//         return this.child[v]!=null;
+//     }
+//     public void addKey(int v){
+//         this.child[v]=new Node();
+//     }
+//     public Node getKey(int v){
+//         return this.child[v];
+//     }
+// }
    
-        HashMap<String,Integer> map=new HashMap<>();
-        for(String it :dictionary )map.put(it,0);
-        String tokens[]=a.split(" ",0);
-        int n=tokens.length;
-       String ans="";
-        for(int i=0;i<n;i++){
-            String word=tokens[i];
-            String temp="";
-            int j=0;
-            int m=word.length();
-            while(j<m && map.containsKey(temp)==false)
-                temp+=word.charAt(j++);
-                
-            if(i==n-1)ans+=temp;
-            else ans=ans+temp+" ";
+
+// class Trie{
+    
+//     Node root=null;
+//     Trie(){
+//         root=new Node();
+//     }
+
+  
+//    public void build(List<String> words){
+//         for(String it : words){
+//             insert(it);
+//         }
+//    }
+
+//    public void insert(String word){
+//         int n=word.length();
+//         Node curr=root;
+//         for(int i=0;i<n;i++){
+//             int ch=word.charAt(i)-'a';
+//             if(curr.containsKey(ch)==false){
+//                 curr.addKey(ch);
+//             }
+//             curr=curr.getKey(ch);
+
+//         }
+//         curr.eow=true;
+//    }
+//    public String isPreffixMatch(String word){
+//         int n=word.length();
+//         Node curr=root;
+//         String temp="";
+//         for(int i=0;i<n;i++){
+//             int ch=word.charAt(i)-'a';
             
-        }
+//             if(curr.eow==true)
+//                return temp;
+//             else if(curr.containsKey(ch)==false){
+//                 while(i<n)temp=temp+word.charAt(i++);
+//                 return temp;
+//             }
+//             temp+=word.charAt(i);
+
+//             curr=curr.getKey(ch);
+
+//         }
+//         return temp;
+//    }
+
+
+
+// }
+
+
+// class Solution {
+//     public String replaceWords(List<String> dictionary, String a) {
+//     //     int i=0;
+//     //     HashMap<String,Integer> map=new HashMap<>();
+//     //     for(String it :dictionary )map.put(it,0);
+//     //     // String tokens[]=a.split(" ",0);
+//     //    String ans="";
+//     //     while(i<a.length()){
+//     //         String temp="";
+//     //         while(i<a.length() && a.charAt(i)!=' '){
+//     //             temp+=a.charAt(i++);
+//     //             if(map.containsKey(temp)==true)break;
+//     //         }
+//     //         while(i<a.length() && a.charAt(i)!=' ')
+//     //            i++;
+//     //        if(i==a.length())ans+=temp;
+//     //        else ans=ans+temp+" ";
+//     //         i++;
+//     //     }
+//     //     return ans;
+   
+//     //     HashMap<String,Integer> map=new HashMap<>();
+//     //     for(String it :dictionary )map.put(it,0);
+//     //     String tokens[]=a.split(" ",0);
+//     //     int n=tokens.length;
+//     //    String ans="";
+//     //     for(int i=0;i<n;i++){
+//     //         String word=tokens[i];
+//     //         String temp="";
+//     //         int j=0;
+//     //         int m=word.length();
+//     //         while(j<m && map.containsKey(temp)==false)
+//     //             temp+=word.charAt(j++);
+                
+//     //         if(i==n-1)ans+=temp;
+//     //         else ans=ans+temp+" ";
+            
+//     //     }
        
-        return ans;
-    }
-}
+//     //     return ans;
+        
+//          Trie tr=new Trie();
+         
+//         String tokens[]=a.split(" ",0);
+//         tr.build(dictionary);
+//         int n=tokens.length;
+//        String ans="";
+//         for(int i=0;i<n;i++){
+//             String word=tokens[i];
+//             String temp=tr.isPreffixMatch(word);
+        
+//             if(i==n-1)ans+=temp;
+//             else ans=ans+temp+" ";
+//         }
+       
+//         return ans;
+//     }
+// }
