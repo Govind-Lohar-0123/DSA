@@ -1,0 +1,31 @@
+/*1]O(N^2) simple
+2]O(Nlogn) by using sort map
+3]O(nlog+o(N))by using sorting arr1
+4]o(2n)by using counting sort 
+*/
+class Solution {
+    public int[] relativeSortArray(int[] ans, int[] arr2) {
+        int map[]=new int[1000+1];
+        //fill the array with value
+
+        for(int it : ans)map[it]++;
+        //take accrogin arr2
+        int k=0;
+        for(int it  : arr2){
+            while(map[it]!=0){
+                ans[k++]=it;
+                map[it]--;
+            }
+        }
+        for(int i=0;i<1000+1;i++){
+            
+            while(map[i]!=0){
+                ans[k++]=i;
+                map[i]--;
+            }
+        }
+        return ans;
+
+
+    }
+}
