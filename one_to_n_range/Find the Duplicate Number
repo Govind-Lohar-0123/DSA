@@ -1,3 +1,6 @@
+1]Hare and Totoi for Duplicate and also range must be 1 to n
+2]Cycle can do for evertinh out of range nargative anywhere
+
 class Solution {
     public int findDuplicate(int[] arr) {
         int slow=0;
