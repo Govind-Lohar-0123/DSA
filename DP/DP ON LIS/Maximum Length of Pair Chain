@@ -1,0 +1,16 @@
+
+
+class Solution {
+    public int findLongestChain(int[][] arr) {
+        Arrays.sort(arr,Comparator.comparingDouble((a)->a[1]));
+       for(int it [] : arr)System.out.print("("+it[0]+","+it[1]+" ");
+        int last=arr[0][1];
+        int ans=1;
+        for(int p[] : arr){
+            if(p[0]>last){
+                ans++;last=p[1];
+            }
+        }
+        return ans;
+    }
+}
