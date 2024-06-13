@@ -1,4 +1,4 @@
-
+1]Greedy Solution o(nlog)
 
 class Solution {
     public int findLongestChain(int[][] arr) {
