@@ -1,0 +1,23 @@
+class Solution {
+    public int minMovesToSeat(int[] seats, int[] students) {
+        int stu[]=new int[101];
+        int seat[]=new int[101];
+        for(int it : seats)seat[it]++;
+        for(int it : students)stu[it]++;
+        int i=0,j=0;
+        int ans=0;
+        while(i<=100){
+            
+            int diff=Math.abs(i-j);
+            int min=Math.min(seat[j],stu[i]);
+            ans+=(min*diff);
+            if(seat[j]>stu[i])seat[j]-=stu[i++];
+            else if(seat[j]<stu[i])stu[i]-=seat[j++];
+            else {i++;j++;}
+            while(i<=100 && stu[i]==0)i++;
+            while(j<=100 && seat[j]==0)j++;
+        }
+        return ans;
+
+    }
+}
