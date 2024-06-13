@@ -1,0 +1,9 @@
+  static int lower_bound(List<Integer>arr,int x){
+        int l=0,r=arr.size()-1;
+        while(l<=r){
+            int mid=(l+r)>>1;
+            if(arr.get(mid)>x)r=mid-1;
+            else l=mid+1;
+        }
+        return (r!=-1 && arr.get(r)==x)?r:l;
+    }
