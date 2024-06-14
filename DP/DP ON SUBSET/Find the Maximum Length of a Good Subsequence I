@@ -1,52 +1,21 @@
-class Pair{
-    int cnt,len;
-    Pair(int c,int l){
-        cnt=c;len=l;
-    }
-}
+
 class Solution {
 
-    int dp[][]=null;
+    int dp[][][]=null;
     // HashMap<String,Integer>map=new HashMap<>();
     int solve(int i,int preIdx,int cnt,int k,int arr[]){
         if(cnt>k)return -1;
         if(i>=arr.length)return 0;
         
         if(dp[i][preIdx][cnt]!=-1)return dp[i][preIdx][cnt];
-        int t=0;                                                   // why tle here becase both same
+        int t=0;                                                   
         if(preIdx!=0)t=(arr[i]!=arr[preIdx-1])?1:0;
         int ans=solve(i+1,i+1,t+cnt,k,arr)+1;
         ans=Math.max(ans,solve(i+1,preIdx,cnt,k,arr));
        
         return dp[i][preIdx][cnt]=ans;
     }
-    // int solve(int i,int rem,int arr[]){
-      
-        
-    //     int maxLen=1;
-    //     if(dp[i][rem]!=-1)return dp[i][rem];
-    //     for(int j=i-1;j>=0;j--){
-    //         if(arr[i]!=arr[j] && rem>0)maxLen=Math.max(maxLen,1+solve(j,rem-1,arr));
-    //         else if(arr[i]==arr[j])maxLen=Math.max(maxLen,1+solve(j,rem,arr));
-    //     }
-    //     return dp[i][rem]=maxLen;
-    // }
-
-
-    //   public int maximumLength(int[] arr, int k) {
-    //     int n=arr.length;
-    //     dp=new int[n][26];
-    //     for(int i=0;i<n;i++){
-    //         for(int l=0;l<26;l++){
-    //                 dp[i][l]=-1;
-    //         }
-    //     }
-    //     int maxLen=1;
-    //     for(int i=0;i<n;i++){
-    //         maxLen=Math.max(maxLen,solve(i,k,arr));
-    //     }
-    //     return maxLen;
-    //   }
+    
 
     public int maximumLength(int[] arr, int k) {
         int n=arr.length;
@@ -59,27 +28,35 @@ class Solution {
             }
         }
         return solve(0,0,0,k,arr);
-        Pair dp[]=new Pair[arr.length];
-         int max=0;
-        for(int i=0;i<arr.length;i++){
-            dp[i]=new Pair(0,0);
-           
-            for(int j=i;j>=0;j--){
-                if(arr[i]!=arr[j] && dp[j].len+1>dp[i].len && dp[j].cnt+1<=k){
-                    dp[i].cnt=dp[j].cnt+1;
-                    dp[i].len=dp[j].len+1;
-                }
-                else if(arr[i]==arr[j] && dp[i].len<dp[j].len+1){
-                    dp[i].len=dp[j].len+1;
-                    dp[i].cnt=dp[j].cnt;
-                }
-                else if(arr[i]==arr[j] && dp[i].len==dp[j].len){
-                    dp[i].cnt=dp[j].cnt;
-                }
-                max=Math.max(max,dp[i].len);
-            }
-            
-        }
-        return max;
+        
+       
     }
 }
+
+// class Solution {
+//     int dp[][];
+//     int solve(int i,int rem,int arr[]){
+//         if(dp[i][rem]!=-1)return dp[i][rem];
+//         int maxLen=1;
+//         for(int j=i+1;j<arr.length;j++){
+//             if(arr[i]==arr[j])maxLen=Math.max(maxLen,solve(j,rem,arr)+1);
+//             else if(arr[i]!=arr[j] && rem>0)maxLen=Math.max(maxLen,solve(j,rem-1,arr)+1);
+//         }
+//         return dp[i][rem]=maxLen;
+//     }
+    
+//     public int maximumLength(int[] arr, int k) {
+//           int n=arr.length;
+//         dp=new int[n][26];
+//         for(int i=0;i<n;i++){
+//             for(int j=0;j<=25;j++){
+//                 dp[i][j]=-1;
+//             }
+//         }
+//         int maxLen=0;
+//         for(int i=0;i<n;i++){
+//             maxLen=Math.max(maxLen,solve(i,k,arr));
+//         }
+//         return maxLen;
+//     }
+// }
