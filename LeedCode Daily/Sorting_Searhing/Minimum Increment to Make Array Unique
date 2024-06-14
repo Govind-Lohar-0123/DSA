@@ -1,0 +1,56 @@
+class Solution {
+    public int minIncrementForUnique(int[] nums) {
+        int max=0;
+        for(int it : nums)max=Math.max(max,it);
+        int map[]=new int[max+1];
+        for(int it : nums)map[it]++;
+        int x=0;
+        int ans=0;
+        for(int i=0;i<max+1;i++){
+            if(map[i]<=1)continue;
+            int cnt=map[i]-1;
+            x=Math.max(x,i);
+            while(cnt-->0){
+                while(x<=max && map[x]>0)x++;
+                ans+=x-i;
+                x++;
+            }
+            
+        }
+
+    return ans;
+
+
+
+
+
+
+
+        // HashMap<Integer,Integer> map=new HashMap<>();
+        
+        // for(int it : nums){map.put(it,map.getOrDefault(it,0)+1);}
+        // //sort hthe aray
+        // Arrays.sort(nums);
+        // int x=nums[0];
+        // int ans=0;
+        // for(int i=1;i<nums.length;i++){
+        //     if(nums[i-1]!=nums[i])continue;
+        //     x=Math.max(x,nums[i]);
+        //     while(map.containsKey(x))x++;
+        //     ans+=x-nums[i];
+        //     x++;
+        // }
+        // return ans; int x=nums[0];
+        // int ans=0;
+        // for(int i=1;i<nums.length;i++){
+        //     if(nums[i-1]!=nums[i])continue;
+        //     x=Math.max(x,nums[i]);
+        //     while(map.containsKey(x))x++;
+        //     ans+=x-nums[i];
+        //     x++;
+        // }
+        // return ans
+        
+
+    }
+}
