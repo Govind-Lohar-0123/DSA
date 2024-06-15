@@ -1,0 +1,29 @@
+class Solution {
+    class Pair{
+        int pro,cap;
+        Pair(int p,int c){
+            pro=p;
+            cap=c;
+        }
+    }
+    public int findMaximizedCapital(int k, int w, int[] pro, int[] cap) {
+        int n=cap.length;
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        Pair pair[]=new Pair[n];
+        for(int i=0;i<n;i++)pair[i]=new Pair(pro[i],cap[i]);
+        Arrays.sort(pair,(a,b)->(a.cap-b.cap));
+        
+       
+            for(int i=0;i<n;i++){
+                Pair it=pair[i];
+                if(it.cap<=w && k>0)pq.add(it.pro);
+                else if(pq.size()!=0 && k>0){w+=pq.poll();i--;k--;}
+                else break;
+            }
+        
+        
+       
+       while(k>0 && pq.size()!=0){w+=pq.poll();k--;}
+       return w;
+    }
+}
