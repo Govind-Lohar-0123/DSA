@@ -1,14 +1,68 @@
+class Solution {
+       LinkedHashMap<Integer,Integer>freq=new LinkedHashMap<>();
+    public long maximumTotalDamage(int[] arr) {
+        int n=arr.length;
+        Arrays.sort(arr);
+        
+       
+        for(int it : arr)freq.put(it,freq.getOrDefault(it,0)+1);
+        ArrayList<long[]>slice=new ArrayList<>();
+        for(Map.Entry<Integer,Integer> it : freq.entrySet()){
+            slice.add(new long[]{it.getKey(),it.getValue()});
+        }
+        int m=slice.size();
+        long dp[]=new long[m];
+        for(int i=0;i<m;i++){
+            long it[]=slice.get(i);
+            long val=it[0]*it[1];
+            dp[i]=val;
+            if(i-1>=0){
+                if(it[0]-slice.get(i-1)[0]>2)dp[i]=Math.max(dp[i],val+dp[i-1]);
+                else dp[i]=Math.max(dp[i],dp[i-1]);
+            }
+            if(i-2>=0){
+                if(it[0]-slice.get(i-2)[0]>2)dp[i]=Math.max(dp[i],val+dp[i-2]);
+                else dp[i]=Math.max(dp[i],dp[i-2]);
+            }
+            if(i-3>=0){
+                if(it[0]-slice.get(i-3)[0]>2)dp[i]=Math.max(dp[i],val+dp[i-3]);
+                else dp[i]=Math.max(dp[i],dp[i-3]);
+            }
+        }
+       return dp[m-1];
+    }
+}
+
 // class Solution {
+//     HashMap<Integer,Integer>map=new HashMap<>();
+//     int getNextIndex(long x,int arr[]){
+//         int l=0,r=arr.length-1;
+//         while(l<=r){
+//             int mid=(l+r)>>1;
+//             if(arr[mid]<=x)l=mid+1;
+//             else r=mid-1;
+//         }
+//         return l;
+//     }
 //     public long maximumTotalDamage(int[] arr) {
 //         Arrays.sort(arr);
 //         int n=arr.length;
 //         int dp[]=new int[n];
+//         for(int it : arr)map.put(it,map.getOrDefault(it,0)+1);
 //         int ans=0;
-//         for(int i=0;i<n;i++){
+//         for(int i=n-1;i>=0;i--){
+//             if(i<n-1 && arr[i]==arr[i+1]){
+//                 dp[i]=dp[i+1]+arr[i];
+                
+//             }
+//             else {
 //             dp[i]=arr[i];
-//             for(int j=i-1;j>=0;j--){
-              
-//                 if(arr[i]==arr[j] || arr[j]<arr[i]-2)dp[i]=Math.max(dp[i],dp[j]+arr[i]);
+//             int j=arr[i]+2;
+//             int ind=getNextIndex(j,arr);
+//             while(ind<n){
+//                 dp[i]=Math.max(dp[i],dp[ind]+arr[i]);
+//                 ind=getNextIndex(arr[ind]+2,arr);
+//             }
 //             }
 //             ans=Math.max(ans,dp[i]);
 //         }
@@ -17,47 +71,58 @@
 // }
 
 
-class Solution {
-    // HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
-    HashMap<Integer,Integer>map=new HashMap<>();
-    long dp[];
-    int getNextIndex(long x,int arr[]){
-        int l=0,r=arr.length-1;
-        while(l<=r){
-            int mid=(l+r)>>1;
-            if(arr[mid]<=x)l=mid+1;
-            else r=mid-1;
-        }
-        return l;
-    }
-    long solve(int i,int arr[],HashMap<Integer,Integer>map){
-        if(i>=arr.length)return 0;
-        if(dp[i]!=-1)return dp[i];
-        long pick=0;
-        int ind=getNextIndex(arr[i]+2,arr);
-        long val=(long)arr[i]*map.get(arr[i]);
-        pick=solve(ind,arr,map)+val;
-         long notPick=0;
-        notPick=solve(i+1,arr,map);
+// class Solution {
+//     // HashMap<Integer,ArrayList<Integer>>map=new HashMap<>();
+//     HashMap<Integer,Integer>map=new HashMap<>();
+//     long dp[];
+//     int getNextIndex(long x,int arr[]){
+//         int l=0,r=arr.length-1;
+//         while(l<=r){
+//             int mid=(l+r)>>1;
+//             if(arr[mid]<=x)l=mid+1;
+//             else r=mid-1;
+//         }
+//         return l;
+//     }
+//     long solve(int i,int arr[],HashMap<Integer,Integer>map){
+//         // if(i>=arr.length)return 0;
+//         // if(dp[i]!=-1)return dp[i];
+//         // long pick=0;
+//         // int ind=getNextIndex(arr[i]+2,arr);
+//         // long val=(long)arr[i]*map.get(arr[i]);
+//         // pick=solve(ind,arr,map)+val;
+//         //  long notPick=0;
+//         // notPick=solve(i+1,arr,map);
         
-        return dp[i]=Math.max(notPick,pick);
+//         // return dp[i]=Math.max(notPick,pick);
+//         for(i=arr.length-1;i>=0;){
+//             long pick=0;
+//             int ind=getNextIndex(arr[i]+2,arr);
+//             long val=(long)arr[i]*map.get(arr[i]);
+//             pick=(ind<arr.length)?dp[ind]:0  + val;
+//             long notPick=0;
+//             notPick=dp[i+1];
+//             dp[i]=Math.max(notPick,pick);
+            
+//         }
+//         return dp[0];
 
-    }
-    public long maximumTotalDamage(int[] arr) {
-        int n=arr.length;
-        Arrays.sort(arr);
-        dp=new long[n+1];
-        Arrays.fill(dp,-1);
-        for(int it : arr)map.put(it,map.getOrDefault(it,0)+1);
-        // for(int i=0;i<n;i++){
-        //     if(map.containsKey(arr[i])==false)map.put(arr[i],new ArrayList<>());
-        //     else{
-        //         int prev=map.get(arr[i]).get(map.get(arr[i]).size()-1);
-        //         if(arr[prev]+2>=arr[i] && arr[prev]!=arr[i])continue;
-        //     }
-        //     map.get(arr[i]).add(i);
-        // }
+//     }
+//     public long maximumTotalDamage(int[] arr) {
+//         int n=arr.length;
+//         Arrays.sort(arr);
+//         dp=new long[n+1];
+//         Arrays.fill(dp,-1);
+//         for(int it : arr)map.put(it,map.getOrDefault(it,0)+1);
+//         // for(int i=0;i<n;i++){
+//         //     if(map.containsKey(arr[i])==false)map.put(arr[i],new ArrayList<>());
+//         //     else{
+//         //         int prev=map.get(arr[i]).get(map.get(arr[i]).size()-1);
+//         //         if(arr[prev]+2>=arr[i] && arr[prev]!=arr[i])continue;
+//         //     }
+//         //     map.get(arr[i]).add(i);
+//         // }
        
-        return solve(0,arr,map);
-    }
-}
+//         return solve(0,arr,map);
+//     }
+// }
