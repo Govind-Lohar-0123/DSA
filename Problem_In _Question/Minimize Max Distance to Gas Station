@@ -63,3 +63,65 @@ class Solution {
         return ans;
     }
 }
+
+//{ Driver Code Starts
+// Initial Template for Java
+
+import java.io.*;
+import java.lang.*;
+import java.math.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(System.in);
+        int T = sc.nextInt();
+        while (T-- > 0) {
+            int n = sc.nextInt();
+            int a[] = new int[n];
+            for (int i = 0; i < n; i++) {
+                a[i] = sc.nextInt();
+            }
+            int k = sc.nextInt();
+            Solution obj = new Solution();
+            double ans = obj.findSmallestMaxDist(a, k);
+            System.out.printf("%.2f", ans);
+            System.out.println();
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+// User function Template for Java
+
+class Solution {
+   static int getCount(double mid,int k,int arr[]){
+        int cnt=0;int n=arr.length;
+        for(int i=0;i<n-1;i++){
+            int numInBetween=(int)((arr[i+1]-arr[i])/mid);
+            if((arr[i+1]-arr[i])/mid == numInBetween*mid)
+                numInBetween--;
+            cnt+=numInBetween;
+        }
+        return cnt;
+    }
+    public static double findSmallestMaxDist(int arr[], int k) {
+       
+       double l=0;
+       double r=arr[arr.length-1]-arr[0];
+      
+       double diff=1e-6;
+       while(r-l>diff){
+           double mid=(l+r)/(2.0);
+           int cnt=getCount(mid,k,arr);
+           if(cnt>k)l=mid;
+           else r=mid;
+       }
+       return r;
+       
+       
+    }
+}
+
