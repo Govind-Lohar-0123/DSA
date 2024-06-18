@@ -1,0 +1,203 @@
+import java.util.*;
+// class SGTree{
+//     int seg[]=null;
+//     SGTree(int n){
+//         seg=new int[n*4+1];
+//     }
+
+//     public void build(int idx,int low,int high,int arr[]){
+//         if(low==high){
+//             seg[idx]=arr[low];
+//             return;
+//         }
+
+//         int mid=(low+high)/2;
+//         build(2*idx+1,low,mid,arr);
+//         build(2*idx+2,mid+1,high,arr);
+//         seg[idx]=seg[2*idx+1]+seg[2*idx+2];
+//     }
+
+//     int get(int idx,int low,int high,int l,int r){
+//             //no overlap
+//         //[low,high][l,r] || [l,r][low,high]//
+//         if(high<l || r<low)return 0;
+
+//         //complete oeverlap
+//         // [left[l,r]right]
+//         else if(low>=l && high<=r)return seg[idx];
+//         int mid=(low+high)/2;
+//         int left=get(2*idx+1,low,mid,l,r);
+//         int right=get(2*idx+2,mid+1,high,l,r);
+//         return left+right;
+//     }
+//     void updatePoint(int idx,int low,int high,int i,int val){
+          
+//           if(low==high){
+//             seg[idx]=val;
+//             return ;
+//           }
+          
+//           int mid=(low+high)/2;
+//           if(i<=mid)updatePoint(2*idx+1,low,mid,i,val);
+//           else updatePoint(2*idx+2,mid+1,high,i,val);
+//           seg[idx]=seg[2*idx+1]+seg[2*idx+2];
+//     }
+    
+    
+
+// }
+
+
+class FenwikTree{
+    int bit[];
+    int n;
+    FenwikTree(int n){
+        bit=new int[n+1];
+        this.n=n;
+    }
+
+    void build_update(int idx,int val){
+       
+        while(idx<=n){
+            bit[idx]+=val;
+            idx+=(idx & -idx);
+        }
+    }
+    int get(int r){
+        int sum=0;
+        while(r>0){
+            sum+=bit[r];
+            r-=(r & -r);
+        }
+        return sum;
+    }
+    
+}
+
+
+class Solution {
+    public List<Integer> countOfPeaks(int[] arr, int[][] query) {
+       
+        int n=arr.length;
+        int m=query.length;
+        int peaks[]=new int[n];
+        //store peaks count in array
+        for(int i=1;i<n-1;i++){
+            if(arr[i-1]<arr[i] && arr[i]>arr[i+1])peaks[i]=1;
+            
+        }
+        List<Integer> ans=new ArrayList<>();
+        //builde segemtn tree
+        FenwikTree ft=new FenwikTree(n);
+        for(int i=0;i<n;i++){
+            ft.build_update(i+1,peaks[i]);
+        }
+      
+
+        for(int q[] : query){
+            int type=q[0];
+            if(type==1){
+                int l=q[1],r=q[2];
+                int val=Math.max(0,ft.get(r)-ft.get(l+1));
+                ans.add(val);
+            }
+            else{
+                int idx=q[1];
+                int val=q[2];
+                arr[idx]=val;
+                if(idx-1>0){
+                    if(arr[idx-1]>arr[idx-2] && arr[idx-1]>arr[idx] ){
+                        if(peaks[idx-1]==0)ft.build_update(idx,1);
+                        peaks[idx-1]=1;
+                    }
+                    else if(peaks[idx-1]==1){
+                        peaks[idx-1]=0;
+                        ft.build_update(idx,-1);
+                    }
+                    
+                }
+                if(idx+1<n-1){
+                    if(arr[idx+1]>arr[idx+2] && arr[idx+1]>arr[idx]){
+                         if(peaks[idx+1]==0)ft.build_update(idx+2,1);
+                        peaks[idx+1]=1;
+                        
+                    }
+                    else if(peaks[idx+1]==1){
+                         peaks[idx+1]=0;
+                        ft.build_update(idx+2,-1);
+                    }
+                }
+                if(idx>0 && idx<n-1){
+                    if(arr[idx]>arr[idx-1] && arr[idx]>arr[idx+1]){
+                        if(peaks[idx]==0)ft.build_update(idx+1,1);
+                        peaks[idx]=1;
+                       
+                    }
+                    else if(peaks[idx]==1){
+                        peaks[idx]=0;
+                        ft.build_update(idx+1,-1);
+                    }
+                }
+           
+                
+            }
+           
+        }
+         return ans;
+
+    }
+}
+
+// class Solution {
+//     public List<Integer> countOfPeaks(int[] arr, int[][] query) {
+       
+//         int n=arr.length;
+//         int m=query.length;
+//         int peaks[]=new int[n];
+//         //store peaks count in array
+//         for(int i=1;i<n-1;i++){
+//             if(arr[i-1]<arr[i] && arr[i]>arr[i+1])peaks[i]=1;
+            
+//         }
+//         List<Integer> ans=new ArrayList<>();
+//         //builde segemtn tree
+//         SGTree st=new SGTree(n);
+
+//         st.build(0,0,n-1,peaks);
+        
+
+//         for(int q[] : query){
+//             int type=q[0];
+//             if(type==1){
+//                 int l=q[1],r=q[2];
+//                 int val=st.get(0,0,n-1,l+1,r-1);
+            
+//                 ans.add(val);
+//             }
+//             else{
+//                 int idx=q[1];
+//                 int val=q[2];
+//                 arr[idx]=val;
+//                 if(idx-1>0){
+//                     if(arr[idx-1]>arr[idx-2] && arr[idx-1]>arr[idx]){
+//                         st.updatePoint(0,0,n-1,idx-1,1);
+//                     }
+//                      else st.updatePoint(0,0,n-1,idx-1,0);
+//                 }
+//                 if(idx+1<n-1){
+//                     if(arr[idx+1]>arr[idx+2] && arr[idx+1]>arr[idx])st.updatePoint(0,0,n-1,idx+1,1);
+//                     else st.updatePoint(0,0,n-1,idx+1,0);
+//                 }
+//                 if(idx>0 && idx<n-1){
+//                     if(arr[idx]>arr[idx-1] && arr[idx]>arr[idx+1])st.updatePoint(0,0,n-1,idx,1);
+//                      else st.updatePoint(0,0,n-1,idx,0);
+//                 }
+                
+                
+//             }
+           
+//         }
+//          return ans;
+
+//     }
+// }
