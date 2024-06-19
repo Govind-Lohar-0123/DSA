@@ -1,3 +1,61 @@
+1]Binary search like 2d matrix median 
+2]simple with space
+3] without spce with counter
+4]Binary search not like 2d matrix median
+
+class Solution {
+    int getCountLessThanEqualToX(int arr1[],int x){
+        
+        int left=0,right=arr1.length-1;
+        while(left<=right){
+            int mid=(left+right)>>1;
+            if(arr1[mid]>x)right=mid-1;
+            else left=mid+1;
+        }
+        return left;
+    }
+    int getMedian(int arr1[],int arr2[],int median){
+        int left=Math.min(arr1[0],arr2[0]);
+        int right=Math.max(arr1[arr1.length-1],arr2[arr2.length-1]);
+        
+        while(left<=right){
+            int mid=(left+right)>>1;
+            int cnt1=getCountLessThanEqualToX(arr1,mid);
+            int cnt2=getCountLessThanEqualToX(arr2,mid);
+            
+            if(cnt1+cnt2<median)left=mid+1;
+            else {
+                right=mid-1;
+                
+            }
+
+        }
+        return left;
+    }
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n1=nums1.length;
+        int n2=nums2.length;
+        if(n1==0 && n2==0)return 0;
+        else if(n1==0){
+            return (n2%2==0)?((nums2[n2/2-1]+nums2[n2/2])/(double)(2)):nums2[n2/2];
+        }
+        else if(n2==0){
+            return (n1%2==0)?((nums1[n1/2-1]+nums1[n1/2])/(double)(2)):nums1[n1/2];
+        }
+        
+        int n=nums1.length+nums2.length;
+        if(n%2==0){
+            int m1=getMedian(nums1,nums2,n/2);
+            int m2=getMedian(nums1,nums2,n/2+1);
+            System.out.print(m1+" "+m2);
+            return (m1+m2)/(double)2;
+        }
+        return getMedian(nums1,nums2,n/2+1);
+        
+        
+    }
+}
+
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int el1=0,el2=0;
