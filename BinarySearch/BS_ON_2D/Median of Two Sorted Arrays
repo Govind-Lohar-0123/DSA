@@ -1,0 +1,29 @@
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int el1=0,el2=0;
+        int n1=nums1.length;
+        int n2=nums2.length;
+        int median=((n1+n2)%2==0)?(n1+n2)/2-1:(n1+n2)/2;
+        int i=0,j=0;
+        while(i<n1 || j<n2){
+            int val1=(i<n1)?nums1[i]:1000000;
+            int val2=(j<n2)?nums2[j]:1000000;
+            if(val1<=val2)i++;
+            else j++;
+            if(median==0){
+                el1=(val1<=val2)?val1:val2;
+                
+            }
+            if(median==-1){
+                el2=(val1<=val2)?val1:val2;
+                break;
+            } 
+
+            median--;
+
+            
+            
+        }
+        return ((n1+n2)%2==0)?(el1+el2)/(double)2:el1;
+    }
+}
