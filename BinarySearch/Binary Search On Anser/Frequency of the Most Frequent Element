@@ -1,4 +1,37 @@
 class Solution {
+    
+   
+    public int maxFrequency(int[] arr, int k) {
+       int ans=0;Arrays.sort(arr);
+       
+      
+    
+       int i=0,j=0;
+       long sum=0;
+       while(j<arr.length){
+            sum+=arr[j];
+            long el=(j-i+1);
+            long dis=(el*arr[j]-sum);
+            if(dis>k){
+                sum-=arr[i++];
+            }
+            // while(dis>k ){
+            //     sum-=arr[i++];
+            //     el=(j-i+1);
+            //     dis=(el*arr[j]-sum);
+                 
+            // }
+           ans=Math.max(j-i+1,ans);
+            j++;
+       }
+       return ans;
+     
+        
+
+    }
+}
+
+class Solution {
     int pre[];
     int getMaxFreq(int arr[],int i,int k){
         int low=0;
