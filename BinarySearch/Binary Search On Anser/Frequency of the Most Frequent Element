@@ -1,0 +1,28 @@
+class Solution {
+    int pre[];
+    int getMaxFreq(int arr[],int i,int k){
+        int low=0;
+        int high=i;
+        while(low<=high){
+            int mid=(low+high)>>1;
+            int el=(i-mid+1);
+            int dis=(el*arr[i]-(pre[i]-pre[mid]+arr[mid]));
+           
+            if(dis>k)low=mid+1;
+            else high=mid-1;
+        }
+        return (i-low+1);
+    }
+    public int maxFrequency(int[] arr, int k) {
+       int ans=0;Arrays.sort(arr);
+        pre=new int[arr.length];
+       pre[0]=arr[0];
+       for(int i=1;i<arr.length;i++)pre[i]=pre[i-1]+arr[i];
+       
+       for(int i=0;i<arr.length;i++)
+        ans=Math.max(ans,getMaxFreq(arr,i,k));
+       return ans;
+        
+
+    }
+}
