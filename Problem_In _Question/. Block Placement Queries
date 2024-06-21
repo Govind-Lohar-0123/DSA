@@ -1,0 +1,33 @@
+class Solution {
+    Map<Integer, Integer> tm = new TreeMap<Integer,Integer>();
+    //time complexity doublt why because 10^4
+    //because 10^4 mab be 3999 type 2 query only we have 
+    boolean isPossible(int x,int sz){
+       int prev=0;
+       int size=0;
+       
+       for(Map.Entry<Integer, Integer> it : tm.entrySet()){
+            
+             int key=it.getKey();
+             if(key>=x)break;
+             size=Math.max(size,(key-prev));
+             prev=key;
+       }
+        size=Math.max(size,(x-prev));
+       
+        return (sz<=size);
+    }
+    public List<Boolean> getResults(int[][] q) {
+        List<Boolean> ans=new ArrayList<>();
+      
+        int n=q.length;
+        for(int it[] : q){
+            if(it[0]==1){
+               tm.put(it[1],0);
+            }
+            else ans.add(isPossible(it[1],it[2]));
+        }
+        return ans;
+        
+    }
+}
