@@ -1,0 +1,27 @@
+1]heap also 
+2]sliding winfo
+
+class Solution {
+    public int longestSubarray(int[] nums, int limit) {
+        ArrayDeque<Integer> qmin=new ArrayDeque<Integer>();
+        ArrayDeque<Integer> qmax=new ArrayDeque<Integer>();
+        int i=0,j=0;
+        int ans=0;
+
+        while(j<nums.length){
+            while(qmin.size()!=0 && nums[qmin.peekLast()]>nums[j])qmin.pollLast();
+            while(qmax.size()!=0 && nums[qmax.peekLast()]<nums[j])qmax.pollLast();
+            qmin.offer(j);
+            qmax.offer(j);
+            while(qmin.size()!=0 && qmax.size()!=0 && Math.abs(nums[qmin.peek()]-nums[qmax.peek()])>limit)
+            {   
+                int idx=(qmin.peek()>qmax.peek())?qmax.poll() : qmin.poll();
+                i=idx+1;
+            }
+           
+            ans=Math.max(ans,j-i+1);
+            j++;
+        }
+        return ans;
+    }
+}
