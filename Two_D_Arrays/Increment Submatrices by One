@@ -1,0 +1,18 @@
+class Solution {
+    public int[][] rangeAddQueries(int n, int[][] queries) {
+        int ans[][]=new int[n][n];
+        for(int it[] : queries){
+            for(int i=it[0];i<=it[2];i++){
+                ans[i][it[1]]++;
+                if(1+it[3]<n)ans[i][it[3]+1]--;
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=1;j<n;j++){
+                ans[i][j]+=ans[i][j-1];
+            }
+        }
+        return ans;
+        
+    }
+}
