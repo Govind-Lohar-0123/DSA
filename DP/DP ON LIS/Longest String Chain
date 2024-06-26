@@ -1,0 +1,92 @@
+class Solution {
+    int dp[][]=null;
+    // int solve(int i,int prev,String arr[]){
+        // if(i>=arr.length)return 0;
+        // int ans=0;
+        // if(dp[i][prev]!=-1)return dp[i][prev];
+        // if(prev==0 || (arr[prev-1].length()+1==arr[i].length() && isValid(arr[i],arr[prev-1])))
+        //     ans=1+solve(i+1,i+1,arr);
+        // ans=Math.max(ans,solve(i+1,prev,arr));
+        // return dp[i][prev]=ans;
+
+        // for(i=arr.length-1;i>=0;i--){
+        //     for(prev=arr.length-1;prev>=0;prev--){
+        //         if(i>=arr.length)return 0;
+        //         int ans=0;
+        //     if(prev==0 || (arr[prev-1].length()+1==arr[i].length() && isValid(arr[i],arr[prev-1])))
+        //             ans=1+dp[i+1][i+1];
+        //         ans=Math.max(ans,dp[i+1][prev]);
+        //         dp[i][prev]=ans;
+        //     }
+        // }
+    //     int next[]=new int[arr.length+1];
+    //     int curr[]=new int[arr.length+1];
+    //     for(i=arr.length-1;i>=0;i--){
+    //         curr=new int[arr.length+1];
+    //         for(prev=arr.length-1;prev>=0;prev--){
+               
+    //             int ans=0;
+    //             if(prev==0 || (arr[prev-1].length()+1==arr[i].length() && isValid(arr[i],arr[prev-1])))
+    //                 ans=1+next[i+1];
+    //             ans=Math.max(ans,next[prev]);
+    //             curr[prev]=ans;
+    //         }
+    //         next=curr;
+            
+    //     }
+    // return curr[0];
+
+    // }
+    boolean isValid(String a,String b){
+        int i=0,j=0;
+        int n=a.length();
+        int m=b.length();
+        boolean flag=false;
+        while(i<n && j<m){
+            if(a.charAt(i)==b.charAt(j)){
+                i++;j++;
+            }
+            else if(flag==false){
+                if(n<m)j++;
+                else i++;
+                flag=true;
+            }
+            else return false;
+        }
+        return true;
+    }
+    public int longestStrChain(String[] words) {
+        // dp=new int[words.length+1][words.length+1];
+        // for(int i=0;i<words.length;i++){
+        //     for(int j=0;j<words.length;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+        // Arrays.sort(words,new Comparator<String>(){
+        //     public int compare(String a,String b){
+        //         return a.length()-b.length();
+        //     }
+        // });
+        
+        // return solve(0,0,words);
+        // int ans=0;
+        // int dp[]=new int[words.length];
+        // for(int i=0;i<words.length;i++){
+        //     dp[i]=1;
+        //     for(int j=i-1;j>=0;j--){
+        //         if((words[j].length()+1==words[i].length() && isValid(words[i],words[j])) && dp[i]<dp[j]+1){
+        //             dp[i]=dp[j]+1;
+        //         }
+                
+        //     }
+        //     ans=Math.max(dp[i],ans);
+        // }
+        // return ans;
+
+
+
+
+
+        
+    }
+}
