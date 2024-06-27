@@ -1,0 +1,27 @@
+ int dp1[]=new int[n];
+        int dp2[]=new int[n];
+        
+        for(int i=0;i<n;i++){
+            dp1[i]=1;
+            dp2[n-i-1]=1;
+            for(int j=i-1;j>=0;j--){
+                if(nums[i]>nums[j] && dp1[i]<dp1[j]+1)
+                    dp1[i]=dp1[j]+1;
+            }
+            
+            for(int j=n-i;j<n;j++){
+                if(nums[n-i-1]>nums[j] && dp2[n-i-1]<dp2[j]+1)
+                    dp2[n-i-1]=dp2[j]+1;
+            }
+            
+           
+            
+            
+            
+        }  
+        int ans=0;
+         for(int i=0;i<n;i++){
+             if(dp1[i]>=2 && dp2[i]>=2)
+                ans=Math.max(ans,dp1[i]+dp2[i]-1);
+         }
+          return ans;
