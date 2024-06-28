@@ -1,0 +1,33 @@
+class Solution {
+    public long maximumImportance(int n, int[][] roads) {
+        long ans=0;
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+      
+        for(int i=0;i<n;i++)grid.add(new ArrayList<>());
+        for(int it[] :roads){
+            grid.get(it[0]).add(it[1]);
+            grid.get(it[1]).add(it[0]);
+        }
+        // Collections.sort(grid,(a,b)->b.size()-a.size());
+        // for(ArrayList<Integer> it : grid){
+        //     ans+=((long)n*it.size());
+        //     n--;
+        // }
+        int max=0;
+        for(ArrayList<Integer> it : grid){
+            max=Math.max(max,it.size());
+        }
+        int map[]=new int[max+1];
+        for(ArrayList<Integer> it : grid){
+            map[it.size()]++;
+        }
+        for(int i=max;i>=0;i--){
+            while(map[i]!=0){
+                ans+=(long)(n) * i;
+                n--;
+                map[i]--;
+            }
+        }
+        return ans;
+    }
+}
