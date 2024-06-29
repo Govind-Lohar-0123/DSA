@@ -1,3 +1,65 @@
+1]simple approach n^3
+2]simple n^2 with sorted run loop 0->n-1 make this i acstors for child
+3]my approach change direction then do travers n^2
+4]topological sort 
+
+
+class Solution {
+    List<List<Integer>> ans=new ArrayList<>();
+    public List<List<Integer>> getAncestors(int n, int[][] edges) {
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+        Queue<Integer>q=new LinkedList<>();
+        int ind[]=new int[n];
+        for(int i=0;i<n;i++){
+            grid.add(new ArrayList<>());
+        }
+        for(int it[] : edges){
+            grid.get(it[0]).add(it[1]);
+            ind[it[1]]++;
+        }
+        for(int i=0;i<n;i++){
+            if(ind[i]==0)q.add(i);
+        }
+        ArrayList<Integer>order=new ArrayList<>();
+
+        
+        while(q.size()!=0){
+            int u=q.poll();
+            order.add(u);
+            for(int v : grid.get(u)){
+                ind[v]--;
+                if(ind[v]==0){
+                    q.add(v);
+                }
+            }
+        }
+        ArrayList<boolean[]>temp=new ArrayList<>();
+        for(int i=0;i<n;i++)temp.add(new boolean[n]);
+        for(int u : order){
+            for(int v : grid.get(u)){
+                temp.get(v)[u]=true;
+                for(int i=0;i<n;i++){
+                    if(temp.get(u)[i]==true)temp.get(v)[i]=true;
+                }
+            }
+
+        }
+        for(int i=0;i<n;i++){
+            ArrayList<Integer>t=new ArrayList<>();
+            for(int j=0;j<n;j++){
+                if(temp.get(i)[j]==true)t.add(j);
+            }
+            ans.add(t);
+        }
+        return ans;
+        
+
+
+
+
+    }
+}
+
 class Solution {
     ArrayList<Integer> sort(ArrayList<Integer> temp,int n){
         int map[]=new int[n];
