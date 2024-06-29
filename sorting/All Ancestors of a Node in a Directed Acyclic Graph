@@ -1,0 +1,45 @@
+class Solution {
+    ArrayList<Integer> sort(ArrayList<Integer> temp,int n){
+        int map[]=new int[n];
+        for(int it : temp){
+            map[it]=1;
+        }
+        temp.clear();
+        for(int i=0;i<n;i++){
+            if(map[i]!=0)temp.add(i);
+        }
+        return temp;
+        
+    }
+ArrayList<Integer> getAncestors(int u,ArrayList<ArrayList<Integer>>grid,ArrayList<Integer> temp,boolean vis[]){
+        
+        
+        
+        
+        vis[u]=true;
+        for(int v : grid.get(u)){
+            if(vis[v]==false){
+                temp.add(v);
+                getAncestors(v,grid,temp,vis);
+            }
+        }
+        return temp;
+    }
+    public List<List<Integer>> getAncestors(int n, int[][] edges) {
+        
+        ArrayList<ArrayList<Integer>>grid=new ArrayList<>();
+        for(int i=0;i<n;i++)grid.add(new ArrayList<>());
+        for(int it[] : edges){
+            grid.get(it[1]).add(it[0]);
+        }
+        List<List<Integer>> ans=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            ArrayList<Integer> temp=getAncestors( i,grid,new ArrayList<>(),new boolean[n]);
+            Collections.sort(temp);
+            // ans.add(temp);
+            ans.add(sort(temp,n));       
+         }
+    return ans;
+    }
+
+}
