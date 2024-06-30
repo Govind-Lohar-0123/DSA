@@ -1,0 +1,52 @@
+class Solution {
+    class Pair{
+        int first,second;
+        Pair(int f,int s){
+            first=f;second=s;
+        }
+    }
+    ArrayList<ArrayList<Integer>> buildGraph(int edges[][]){
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+        int n=edges.length;
+        for(int i=0;i<=n+1;i++){
+            grid.add(new ArrayList<>());
+        }
+        for(int it[] : edges){
+            grid.get(it[0]).add(it[1]);
+            grid.get(it[1]).add(it[0]);
+        }
+        return grid;
+    }
+    void solve(int u,int par,int dis,ArrayList<ArrayList<Integer>>grid,Pair p){
+        if(dis>p.second){
+            p.first=u;
+            p.second=dis;
+        }
+        for(int v  : grid.get(u)){
+            if(v!=par)
+                solve(v,u,dis+1,grid,p);
+        }
+    }
+    public int minimumDiameterAfterMerge(int[][] edges1, int[][] edges2) {
+        int n=edges1.length;
+        int m=edges2.length;
+        ArrayList<ArrayList<Integer>> grid=buildGraph(edges1);
+        Pair p1=new Pair(-1,Integer.MIN_VALUE),p2=new Pair(-1,Integer.MIN_VALUE);
+        solve(0,-1,0,grid,p1);
+        solve(p1.first,-1,0,grid,p2);
+        int d1=p2.second;
+
+        grid=buildGraph(edges2);
+        p1=new Pair(-1,Integer.MIN_VALUE);p2=new Pair(-1,Integer.MIN_VALUE);
+        solve(0,-1,0,grid,p1);
+        solve(p1.first,-1,0,grid,p2);
+        int d2=p2.second;
+
+        return Math.max(d1,Math.max(d2,(d1+1)/2 + (d2+1)/2 +1));
+
+
+
+
+
+    }
+}
