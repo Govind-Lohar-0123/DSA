@@ -1,6 +1,8 @@
 class DisjointSet{
     int [] par,rank;
+    int components;
     DisjointSet(int n){
+        components=n;
         par=new int[n+1];
         rank=new int[n+1];
         for(int i=0;i<n;i++){
@@ -15,13 +17,14 @@ class DisjointSet{
     public void unionByRank(int u,int v){
         int up=getPar(u);
         int vp=getPar(v);
+        if(up==vp)return ;
         if(rank[up]==rank[vp]){
             par[vp]=up;
             rank[up]++;
         }
         else if(rank[up]>rank[vp])par[vp]=up;
         else par[up]=vp;
-
+        components--;
     }
 }
 
@@ -61,11 +64,13 @@ class Solution {
             }
         }
         
-        for(int i=1;i<=n;i++){
-            if(alice.getPar(i)!=alice.getPar(1))return -1;
-            if(bob.getPar(i)!=bob.getPar(1))return -1;
-        }
-        return edges.length-ans;
+        // for(int i=1;i<=n;i++){
+        //     if(alice.getPar(i)!=alice.getPar(1))return -1;
+        //     if(bob.getPar(i)!=bob.getPar(1))return -1;
+        // }
+        if(alice.components==1 && bob.components==1)
+            return edges.length-ans;
+        return -1;
 
     }
 }
