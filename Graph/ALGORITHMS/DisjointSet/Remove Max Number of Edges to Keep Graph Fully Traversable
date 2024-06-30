@@ -1,0 +1,71 @@
+class DisjointSet{
+    int [] par,rank;
+    DisjointSet(int n){
+        par=new int[n+1];
+        rank=new int[n+1];
+        for(int i=0;i<n;i++){
+            par[i]=i;
+            rank[i]=1;
+        }
+    }
+    public int getPar(int u){
+        if(par[u]==u)return u;
+        return par[u]=getPar(par[u]);
+    }
+    public void unionByRank(int u,int v){
+        int up=getPar(u);
+        int vp=getPar(v);
+        if(rank[up]==rank[vp]){
+            par[vp]=up;
+            rank[up]++;
+        }
+        else if(rank[up]>rank[vp])par[vp]=up;
+        else par[up]=vp;
+
+    }
+}
+
+class Solution {
+
+    public int maxNumEdgesToRemove(int n, int[][] edges) {
+        DisjointSet alice=new DisjointSet(n);
+        DisjointSet bob=new DisjointSet(n);
+
+        int ans=0;
+        for(int it[] : edges){
+            if(it[0]==3){
+                int u=it[1];
+                int v=it[2];
+                if(bob.getPar(u)!=bob.getPar(v)){
+                    ans++;
+                    alice.unionByRank(u,v);
+                    bob.unionByRank(u,v);
+                }
+            }
+        }
+        for(int it[] : edges){
+            int u=it[1];
+            int v=it[2];
+            if(it[0]==1){
+                if(alice.getPar(u)!=alice.getPar(v)){
+                    ans++;
+                    alice.unionByRank(u,v);
+                }
+            }
+            else if(it[0]==2){
+                  if(bob.getPar(u)!=bob.getPar(v)){
+                    ans++;
+                    bob.unionByRank(u,v);
+                }
+
+            }
+        }
+        
+        for(int i=1;i<=n;i++){
+            if(alice.getPar(i)!=alice.getPar(1))return -1;
+            if(bob.getPar(i)!=bob.getPar(1))return -1;
+        }
+        return edges.length-ans;
+
+    }
+}
