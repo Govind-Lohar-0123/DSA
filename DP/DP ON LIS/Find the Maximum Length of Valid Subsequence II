@@ -1,0 +1,29 @@
+class Solution {
+   
+      
+    int getLis(int nums[],int k){
+        int n=nums.length;
+        int dp[][]=new int[n+1][k];
+        
+        int ans=1;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<k;j++)dp[i][j]=1;
+            for(int j=i-1;j>=0;j--){
+                int mod=(nums[j]+nums[i])%k;
+                dp[i][mod]=Math.max(dp[j][mod]+1,dp[i][mod]);
+                ans=Math.max(ans,dp[i][mod]);
+            }
+        }
+        return ans;
+    }
+    
+
+    
+    public int maximumLength(int[] nums,int k) {
+       
+      return  getLis(nums,k);
+       
+        
+
+    }
+}
