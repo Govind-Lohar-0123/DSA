@@ -1,0 +1,20 @@
+class Solution {
+    public int[] intersect(int[] nums1, int[] nums2) {
+        int n=nums1.length;
+        int m=nums2.length;
+
+        int map[]=new int[1000+1];
+        for(int it : nums2)map[it]++;
+        ArrayList<Integer> ans=new ArrayList<>();
+        for(int it : nums1){
+            if(map[it]>0){
+                ans.add(it);
+                map[it]--;
+            }
+        }
+        // int res[]=ans.stream().mapToInt(i->i).toArray();
+        
+        return res;
+
+    }
+}
