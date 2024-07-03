@@ -13,6 +13,125 @@
  *     }
  * }
  */
+
+
+class BSTIterator {
+
+    TreeNode root;
+    TreeNode head=null;
+    TreeNode tail=null;
+    TreeNode curr=null;
+    TreeNode temp=null;
+    int n=0;
+   
+    void makeLL(TreeNode root){
+        if(root==null)return;
+        n++;
+        makeLL(root.left);
+         if(head==null)head=root;
+        else curr.right=root;
+            // tail=root;
+        curr=root;
+            // tail.left=curr;
+            
+        makeLL(root.right);
+    }
+    public BSTIterator(TreeNode root) {
+        this.root=root;
+        this.makeLL(root);
+    }
+    
+    public int next() {
+        int val= head.val;
+        head=head.right;
+        return val;
+    }
+    public int prev() {
+        int val= tail.val;
+        tail=tail.left;
+        return val;
+    }
+    
+    public boolean hasNext() {
+        if(head==null) return false;
+        return true;
+    }
+    public boolean hasPrev() {
+        if(tail==null) return false;
+        return true;
+    }
+}
+
+/**
+ * Your BSTIterator object will be instantiated and called as such:
+ * BSTIterator obj = new BSTIterator(root);
+ * int param_1 = obj.next();
+ * boolean param_2 = obj.hasNext();
+ */
+class Solution {
+    TreeNode head=null;
+    TreeNode convertLLIntoTree(int n){
+        if(n==0 )return null;
+        TreeNode left=convertLLIntoTree(n/2);
+            TreeNode root=head;
+            root.left=left;
+            head=head.right;
+        root.right=convertLLIntoTree((n-(n/2))-1);
+        return root; 
+    }
+    problem is here 
+    // TreeNode convertLLIntoTree(TreeNode head,int n){
+    //     System.out.print(n+" ");
+    //     if(head!=null)
+    //      System.out.println(head.val+" ");
+    //     else System.out.println(head);
+
+    //     if(n==0 )return null;
+    //     TreeNode left=convertLLIntoTree(head,n/2);
+    //         TreeNode root=head;
+    //         root.left=left;
+    //         head=head.right;
+    //     root.right=convertLLIntoTree(head,(n-(n/2))-1);
+        
+    //     return root; 
+    // }
+    public void recoverTree(TreeNode root) {
+        if(root==null)return ;
+        BSTIterator bst=new BSTIterator(root);
+       
+
+       
+        TreeNode i=bst.head;
+        TreeNode prev=i;
+        i=i.right;
+        TreeNode a=null;
+        TreeNode b=null;
+        int n=0;
+        while(i!=null){
+            if(prev.val>i.val){
+                if(a==null)a=prev;
+                b=i;
+            }
+            n++;
+            i=i.right;
+        }
+        if(a!=null && b!=null){
+            int t=a.val;
+            a.val=b.val;
+            b.val=t;
+        }
+        head=bst.head;
+        head=convertLLIntoTree(bst.n);
+       
+    }
+    void solve(TreeNode root){
+        if(root==null)return ;
+        solve(root.left);
+        System.out.print(root.val);
+        solve(root.right);
+
+    }
+}
 class Solution {
     ArrayList<Integer>ans=new ArrayList<>();
     void solve(TreeNode root,int a,int b,boolean flag){
