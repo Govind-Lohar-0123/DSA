@@ -9,23 +9,43 @@
  * }
  */
 class Solution {
-    public ListNode mergeNodes(ListNode head) {
-        while(head!=null && head.val==0)head=head.next;
-        ListNode curr=head;
-        ListNode ans=new ListNode(0);
-        ans.next=head;
-        ListNode temp=ans;int sum=0;
-        while(curr!=null){
-            sum+=curr.val;
-            if(curr.val==0){
-                temp=temp.next;
-                temp.val=sum;
-                sum=0;
-                while(curr!=null && curr.val==0)curr=curr.next;
-            }
-            else curr=curr.next;
-        }
-        temp.next=null;
-        return ans.next;
+    // public ListNode mergeNodes(ListNode head) {
+    // // while(head!=null && head.val==0)head=head.next;
+    //     ListNode curr=head.next;
+    //     ListNode ans=new ListNode(0);
+    //     ans.next=head;
+    //     ListNode temp=ans;int sum=0;
+    //     while(curr!=null){
+    //         while(curr!=null && curr.val!=0){
+    //             sum+=curr.val;
+    //             curr=curr.next;
+    //         }
+    //         temp=temp.next;
+    //             temp.val=sum;
+    //             sum=0;
+            
+    //         curr=curr.next;
+    //     }
+    //     temp.next=null;
+    //     return ans.next;
     }
+    // public ListNode mergeNodes(ListNode head) {
+    //     // while(head!=null && head.val==0)head=head.next;
+    //     ListNode curr=head.next;
+    //     ListNode ans=new ListNode(0);
+    //     ans.next=head;
+    //     ListNode temp=ans;int sum=0;
+    //     while(curr!=null){
+    //         sum+=curr.val;
+    //         if(curr.val==0){
+    //             temp=temp.next;
+    //             temp.val=sum;
+    //             sum=0;
+    //             // while(curr!=null && curr.val==0)curr=curr.next;
+    //         }
+    //         curr=curr.next;
+    //     }
+    //     temp.next=null;
+    //     return ans.next;
+    // }
 }
