@@ -1,0 +1,40 @@
+class Solution {
+    int k=0;
+    boolean dfs(int u,int p,ArrayList<ArrayList<Integer>> grid,boolean vis[],boolean dfs[],int ans[]){
+        vis[u]=true;
+        dfs[u]=true;
+        for(int v : grid.get(u)){
+            if(vis[v]==false){
+                if(dfs(v,u,grid,vis,dfs,ans)==true)return true;
+            }
+            else if(dfs[v]==true)return true;
+        }
+        
+      
+        ans[k--]=u;
+        dfs[u]=false;
+        return false;
+    }
+    public int[] findOrder(int n, int[][] prerequisites) {
+        k=n-1;
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            grid.add(new ArrayList<>());
+        }
+        int ind[]=new int[n];
+        for(int it [] : prerequisites){
+           
+            int v=it[0];
+            int u=it[1];
+            grid.get(u).add(v);
+           
+        }
+        boolean vis[]=new boolean[n];
+        int ans[]=new int[n];
+        for(int i=0;i<n;i++){
+            if(vis[i]==false)
+                if(dfs(i,-1,grid,vis,new boolean[n],ans)==true)return new int[0];
+        }
+       return ans;
+    }
+}
