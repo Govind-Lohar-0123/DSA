@@ -1,0 +1,54 @@
+class Solution {
+    class Pair
+    {
+        int el,bit;
+        Pair(int e,int b){
+            el=e;bit=b;
+        }
+    }
+    public boolean canSortArray(int[] arr) {
+        int n=arr.length;
+        Pair ans[]=new Pair[n];
+        for(int i=0;i<n;i++){
+            int bit=countBit(arr[i]);
+            ans[i]=new Pair(arr[i],bit);
+        }
+        bubbleSort(ans,n);
+        return isSorted(ans,n);
+        
+    }
+    boolean isSorted(Pair arr[],int n){
+        
+        for(int i=0;i<n-1;i++){
+            if(arr[i].el>arr[i+1].el)return false;
+        }
+        return true;
+    }
+    
+    public void bubbleSort(Pair arr[],int n){
+        
+        for(int i=0;i<n;i++){
+            boolean flag=false;
+            for(int j=0;j<n-1;j++){
+                if(arr[j].bit==arr[j+1].bit && arr[j].el>arr[j+1].el){
+                    int temp=arr[j].el;
+                    arr[j].el=arr[j+1].el;
+                    arr[j+1].el=temp;flag=true;
+                }
+            }
+            if(flag==false)break;
+        }
+    }
+    
+    
+    
+    int countBit(int n){
+        int cnt=0;
+        
+        while(n>0){
+            cnt+=(n&1);
+            n>>=1;
+        }
+        return cnt;
+    }
+}

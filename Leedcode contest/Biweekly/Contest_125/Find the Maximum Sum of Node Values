@@ -1,1 +1,24 @@
 
+class Solution {
+    public long maximumValueSum(int[] nums, int k, int[][] edges) {
+        long ans=0;
+        long cnt=0;
+        long temp=0;
+        long nuksan=Integer.MAX_VALUE;
+        for(int it : nums){
+            ans+=it;
+            if((it^k)>it){
+                temp+=(it^k);
+                cnt++;
+            }
+            else {
+               
+                temp+=it;
+
+            }
+             nuksan=Math.min(nuksan,Math.abs((it-(it^k))));
+        }
+        temp-=(cnt%2!=0)?(nuksan):0;
+        return Math.max(ans,temp); 
+    }
+}

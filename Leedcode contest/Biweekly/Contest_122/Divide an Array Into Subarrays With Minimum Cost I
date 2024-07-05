@@ -1,0 +1,20 @@
+class Solution {
+    int ans=Integer.MAX_VALUE;
+    public int minimumCost(int[] nums) {
+        ans=Integer.MAX_VALUE;
+        return findMin(nums,0,nums.length,3,0);
+    }
+    
+    
+    int findMin(int arr[],int idx,int n,int par,int min){
+        if(par==0){
+            ans=Math.min(ans,min);
+            return ans;
+        }
+        
+        for(int k=idx;k<n;k++){
+            findMin(arr,k+1,n,par-1,arr[idx]+min);
+        }
+        return ans;
+    }
+}
