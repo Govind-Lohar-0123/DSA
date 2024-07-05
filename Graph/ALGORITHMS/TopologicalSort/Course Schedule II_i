@@ -1,0 +1,41 @@
+class Solution {
+    public int[] findOrder(int n, int[][] prerequisites) {
+        Queue<Integer> q=new LinkedList<Integer>();
+        ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            grid.add(new ArrayList<>());
+        }
+        int ind[]=new int[n];
+        for(int it [] : prerequisites){
+           
+            int v=it[0];
+            int u=it[1];
+            grid.get(u).add(v);
+            ind[v]++;
+         }
+ int k=0; int cnt=0;
+        for(int i=0;i<n;i++){
+            if(ind[i]==0){
+                q.add(i);
+            }
+        }
+       
+        int ans[]=new int[n];
+       
+        while(q.size()!=0){
+            int u=q.poll();
+            ans[k++]=u;
+            cnt++;
+            for(int v : grid.get(u)){
+                ind[v]--;
+                if(ind[v]==0)
+                  {  q.add(v);}
+            }
+        }
+
+        if(cnt!=n)return new int[0];
+        return ans;
+        
+
+    }
+}
