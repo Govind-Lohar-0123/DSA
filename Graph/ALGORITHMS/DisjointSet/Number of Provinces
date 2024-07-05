@@ -1,0 +1,54 @@
+class DisjointSet{
+    int par[]=null;
+    int rank[]=null;
+    DisjointSet(int n){
+        par=new int[n];
+        rank=new int[n];
+        for(int i=0;i<n;i++){
+            par[i]=i;
+            rank[i]=0;
+        }
+
+    }
+    public int findUPar(int el){
+        if(par[el]==el)return el;
+        return par[el]=findUPar(par[el]);
+    }
+    public void unionBySize(int u,int v){
+        int up=findUPar(u);
+        int vp=findUPar(v);
+        if(rank[up]==rank[vp])
+        {
+            par[vp]=up;
+            rank[up]++;
+        }
+        else if(rank[up] <  rank[vp])
+            par[up]=vp;
+        else par[vp]=up;
+        }
+}
+
+
+class Solution {
+       DisjointSet ds=null;
+    public int findCircleNum(int[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+     DisjointSet ds=new DisjointSet(grid.length*2);
+    
+    
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+               if(grid[i][j]==1)
+                ds.unionBySize(i,j);
+            }
+        }
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(ds.findUPar(i)==i)cnt++;
+        }
+        return cnt;
+    }
+
+   
+}
