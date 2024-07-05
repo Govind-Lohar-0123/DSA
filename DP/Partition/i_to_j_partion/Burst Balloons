@@ -1,0 +1,51 @@
+class Solution {
+    int dp[][]=null;
+    int solve(int i,int j,List<Integer>arr){
+        // if(i>j)return 0;
+        // if(dp[i][j]!=-1)return dp[i][j];
+        // int ans=0;
+        // for(int k=i;k<=j;k++){
+        //     int temp=arr.get(i-1)*arr.get(k)*arr.get(j+1)+solve(i,k-1,arr)+solve(k+1,j,arr);
+        //     ans=Math.max(ans,temp);
+        // }
+        // return dp[i][j]=ans;
+        // int n=arr.size()-2;
+        // for(i=n;i>=1;i--){
+        //     for(j=i;j<=n;j++){
+        //         int ans=0;
+        //         for(int k=i;k<=j;k++){
+        //             int temp=arr.get(i-1)*arr.get(k)*arr.get(j+1)+dp[i][k-1]+dp[k+1][j];
+        //             ans=Math.max(ans,temp);
+        //         }
+        //          dp[i][j]=ans;
+        //     }
+        // }
+        // return dp[1][n];
+        int n=arr.size()-2;
+        for(i=n;i>=1;i--){
+            for(j=i;j<=n;j++){
+                int ans=0;
+                for(int k=i;k<=j;k++){
+                    int temp=arr.get(i-1)*arr.get(k)*arr.get(j+1)+dp[i][k-1]+dp[k+1][j];
+                    ans=Math.max(ans,temp);
+                }
+                 dp[i][j]=ans;
+            }
+        }
+        return dp[1][n];
+    }
+    public int maxCoins(int[] nums) {
+         dp=new int[300+2][300+2];
+        // for(int i=0;i<302;i++){
+        //     for(int j=0;j<302;j++){
+        //         dp[i][j]=-1;
+        //     }
+        // }
+
+       List<Integer> ans = IntStream.of(nums).boxed().collect(Collectors.toList());
+        ans.add(0,1);
+        ans.add(1);
+      
+        return solve(1,nums.length,ans);
+    }
+}
