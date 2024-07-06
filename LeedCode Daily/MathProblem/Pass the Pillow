@@ -1,0 +1,21 @@
+class Solution {
+    public int passThePillow(int n, int time) {
+        int i=1;
+        // while(true){
+        //     while(time!=0 && i<n){
+        //         i++;time--;
+        //     }
+          
+        //     while(time!=0 && i>1){
+        //         i--;time--;
+        //     }
+        //     System.out.print(time+" "+i);
+        //     if(time==0)return i;
+
+        // }
+       int rem=(time%(n-1));
+       int q=(time/(n-1));
+       if(q%2==0)return 1+rem;
+       return n-rem;
+    }
+}
