@@ -1,0 +1,39 @@
+class Solution {
+    int bit[]=new int[32];
+    public void addBit(int n){
+        for(int i=0;n!=0;i++){
+            bit[i]+=(1 & n);
+            n>>=1;
+        }
+    }
+    public int  removeBit(int n,int len){
+        int and=0;
+        for(int i=0;i<32;i++){
+            bit[i]-=(1 & n);
+            if(bit[i]==len)and+=(1<<i);
+            n>>=1;
+        }
+        return and;
+    }
+    public int minimumDifference(int[] nums, int k) {
+        int i=0,j=0;
+        int and=nums[0];
+        int ans=Integer.MAX_VALUE;
+      
+        while(j<nums.length){
+            and &=nums[j];
+         
+            addBit(nums[j]); 
+            ans=Math.min(ans,Math.abs(k-and));
+            if(and==k)return 0;
+            while(i<=j && k>and){
+                and=removeBit(nums[i++],j-i+1);
+                ans=Math.min(ans,Math.abs(k-and));
+            }
+            
+            j++;
+            
+        }
+        return ans;
+    }   
+}
