@@ -1,0 +1,173 @@
+class SegmentTree{
+    long seg[];
+    long val=(~(long)0);
+    SegmentTree(int n){
+        seg=new long[n*4+2];
+    }
+
+    public void build(int idx,int low,int high,int arr[]){
+        if(low==high){
+            seg[idx]=arr[low];
+            return ;
+        }
+        int mid=(low+high>>1);
+        build(2*idx+1,low,mid,arr);
+        build(2*idx+2,mid+1,high,arr);
+        seg[idx]=seg[2*idx+1] & seg[2*idx+2];
+    }
+    
+    public long getAnd(int idx,int low,int high,int l,int r){
+        //partial overlap
+        //[l,r][low,high],[low,hih][l,r]
+        if(r<low || high<l)return val;
+
+        //compatele overpa
+        if(low>=l && high<=r)return seg[idx];
+
+        int mid=(low+high)>>1;
+        long left=getAnd(2*idx+1,low,mid,l,r);
+        long right=getAnd(2*idx+2,mid+1,high,l,r);
+        return (left & right);
+    }
+
+
+
+}
+class Solution {
+    public int minimumDifference(int[] arr, int k) {
+        SegmentTree sg=new SegmentTree(arr.length);
+        int n=arr.length;
+        sg.build(0,0,n-1,arr);
+        int ans=Integer.MAX_VALUE;
+
+        for(int i=0;i<n;i++){
+            if(arr[i]<=k)ans=Math.min(ans,(k-arr[i]));
+            else{
+                int l=i,r=n-1;
+                while(l<=r){
+                    int mid=(l+r)>>1;
+                    long sub_and=sg.getAnd(0,0,n-1,i,mid);
+                    ans=(int)Math.min(ans,Math.abs(k-sub_and));
+                    if(sub_and<=k)r=mid-1;
+                    else l=mid+1;
+                }
+
+            }
+        }
+        return ans;
+    }
+}
+
+class Node{
+public:
+	int v = (1LL<<31)-1; //We can use more variables depending on what all info we need !
+	// 1. this is identitiyElement - default node value which will not impact answer on taken
+	Node(){}
+	Node(int val){
+		v = val; // 2. Node constructor will change depending on, what we need to initialize
+	}
+	
+	void merge(const Node& l, const Node& r){ // v is each nodes data, while l & r are children
+		v = (l.v & r.v); //3. Merge function (merge logic can change)
+	}
+};
+
+class Update{
+public:
+	int v = 0;
+	// 4. this is identity Transformation - default update value assigned before or after the operation
+	Update(){};
+	Update(int val){
+		v = val; // 5. Update constructor initialization
+	}
+	
+	void combine(const Update& otherUpdate, const int& tl, const int& tr){ //combing the update, to give to chidren in future
+		v += otherUpdate.v; // 6. OtherUpdate is the newest update ['=' or '+=' depends on 'assign/set' vs 'add']
+	}
+	
+	void apply(Node& node, const int& tl, const int& tr) const{
+		node.v += (tr - tl + 1) * v; // 7. applying the update received on the node
+	}	
+};
+
+template <typename node, typename update>
+class SegTree{
+public:
+	int len;
+	vector<node> t;
+	node identityElement;
+	update identityTransformation; 
+	
+	SegTree(){}
+	SegTree(int l){
+		len = l;
+		t.resize(4 * len);
+		identityElement = node();
+		identityTransformation = update();
+	}
+	
+	// Build Segment Tree -- build(a, 1, 0, len-1); 
+	template<typename T>
+	void build(const T& a, int v, int tl, int tr){
+		if(tl == tr){
+			t[v] = a[tl];
+			return;
+		}
+		int tm = (tl + tr)/2;
+		build(a, 2*v, tl, tm);
+		build(a, 2*v+1, tm+1, tr);
+		t[v].merge(t[2*v], t[2*v+1]);
+	}
+	
+	// Query input question is = [l, r] included -- query(1, 0, len-1, l, r)
+	node query(int v, int tl, int tr, int l, int r){
+		if(tl > r || tr < l) return identityElement; // no overlap
+		if(l <= tl && tr <= r) return t[v]; //Full overlap
+		
+		// Partial Overlap
+		// pushDown(v, tl, tr); //we remove the lazy tag before going down, so children have correct info
+		int tm = (tl + tr)/2;
+		node leftAns = query(2*v, tl, tm, l, r);
+		node rightAns = query(2*v+1, tm+1, tr, l, r);
+		node ans;
+		ans.merge(leftAns, rightAns);
+		return ans;
+	}
+	
+	//over-ridden functions
+	template<typename T>
+	void build(const T& a){
+		build(a, 1, 0, len-1);
+	}
+	
+	node query(int l, int r){
+		return query(1, 0, len-1, l, r);
+	}
+};
+
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums, int k) {
+        int minDiff = INT_MAX, n = nums.size();
+
+        SegTree<Node, Update> segTree(n);
+        segTree.build(nums);
+
+        for(int i=0; i<n; i++){
+            if(nums[i] <= k){
+                minDiff = min(minDiff, k - nums[i]);
+            }else{
+                int l = i, r = n-1, ans = 0; // try to achieve maxAnd in range [l, r]
+                while(l <= r){
+                    int mid = (l+r)/2;
+                    int rangeAnd = segTree.query(i, mid).v;
+                    minDiff = min(minDiff, abs(rangeAnd - k));
+                    if(rangeAnd < k) r = mid - 1;
+                    else l = mid + 1;
+                }
+            }
+        }
+
+        return minDiff;
+    }
+};
