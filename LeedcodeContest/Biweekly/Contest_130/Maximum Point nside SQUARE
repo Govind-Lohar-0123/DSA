@@ -1,0 +1,64 @@
+// class Solution {
+//     int isSquare(int [][] p,String s,int mid){
+//         boolean map[]=new boolean[26];
+//         int cnt=0;
+       
+//         for(int i=0;i<s.length();i++){
+//             int x=Math.abs(p[i][0]);
+//             int y=Math.abs(p[i][1]);           // not working
+//             int ch=s.charAt(i)-'a';
+            
+//             if((x<=mid) || (y<=mid)){
+                
+//                 if(map[ch]==true)return 0;
+//                  cnt++;
+//                 map[ch]=true;
+//               }
+//         }
+//             return cnt;
+//     }
+//     public int maxPointsInsideSquare(int[][] points, String s) {
+       
+//         long l=1;
+//         long r=(long)10^9;
+//         int ans=0;
+//         while(l<=r){
+//             int mid=(int)((l+r)>>1);
+//             int isPossible=isSquare(points,s,mid);
+//             ans=Math.max(ans,isPossible);
+//             if(isPossible==0)r=mid-1;
+//             else l=mid+1;
+//         }
+//         return ans;
+//     }
+// }
+class Solution {
+   
+    public int maxPointsInsideSquare(int[][] p, String s) {
+       boolean map[]=new boolean[26];
+       int ans=0;
+       TreeMap<Integer,ArrayList<Character>> tm=new TreeMap<>();
+        
+       for(int i=0;i<p.length;i++){
+            int lvl=Math.max(Math.abs(p[i][0]),Math.abs(p[i][1]));
+            if(tm.containsKey(lvl)==false)
+                tm.put(lvl,new ArrayList<>());
+             tm.get(lvl).add(s.charAt(i));
+        }
+        
+       for(Map.Entry<Integer,ArrayList<Character>> it : tm.entrySet()){
+            ArrayList<Character> arr=it.getValue();
+            for(char ch : arr){
+                
+                if(map[ch-'a']==true)return ans;
+                map[ch-'a']=true;
+            }
+            ans+=arr.size();
+            
+        }
+        return ans;
+
+        
+        
+    }
+}

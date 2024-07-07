@@ -1,0 +1,20 @@
+class Solution {
+    public int[] queryResults(int limit, int[][] q) {
+        HashMap<Integer,Integer> x_map=new HashMap<>();
+        HashMap<Integer,Integer> y_map=new HashMap<>();
+        int ans[]=new int[q.length];
+        for(int i=0;i<q.length;i++){
+            int x=q[i][0];
+            int y=q[i][1];
+            if(x_map.containsKey(x)==true){
+                int x_val=x_map.get(x);
+                y_map.put(x_val,y_map.get(x_val)-1);
+                if(y_map.get(x_val)==0)y_map.remove(x_val);
+            }
+            x_map.put(x,y);
+            y_map.put(y,y_map.getOrDefault(y,0)+1);
+            ans[i]=y_map.size();
+        }
+        return ans;
+    }
+}

@@ -1,0 +1,33 @@
+class Solution {
+    public String getSmallestString(String s, int k) {
+        String ans="";
+        for(int i=0;i<s.length();i++){
+            int ch=s.charAt(i)-'a';
+            int diff1=Math.abs(0-ch);
+            int diff2=Math.abs(26-ch);
+            if(k==0){
+                ans+=s.charAt(i);
+                continue;
+            }
+            if(diff1<=diff2){
+                if(diff1<=k){
+                    k-=diff1;
+                    ans+='a';
+                }
+                else {
+                    ans+=(char)((ch-k)+'a');
+                    k=0;
+                }
+            }
+            else if(diff2<=k){
+                    k-=diff2;
+                    ans+='a';
+            }
+            else {
+                ans+=(char)((ch-k)+'a');
+                k=0;
+            }
+        }
+        return ans;
+    }
+}

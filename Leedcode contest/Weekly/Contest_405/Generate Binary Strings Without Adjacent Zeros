@@ -1,0 +1,16 @@
+class Solution {
+     List<String> ans=new ArrayList<>();
+    void solve(int o,int z,String temp,int n){
+        if(temp.length()==n){
+            ans.add(temp);
+            return ;
+        }
+        if(o!=0)solve(o-1,z,temp+"1",n);
+        if(temp.length()==0 || (z!=0 && temp.charAt(temp.length()-1)=='1'))solve(o,z-1,temp+"0",n);
+        
+    }
+    public List<String> validStrings(int n) {
+        solve(n,n,"",n);
+        return ans;
+    }
+}

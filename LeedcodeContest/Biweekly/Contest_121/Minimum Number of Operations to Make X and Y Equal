@@ -1,0 +1,47 @@
+class Solution {
+    class Pair{
+        int el,dis;
+        Pair(int e,int d){
+            el=e;dis=d;
+        }
+    }
+    public int minimumOperationsToMakeEqual(int x, int y) {
+        if(x<=y)return y-x;
+        PriorityQueue<Pair>pq=new PriorityQueue<>((a,b)->(a.dis-b.dis));
+        pq.add(new Pair(x,0));
+        int dis[]=new int[100000];
+        Arrays.fill(dis,Integer.MAX_VALUE);
+        dis[x]=0;
+        while(pq.size()!=0){
+            Pair it=pq.remove();
+            
+            if(it.el==y)return it.dis;
+            //x+1
+            if(dis[it.el+1]>it.dis+1)
+            {
+                dis[it.el+1]=it.dis+1;
+                pq.add(new Pair(it.el+1,it.dis+1));
+            }
+            //x-1
+            if(it.el-1>=0 && dis[it.el-1]>it.dis+1)
+            {
+                dis[it.el-1]=it.dis+1;
+                pq.add(new Pair(it.el-1,it.dis+1));
+            }
+            //x/5
+            if(it.el%5==0 && dis[it.el/5]>it.dis+1)
+            {
+                dis[it.el/5]=it.dis+1;
+                pq.add(new Pair(it.el/5,it.dis+1));
+            }
+            // x/11
+            if(it.el%11==0 && dis[it.el/11]>it.dis+1)
+            {
+                dis[it.el/11]=it.dis+1;
+                pq.add(new Pair(it.el/11,it.dis+1));
+            }
+        }
+        return 0;
+        
+    }
+}

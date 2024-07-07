@@ -1,0 +1,37 @@
+              OPTIMAL TRIE APROACH
+
+class Node{
+       int count=0; 
+       HashMap<Integer,Node>map=new HashMap<>();
+    Node(){
+        count=0;
+        map=new HashMap<>();
+    }
+}
+
+
+
+
+class Solution {
+    Node root;
+    Solution(){
+        root=new Node();
+    }
+    public int countPrefixSuffixPairs(String[] words) {
+       int ans=0;  
+        Node curr=root;
+      for(String word : words){
+            curr=root;
+        for(int i=0;i<word.length();i++){
+            int hash=(word.charAt(i)-'a')*26 + (word.charAt(word.length()-1-i)-'a');
+            if(curr.map.containsKey(hash)==false)
+                curr.map.put(hash,new Node());
+            curr=curr.map.get(hash);
+            ans+=curr.count;
+        }
+        curr.count++;
+    }
+        return ans;
+        
+    }
+}

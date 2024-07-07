@@ -1,0 +1,97 @@
+class Trie{
+    class Node{
+        boolean eow;
+        int freq;
+        Node child[]=new Node[26];
+    }
+    // ["a","aba","ababa","aa"]
+    Node root1=new Node();
+    Node root2=new Node();
+
+     void removeSuffix(String word){
+        Node curr=root2;
+        for(int i=word.length()-1;i>=0;i--){
+            int ch=word.charAt(i)-'a';
+            
+            curr=curr.child[ch];
+             curr.freq--;
+        }
+        curr.eow=true;
+    }
+    void removePrefix(String word){
+        Node curr=root1;
+        for(int i=0;i<word.length();i++){
+            int ch=word.charAt(i)-'a';
+            
+            curr=curr.child[ch];
+            curr.freq--;
+        }
+        curr.eow=true;
+    }
+    
+    void insertSuffix(String word){
+        Node curr=root2;
+        for(int i=word.length()-1;i>=0;i--){
+            int ch=word.charAt(i)-'a';
+            if(curr.child[ch]==null)
+                curr.child[ch]=new Node();
+            curr=curr.child[ch];
+            curr.freq++;
+        }
+        curr.eow=true;
+    }
+    void insertPrefix(String word){
+        Node curr=root1;
+        for(int i=0;i<word.length();i++){
+            int ch=word.charAt(i)-'a';
+            if(curr.child[ch]==null)
+                curr.child[ch]=new Node();
+            curr=curr.child[ch];
+            curr.freq++;
+        }
+        curr.eow=true;
+    }
+    
+   int hasPrefix(String word){
+       Node curr=root1;
+       
+        for(int i=0;i<word.length();i++){
+            int ch=word.charAt(i)-'a';
+            curr=curr.child[ch];
+           if(curr.freq==1)return 0;
+        }
+       return curr.freq;
+   }
+     int hasSuffix(String word){
+       Node curr=root2;
+       
+        for(int i=word.length()-1;i>=0;i--){
+            int ch=word.charAt(i)-'a';
+            curr=curr.child[ch];
+           if(curr.freq==1)return 0;
+        }
+       return curr.freq;
+   }
+}
+
+
+
+class Solution {
+    public int countPrefixSuffixPairs(String[] words) {
+        Trie tr=new Trie();
+        for(String it : words){
+            tr.insertPrefix(it);
+            tr.insertSuffix(it);
+        }
+        int ans=0;
+        for(String it : words){
+            int p=tr.hasPrefix(it);
+            int s=tr.hasSuffix(it);
+            int min=Math.min(p,s)-1;
+            if(min>=1)ans+=min;
+            tr.removePrefix(it);
+             tr.removeSuffix(it);
+        }
+        return ans;
+    }
+}

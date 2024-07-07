@@ -1,0 +1,16 @@
+class Solution {
+    public int[] findIntersectionValues(int[] nums1, int[] nums2) {
+        int map1[]=new int[100+1];
+        int map2[]=new int[100+1];
+        for(int it : nums1)map1[it]++;
+        for(int it : nums2)map2[it]++;
+        int ans[]=new int[2];
+        for(int i=0;i<=100;i++){
+            if(map1[i]>0  && map2[i]>0){
+                ans[0]+=map1[i];
+                ans[1]+=map2[i];
+            }
+        }
+      return ans;
+    }
+}
