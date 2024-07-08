@@ -1,0 +1,86 @@
+class Node{
+    int cost;
+    Node child[];
+    Node (){
+        child=new Node[26];
+        cost=Integer.MAX_VALUE;
+    }
+}
+class Trie{
+    Node root=new Node();
+    public void insert(String word,int n,int cost){
+        Node curr=root;
+        for(int i=0;i<n;i++){
+            int ch=word.charAt(i)-'a';
+            if(curr.child[ch]==null)
+                curr.child[ch]=new Node();
+            curr=curr.child[ch];
+        }
+        curr.cost=Math.min(curr.cost,cost);
+    }
+    public int get(String word){
+        Node curr=root;
+        int n=word.length();
+        for(int i=0;i<n;i++){
+            int ch=word.charAt(i)-'a';
+            if(curr.child[ch]==null)
+                return -1;
+            curr=curr.child[ch];
+        }
+        return curr.cost;
+    }
+}
+
+
+class Solution {
+    HashMap<String ,Integer>map=new HashMap<>();
+    Trie tr=new Trie();
+    long dp[]=null;
+    long solve(int idx,String t){
+        // if(idx>=t.length())return 0;
+        // long ans=Integer.MAX_VALUE;
+        // String temp="";
+        // if(dp[idx]!=-1)return dp[idx];
+        // for(int k=idx;k<t.length();k++){
+        //     temp+=t.charAt(k);
+        //     int val=tr.get(temp);
+        //     if(val==-1)continue;
+        //     ans=Math.min(ans,val+solve(k+1,t));
+        // }
+     
+        // return dp[idx]=ans;
+        for(int i=t.length()-1;i>=0;i--){
+           
+            long ans=Integer.MAX_VALUE;
+            Node curr=tr.root;
+            for(int k=i;k<t.length();k++){
+                int ch=t.charAt(k)-'a';
+                if(curr.child[ch]==null)
+                   break;
+                curr=curr.child[ch];
+                if(curr.cost!=Integer.MAX_VALUE)
+                    ans=Math.min(ans,dp[k+1]+curr.cost);
+            }
+            dp[i]=ans;
+           
+        }
+        return dp[0];
+
+    }
+    public int minimumCost(String target, String[] words, int[] cost) {
+        // for(int i=0;i<words.length ;i++){
+        //     if(map.containsKey(words[i]) && map.get(words[i])>cost[i])
+        //         map.put(words[i],cost[i]);
+        //     else if(map.containsKey(words[i])==false)map.put(words[i],cost[i]);
+        // }
+         for(int i=0;i<words.length ;i++){
+            tr.insert(words[i],words[i].length(),cost[i]);
+        }
+        
+        dp=new long[target.length()+1];
+        Arrays.fill(dp,0);
+        int ans=(int)solve(0,target);
+        if(ans>=Integer.MAX_VALUE)return -1;
+        return ans;
+    }
+}
