@@ -1,4 +1,30 @@
 class Solution {
+    public int findTheWinner(int n, int k) {
+        LinkedList<Integer> arr=new LinkedList<>();
+        for(int i=0;i<n;i++)arr.add(i+1);
+        ListIterator<Integer> list=arr.listIterator();
+        
+        while(arr.size()>1){
+            int t=k; 
+            while(t!=0){
+                while(list.hasNext() && t!=0){
+                    list.next();
+                    t--;
+                }
+                if(t!=0){
+                    list=arr.listIterator();
+                   
+                }
+            }
+            list.remove();
+        }
+        return arr.get(0);
+
+        
+    }
+}
+
+class Solution {
     int winner( int i,ArrayList<Integer> arr,int k){
         if(arr.size()==1)return arr.get(0)+1;
         int ind=(i+k)%arr.size();
