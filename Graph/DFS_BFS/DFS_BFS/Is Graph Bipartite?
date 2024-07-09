@@ -1,0 +1,89 @@
+
+
+    
+class Solution {
+   
+    boolean bfs(int u,int clr,ArrayList<ArrayList<Integer>> grid,int vis[]){
+        vis[u]=clr;
+        
+       Queue<Integer>q=new LinkedList<Integer>();
+       q.offer(u);
+        while(q.size()!=0){
+             u=q.poll();
+            for(int v : grid.get(u)){
+                if(vis[v]==0){
+                    q.offer(v);
+                    vis[v]=(vis[u]==1)?2:1;
+                }
+                else if(vis[v]==vis[u])return false;
+            }
+            
+        }
+        return true;
+        
+    }
+     public boolean isBipartite(int[][] graph) {
+       
+         ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+         int n=graph.length;
+        for(int i=0;i<=n;i++){
+            grid.add(new ArrayList<>());
+        }
+        int ind[]=new int[n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<graph[i].length;j++){
+                grid.get(i).add(graph[i][j]);
+            }
+        }
+        int vis[]=new int[n];
+       
+        for(int i=0;i<n;i++){
+            if(vis[i]==0){
+                
+                if(bfs(i,1,grid,vis)==false)return false;
+            }
+        } 
+       return true;
+    }
+}
+   
+
+class Solution {
+   
+    boolean dfs(int u,int clr,ArrayList<ArrayList<Integer>> grid,int vis[]){
+        vis[u]=clr;
+        
+        for(int v : grid.get(u)){
+            if(vis[v]==0){
+                if(dfs(v,(clr==1)?2:1,grid,vis)==false)return false;
+            }
+            else if(clr==vis[v])return false;
+        }
+        return true;
+        
+    }
+     public boolean isBipartite(int[][] graph) {
+       
+         ArrayList<ArrayList<Integer>> grid=new ArrayList<>();
+         int n=graph.length;
+        for(int i=0;i<=n;i++){
+            grid.add(new ArrayList<>());
+        }
+        int ind[]=new int[n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<graph[i].length;j++){
+                grid.get(i).add(graph[i][j]);
+            }
+        }
+        int vis[]=new int[n];
+       
+        for(int i=0;i<n;i++){
+            if(vis[i]==0){
+                
+                if(dfs(i,1,grid,vis)==false)return false;
+            }
+        } 
+       return true;
+    }
+}
+   
