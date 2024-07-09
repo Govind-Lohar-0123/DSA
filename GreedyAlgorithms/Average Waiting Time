@@ -1,0 +1,13 @@
+class Solution {
+    public double averageWaitingTime(int[][] customers) {
+        long ans=0;
+        long time=0;
+        for(int it[]  : customers){
+            time+=Math.max(0,it[0]-time);
+            time+=it[1];
+            ans+=(time-it[0]);
+        }
+        double avg=(ans/(double)(customers.length));
+        return avg;
+    }
+}
