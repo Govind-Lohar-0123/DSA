@@ -1,0 +1,79 @@
+class SegmentTree{
+    long seg[];
+    long val=(~(long)0);
+    SegmentTree(int n){
+        seg=new long[n*4+2];
+    }
+
+    public void build(int idx,int low,int high,int arr[]){
+        if(low==high){
+            seg[idx]=arr[low];
+            return ;
+        }
+        int mid=(low+high>>1);
+        build(2*idx+1,low,mid,arr);
+        build(2*idx+2,mid+1,high,arr);
+        seg[idx]=seg[2*idx+1] & seg[2*idx+2];
+    }
+    
+    public long getAnd(int idx,int low,int high,int l,int r){
+        //partial overlap
+        //[l,r][low,high],[low,hih][l,r]
+        if(r<low || high<l)return val;
+
+        //compatele overpa
+        if(low>=l && high<=r)return seg[idx];
+
+        int mid=(low+high)>>1;
+        long left=getAnd(2*idx+1,low,mid,l,r);
+        long right=getAnd(2*idx+2,mid+1,high,l,r);
+        return (left & right);
+    }
+
+
+
+}
+class Solution {
+    public long countSubarrays(int[] arr, int k) {
+        
+    
+        SegmentTree sg=new SegmentTree(arr.length);
+        int n=arr.length;
+        sg.build(0,0,n-1,arr);
+       long ans=0;
+
+        for(int i=0;i<n;i++){
+            if(arr[i]<k)continue;
+            else{
+                //this is for fllor value
+                int l=i,r=n-1;
+                int min=r;
+                while(l<=r){
+                    int mid=(l+r)>>1;
+                    long sub_and=sg.getAnd(0,0,n-1,i,mid);
+                    if(sub_and<k)min=mid;
+                    if(sub_and<=k)r=mid-1;
+                    else l=mid+1;
+                }
+                int left=l;
+
+                  //this is for ceil value
+                l=i;r=min;
+                while(l<=r){
+                    int mid=(l+r)>>1;
+                    long sub_and=sg.getAnd(0,0,n-1,i,mid);
+                    
+                    if(sub_and>=k)l=mid+1;
+                    else r=mid-1;
+                }
+
+                int right=r;
+
+            ans+=(right-left+1);
+
+            }
+        }
+        return ans;
+    }
+}
+
