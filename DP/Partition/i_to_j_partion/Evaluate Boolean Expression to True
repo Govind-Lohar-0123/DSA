@@ -1,0 +1,45 @@
+public class Solution {
+   static int mod=1000000007;
+   static long dp[][][]=null;
+    static long solve(int i,int j,int  isTrue,String exp){
+        if(i>j)return 0;
+        else if(i==j){
+            if(isTrue==1)return (exp.charAt(i)=='T')?1:0;
+            else return (exp.charAt(j)=='F')?1:0;
+        }
+        if(dp[i][j][isTrue]!=-1)return dp[i][j][isTrue];
+        long ways=0;
+        for(int k=i+1;k<=j-1;k+=2){
+            long x1=solve(i,k-1,1,exp);
+            long x2=solve(i,k-1,0,exp);
+            long x3=solve(k+1,j,1,exp);
+            long x4=solve(k+1,j,0,exp);
+           
+            if(exp.charAt(k)=='|'){
+               if(isTrue==1) ways=(ways+(x1*x3)+(x1 * x4)+(x2 * x3))%mod;
+               else ways=(ways+(x2 * x4))%mod;
+            }
+            else if(exp.charAt(k)=='&'){
+                if(isTrue==1)ways=(ways+(x1*x3))%mod;
+                else ways=(ways+(x1 * x4) + (x2 * x3) + (x2 * x4))%mod;
+            }
+            else {
+                if(isTrue==1)ways=(ways+(x1*x4)+(x2 * x3))%mod;
+                else ways=(ways+(x1 * x3) + (x2 * x4))%mod;
+            }
+
+            
+        }
+        return dp[i][j][isTrue]=ways%mod;
+    }
+    public static int evaluateExp(String exp) {
+        dp=new long[exp.length()][exp.length()][2];
+        for(int i=0;i<exp.length();i++){
+            for(int j=0;j<exp.length();j++){
+                dp[i][j][0]=-1;
+                dp[i][j][1]=-1;
+            }
+        }
+        return (int)solve(0,exp.length()-1,1,exp);
+    }
+}
