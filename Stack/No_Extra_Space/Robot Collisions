@@ -1,0 +1,45 @@
+class Solution {
+    class Pair{
+        int idx,pos;
+        Pair(int i,int p){
+            idx=i;pos=p;
+        }
+    }
+    public List<Integer> survivedRobotsHealths(int[] p, int[] h, String d) {
+        Stack<Integer> st=new Stack<>();
+        LinkedHashMap<Integer,Integer>map=new LinkedHashMap<>();
+           int n=p.length;
+        ArrayList<Pair>arr=new ArrayList<>();
+        for(int i=0;i<n;i++){
+            arr.add(new Pair(i,p[i]));
+        }
+        Collections.sort(arr,(a,b)->(a.pos-b.pos));
+     
+        for(int i=0;i<n;){
+            int idx=arr.get(i).idx;
+            while(st.size()!=0 && d.charAt(idx)=='L' && d.charAt(st.peek())=='R' && h[idx]>h[st.peek()]){
+                    st.pop();
+                    h[idx]--;
+            }
+
+            if(st.size()!=0 && d.charAt(idx)=='L' && d.charAt(st.peek())=='R' && h[idx]==h[st.peek()])
+                {st.pop();i++;continue;}
+            
+            if(st.size()!=0 && d.charAt(idx)=='L' && d.charAt(st.peek())=='R' && h[idx]<h[st.peek()])
+                {i++;h[st.peek()]--;continue;}
+            
+            st.push(idx);
+            i++;
+        }
+      
+
+    List<Integer>ans=new ArrayList<>();
+    
+   
+    while(st.size()!=0)map.put(st.pop(),0);
+    for(int i=0;i<arr.size();i++){
+        if(map.containsKey(i))ans.add(h[i]);
+    }
+    return ans;
+    }
+}
