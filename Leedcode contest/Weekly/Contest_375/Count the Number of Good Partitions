@@ -1,0 +1,27 @@
+class Solution {
+    int mod=(1000000007);
+    long pow(int x,int n){
+        if(n==0)return 1;
+        long temp=pow(x,n/2);
+        temp=(temp*temp)%mod;
+        if(n%2==0)return temp;
+        return (x*temp)%mod;
+
+    }
+    public int numberOfGoodPartitions(int[] nums) {
+        int j=0;
+        int part=0;
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<nums.length;i++)map.put(nums[i],i);
+        for(int i=0;i<nums.length;i++){
+            j=Math.max(j,map.get(nums[i]));
+            if(i==j)part++;
+        }
+        return (int)pow(2,part-1);
+    }
+}
+
+
+            
+        
+  
