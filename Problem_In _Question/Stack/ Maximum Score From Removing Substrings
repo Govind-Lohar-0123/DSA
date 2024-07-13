@@ -1,0 +1,45 @@
+class Solution {
+   
+   
+    String removeSubstring(String a,String sb){
+       StringBuilder s=new StringBuilder(sb);
+        int n=s.length();
+        int i=-1;
+         
+       
+        for(int j=0;j<n;j++){
+            if(i!=-1 && s.charAt(i)==a.charAt(0) && s.charAt(j)==a.charAt(1)) i--;
+            else {
+                i++;
+                s.setCharAt(i,s.charAt(j));
+            }
+        }
+        String temp=s.substring(0,i+1);
+        // while(i>=0)temp=s.charAt(i--)+temp;     //why TLE with while loop 
+        // s.delete(i+1,s.length());
+        return temp;
+       
+        
+    }
+    
+    public int maximumGain(String s, int x, int y) {
+        int n = s.length();
+        int score = 0;
+        StringBuilder sb=new StringBuilder(s);
+        String maxStr = (x > y) ? "ab" : "ba";
+        String minStr = (x < y) ? "ab" : "ba";
+
+        // First Pass
+        String tempFirst = removeSubstring(maxStr,s );
+        int removedPairsCount = (n - tempFirst.length()) / 2;
+        score += removedPairsCount * Math.max(x, y);
+
+        // Second Pass
+        String tempSecond = removeSubstring(minStr,tempFirst);
+        removedPairsCount = (tempFirst.length() - tempSecond.length()) / 2;
+        score += removedPairsCount * Math.min(x, y);
+
+        return score;
+       
+    }
+}
