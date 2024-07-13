@@ -1,0 +1,39 @@
+class Solution {
+    
+    public int networkDelayTime(int[][] times, int n, int k) {
+        PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->(a[1]-b[1]));
+        ArrayList<ArrayList<ArrayList<Integer>>>graph=new ArrayList<>();
+        for(int i=0;i<n+1;i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int it[] : times){
+            graph.get(it[0]).add(new ArrayList<>(Arrays.asList(it[1],it[2])));
+        }
+        pq.offer(new int[]{k,0});
+        int dis[]=new int[n+1];
+        boolean vis[]=new boolean[n+1];
+        Arrays.fill(dis,200);
+        dis[k]=0;
+        while(pq.isEmpty()==false){
+            int u[]=pq.remove();
+            if(vis[u[0]])continue;
+            vis[u[0]]=true;
+          
+            for(ArrayList<Integer> v : graph.get(u[0])){
+                if(vis[v.get(0)]==false && dis[v.get(0)]>dis[u[0]]+v.get(1)){
+                    dis[v.get(0)]=dis[u[0]]+v.get(1);
+                    pq.add(new int[]{v.get(0),dis[v.get(0)]});
+                }
+            }
+        }
+        int max=0;
+       
+        for(int i=1;i<n+1;i++){
+            int it=dis[i];
+            if(it>=200)return -1;
+            max=Math.max(max,it);
+        }
+        return max;
+        
+    }
+}
