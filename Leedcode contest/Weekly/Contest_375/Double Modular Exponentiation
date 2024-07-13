@@ -1,1 +1,20 @@
-
+class Solution {
+    long pow(long x,int n,int m){
+        if(n==0 )return 1;
+        long temp=pow(x,n/2,m);
+        temp=(temp*temp)%m;
+        if(n%2==0)return temp%m;
+        return (temp*x)%m;
+    }
+    public List<Integer> getGoodIndices(int[][] variables, int target) {
+        List<Integer> ans=new ArrayList<>();
+        for(int i=0;i<variables.length;i++){
+            int it[]=variables[i];
+            long x=pow(it[0],it[1],10)%10;
+            long y=pow(x,it[2],it[3])%it[3];
+             
+            if(y==target)ans.add(i);
+        }
+        return ans;
+    }
+}
