@@ -1,0 +1,10 @@
+class Solution {
+    public int countTestedDevices(int[] batteryPercentages) {
+        int ans=0;
+        for(int it :batteryPercentages ){
+            int val=Math.max(0,it-ans);
+            if(val!=0)ans++;
+        }
+        return ans;
+    }
+}
