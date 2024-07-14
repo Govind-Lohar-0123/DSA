@@ -1,0 +1,53 @@
+class Solution {
+    int i=0;
+    String getStr(String a){
+        String temp="";
+        while(Character.isLowerCase(a.charAt(i)))temp=a.charAt(i--)+temp;
+        temp=a.charAt(i)+temp;
+        return temp;
+    }
+    int getNum(String a){
+        String nums="";
+        while(Character.isDigit(a.charAt(i)))
+           nums=a.charAt(i--)+nums;
+        int rem=0;
+        int j=0;
+        // while(j<nums.length())rem=(rem*10)+nums.charAt(j++)-'0';
+       if(nums=="")return 0;
+       return Integer.parseInt(nums);
+    }
+    public String countOfAtoms(String s) {
+        int n=s.length();
+        Stack<Integer> st=new Stack<>();
+       HashMap<String,Long>map=new HashMap<>();
+        long sum=1;
+        i=n-1;
+        while(i>=0){
+            int nums=Math.max(1,getNum(s));
+            char ch=s.charAt(i);
+           
+            if(ch==')'){
+                st.push(nums);
+                sum*=nums;
+            }
+            else if(Character.isLetter(ch)){
+                String temp=getStr(s);
+                map.put(temp,map.getOrDefault(temp,(long)0)+(nums*sum));
+            }
+               
+            else sum/=st.pop();
+            i--;
+        }
+
+        String ans="";
+        ArrayList<Map.Entry<String,Long>>sort=new ArrayList<>(map.entrySet());
+        Collections.sort(sort,(i1, i2) -> i1.getKey().compareTo(i2.getKey()));
+
+        for(Map.Entry<String,Long> it : sort)
+          { if(it.getValue()==1)ans+=it.getKey();
+            else ans+=it.getKey()+""+it.getValue();
+          }  
+       
+       return ans;
+    }
+}
