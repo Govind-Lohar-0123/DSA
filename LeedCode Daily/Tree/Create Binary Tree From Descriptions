@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+
+     HashMap<Integer,HashMap<Integer,Integer>> map=new HashMap<>();
+
+        TreeNode solve(int root,int ind){
+            if(map.containsKey(root)==false)return null;
+            if(map.get(root).containsKey(ind)==false)return null;
+        
+            TreeNode  newNode=new TreeNode(map.get(root).get(ind));
+            newNode.left=solve(newNode.val,1);
+            newNode.right=solve(newNode.val,0);
+            return newNode;
+     }
+    public TreeNode createBinaryTree(int[][] arr) {
+       HashMap<Integer,Integer> temp=new HashMap<>();
+       // build th first map 
+        int val=0;
+       for(int it[] : arr){
+            int root=it[0];
+            int child=it[1];
+            int pos=it[2];
+            if(map.containsKey(root)==false)map.put(root,new HashMap<>());
+            map.get(root).put(pos,child);
+            temp.put(child,0);
+        }
+       for(int it[] : arr){
+         
+            int p=it[0];
+            if(temp.containsKey(p)==false)val=it[0];
+            
+        }
+
+
+        //Construct the tree by th map
+      
+        TreeNode root=new TreeNode(val);
+         root.left=solve(val,1);
+         root.right=solve(val,0);
+         return root;
+
+    }
+}
