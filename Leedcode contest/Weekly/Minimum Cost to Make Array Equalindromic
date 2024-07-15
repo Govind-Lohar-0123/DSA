@@ -1,0 +1,32 @@
+class Solution {
+    boolean isPaliNum(int n){
+        int temp=n;
+        int revNum=0;
+        while(n!=0){
+            revNum=(revNum*10)+n%10;
+            n/=10;
+        }
+        return (revNum==temp);
+    }
+    long getCost(int i,int nums[]){
+        long currCost=0;
+         for(int it : nums)
+            currCost+=Math.abs(it-i);
+        return currCost;
+    }
+    public long minimumCost(int[] nums) {
+        
+        Arrays.sort(nums);
+       
+        int mid=(nums[nums.length/2]);
+        long cost=Integer.MAX_VALUE;
+
+        int i=mid;
+        int j=mid;
+        while(!isPaliNum(i))i--;
+        while(!isPaliNum(j))j++;
+        return Math.min(getCost(i,nums),getCost(j,nums));
+            
+       
+    }
+}
