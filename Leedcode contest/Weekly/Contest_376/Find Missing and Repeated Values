@@ -1,0 +1,39 @@
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid) {
+        int xor=0;
+        int n=grid.length;
+        n*=n;
+        for(int i=1;i<=n;i++)xor^=i;
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[i].length;j++){
+              
+                xor^=grid[i][j];
+            }
+        }
+        int temp=xor;
+        xor=(xor ) & (xor-1);
+        xor=(~xor) & temp;
+ 
+        int b1=0;
+        int b2=0;
+        for(int i=1;i<=n;i++){
+            if((xor&i)!=0)b1^=i;
+            else b2^=i;
+        }
+        
+         for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[i].length;j++){
+                if((xor & grid[i][j])!=0)b1^=grid[i][j];
+                else b2^=grid[i][j];
+            }
+        }
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[i].length;j++){
+                if(grid[i][j]==b1)return new int[]{b1,b2};
+                
+            }
+        }
+        return new int[]{b2,b1};
+       
+    }
+}
