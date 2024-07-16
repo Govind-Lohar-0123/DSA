@@ -1,5 +1,58 @@
 1]find lca and do using path
 2]withour lca but with the path
+
+class Solution {
+    TreeNode par[]=null;
+    class Pair{
+        String ans;
+        TreeNode node;
+        Pair(TreeNode t,String s){
+             node=t;
+             ans=s;
+        }
+    }
+    TreeNode findSource(TreeNode root,int s){
+        if(root==null)return null;
+        if(root.val==s)return root;
+        TreeNode left=findSource(root.left,s);
+        TreeNode right=findSource(root.right,s);
+        if(root.left!=null)par[root.left.val]=root;
+        if(root.right!=null)par[root.right.val]=root;
+
+        if(left==null)return right;
+        else return left;
+    }
+    public String getDirections(TreeNode node, int startValue, int destValue) {
+        par=new TreeNode[100000+1];
+        boolean vis[]=new boolean[100000+1];
+        Arrays.fill(par,null);
+        TreeNode src=findSource(node,startValue);
+        Queue<Pair> q=new LinkedList<>();
+        q.add(new Pair(src,""));
+        vis[src.val]=true;
+        while(q.size()!=0){
+            Pair root=q.remove();
+            // if(vis[root.node.val]==true)continue;
+            // vis[root.node.val]=true;
+            if(root.node.val==destValue)return root.ans;
+            if(par[root.node.val]!=null && vis[par[root.node.val].val]==false){
+                q.add(new Pair(par[root.node.val],root.ans+"U"));
+                vis[root.node.val]=true;
+            }
+            if(root.node.left!=null && vis[root.node.left.val]==false){
+                q.add(new Pair(root.node.left,root.ans+"L"));
+                vis[root.node.left.val]=true;
+            }
+            if(root.node.right!=null && vis[root.node.right.val]==false){
+                q.add(new Pair(root.node.right,root.ans+"R"));
+                 vis[root.node.right.val]=true;
+            }
+            
+        }
+        return "";
+
+    }
+}
 class Solution {
 
     private TreeNode lowestCommonAncestor(TreeNode root, int src, int dest) {
