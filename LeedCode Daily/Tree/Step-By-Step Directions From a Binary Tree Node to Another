@@ -1,4 +1,75 @@
+1]find lca and do using path
+2]withour lca but with the path
+class Solution {
 
+    private TreeNode lowestCommonAncestor(TreeNode root, int src, int dest) {
+        if (root == null) {
+            return null;
+        }
+        
+        if (root.val == src || root.val == dest) {
+            return root;
+        }
+        
+        TreeNode left = lowestCommonAncestor(root.left, src, dest);
+        TreeNode right = lowestCommonAncestor(root.right, src, dest);
+        
+        if (left != null && right != null) {
+            return root;
+        }
+        
+        return left != null ? left : right;
+    }
+
+    private boolean findPath(TreeNode node, int target, StringBuilder path) {
+        if (node == null) {
+            return false;
+        }
+
+        if (node.val == target) {
+            return true;
+        }
+
+        path.append('L');
+        if (findPath(node.left, target, path)) {
+            return true;
+        }
+        path.deleteCharAt(path.length() - 1);
+
+        path.append('R');
+        if (findPath(node.right, target, path)) {
+            return true;
+        }
+        path.deleteCharAt(path.length() - 1);
+
+        return false;
+    }
+
+    public String getDirections(TreeNode root, int startValue, int destValue) {
+        // TreeNode LCA = lowestCommonAncestor(root, startValue, destValue);
+
+        StringBuilder lcaToStart = new StringBuilder();
+        StringBuilder lcaToDest = new StringBuilder();
+        
+      
+        findPath(root, startValue, lcaToStart);
+        findPath(root, destValue, lcaToDest);
+        int n=lcaToStart.length();
+        int m=lcaToDest.length();
+        int i=0;
+      while(i<n && i<m && lcaToStart.charAt(i)==lcaToDest.charAt(i))i++;
+        StringBuilder result = new StringBuilder();
+        
+        for (int j=i ;j< lcaToStart.length(); j++) {
+            result.append('U');
+        }
+       
+        
+        result.append(lcaToDest,i,m);
+    
+        return result.toString();
+    }
+}
 class Solution {
 
     private TreeNode lowestCommonAncestor(TreeNode root, int src, int dest) {
