@@ -1,0 +1,72 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    ArrayList<TreeNode> ans=new ArrayList<>();
+    TreeNode LCA(TreeNode root,int s,int d){
+        if(root==null)return null;
+    
+        if(root.val==s || root.val==d)return root;
+        TreeNode left=LCA(root.left,s,d);
+        TreeNode right=LCA(root.right,s,d);
+        if(left!=null && right!=null)return root;
+        else if(left==null)return right;
+        else return left;
+    }
+   ArrayList<TreeNode> getPath(TreeNode root,int s,int d,ArrayList<TreeNode>temp){
+        if(root==null)return ans;
+        temp.add(root);
+        if(root.val==s || root.val==d){
+            ans=new ArrayList<>(temp);
+            return ans;
+        }
+        getPath(root.left,s,d,temp);
+        getPath(root.right,s,d,temp);
+        temp.remove(temp.size()-1);
+        return ans;
+     }
+     String solve(TreeNode lcs,ArrayList<TreeNode> left,ArrayList<TreeNode> right){
+       
+        String ans="";
+        for(int i=0;i<left.size();i++)
+            ans+="U";
+        for(int i=0;i<right.size();i++){
+            TreeNode temp=(i==0)?lcs : right.get(i-1);
+            if(temp.left==right.get(i))ans+="L";
+            else ans+="R";
+        }
+        return ans;
+        
+     }
+    public String getDirections(TreeNode root, int s, int d) {
+        TreeNode lca=LCA(root,s,d);
+        ArrayList<TreeNode> left=getPath(lca.left,s,d,new ArrayList<>());
+        ans=new ArrayList<>();
+        ArrayList<TreeNode> right=getPath(lca.right,s,d,new ArrayList<>());       
+        int n=left.size();
+        int m=right.size();
+      
+        if(n!=0){
+            if(left.get(n-1).val==s)return solve(lca,left,right);
+            else return solve(lca,right,left);
+        }
+        else if(m!=0){
+            if(right.get(m-1).val==s)return solve(lca,right,left);
+            else return solve(lca,left,right);
+        }
+    
+        return "";
+    }
+}
