@@ -1,4 +1,74 @@
+1]LCA with 
+2]LCA withour with path
+3]BFS using HASHMA BY MAKING GRAPH
+4]
 
+
+class Solution {
+    class Pair{
+        int dis;
+        TreeNode node;
+        Pair(TreeNode t,int dis){
+            this.dis=dis;
+            node=t;
+        }
+    }
+    HashMap<TreeNode,TreeNode>map=new HashMap<>();
+    int ans=0;
+    void addParent(TreeNode root){
+        if(root==null)return;
+        addParent(root.left);
+        addParent(root.right);
+        if(root.left!=null)map.put(root.left,root);
+        if(root.right!=null)map.put(root.right,root);
+    }
+    void solve(TreeNode root,int dis){
+        if(root==null)return ;
+        if(root.left==null && root.right==null)
+            ans+=getGoodLeafNodes(root,dis);
+        solve(root.left, dis);
+        solve(root.right,dis);
+    }
+    int getGoodLeafNodes(TreeNode node,int d){
+        if(node==null)return 0;
+        int cnt=0;
+        HashMap<TreeNode,Integer> vis=new HashMap<>();
+        
+        Queue<Pair> q=new LinkedList<>();
+        q.add(new Pair(node,0));
+        while(q.size()!=0){
+            Pair it=q.remove();
+            TreeNode root=it.node;
+            int dis=it.dis;
+            if(root!=node && root.left==null && root.right==null && map.containsKey(root) && dis<=d){
+                cnt++;
+                // System.out.print(root.val+" "+node.val);
+            }
+            //parent node push
+            if(map.containsKey(root) && vis.containsKey(map.get(root))==false){
+                q.add(new Pair(map.get(root),dis+1));
+                vis.put(map.get(root),0);
+            }
+            if(root.left!=null && vis.containsKey(root.left)==false){
+                  q.add(new Pair(root.left,dis+1));
+                vis.put(root.left,0);
+            }
+            if(root.right!=null && vis.containsKey(root.right)==false){
+                  q.add(new Pair(root.right,dis+1));
+                vis.put(root.right,0);
+            }
+        }
+        map.remove(node);
+        return cnt;
+        
+    }
+    public int countPairs(TreeNode root, int distance) {
+        addParent(root);
+        ans=0;
+        solve(root,distance);
+        return ans;
+    }
+}
 class Solution {
     boolean findPath(TreeNode root,ArrayList<TreeNode>temp,TreeNode x){
         if(root==null)return false;
