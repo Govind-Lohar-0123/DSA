@@ -1,0 +1,52 @@
+
+class Solution {
+    boolean findPath(TreeNode root,ArrayList<TreeNode>temp,TreeNode x){
+        if(root==null)return false;
+        temp.add(root);
+        if(root==x)return true;
+        boolean left=findPath(root.left,temp,x);
+        if(left)return true;
+        boolean right=findPath(root.right,temp,x);
+        if(right)return true;
+        
+        temp.remove(temp.size()-1);
+        return false;
+
+    }
+    ArrayList<TreeNode> addAllLeafNode(TreeNode root,ArrayList<TreeNode>leafNodes){
+        if(root==null)return leafNodes;
+        addAllLeafNode(root.left,leafNodes);
+        addAllLeafNode(root.right,leafNodes);
+        if(root.left==null && root.right==null)leafNodes.add(root);
+        return leafNodes;
+    }
+    int getGoodNodes(ArrayList<TreeNode> path1,ArrayList<TreeNode> path2){
+        int i=0;
+        int n=path1.size();
+        int m=path2.size();
+      
+        while(i<n && i<m && path1.get(i)==path2.get(i))i++;
+
+        return (n-i)+(m-i);
+            
+        
+    }
+    public int countPairs(TreeNode root, int distance) {
+        ArrayList<TreeNode> leafNodes=addAllLeafNode(root,new ArrayList<>());
+        int ans=0;
+        int n=leafNodes.size();
+        for(int i=0;i<n;i++){
+              ArrayList<TreeNode> path1=new ArrayList<>();
+             findPath(root,path1,leafNodes.get(i));
+            for(int j=i+1;j<n;j++){
+              
+                ArrayList<TreeNode> path2=new ArrayList<>();
+                findPath(root,path2,leafNodes.get(j));
+                int temp=getGoodNodes(path1,path2);
+                if(temp<=distance)ans++;
+            }
+        }
+        return ans;
+
+    }
+}
