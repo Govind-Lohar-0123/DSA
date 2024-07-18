@@ -1,0 +1,88 @@
+
+class Solution {
+    long pre[]=null;
+    int binarySeach(int arr[],long k){
+        int l=1;
+        int r=arr.length;
+        int ans=0;
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(isPossible(mid,arr,k)){
+                l=mid+1;
+                ans=mid;
+            }
+            else r=mid-1;
+        }
+        return ans;
+
+    }
+        private boolean isPossible(int len, int[] nums, long k) {
+        if (len == 0)
+            return false;
+        int n=nums.length;
+        int i = 0;
+        int j = len - 1;
+
+        while (j < n) {
+            long targetIdx = (i+j)>>1;
+            long target = nums[(int) targetIdx];
+
+            long operationsLeft;
+            long operationsRight;
+        
+            if (targetIdx == 0) {
+                operationsLeft = 0;
+            } else {
+                operationsLeft = Math.abs(((targetIdx - i) * target)
+                        - (pre[(int) targetIdx - 1] - (i > 0 ? pre[i - 1] : 0)));
+            }
+
+            operationsRight = Math.abs(((j - targetIdx) * target) - (pre[j] - pre[(int) targetIdx]));
+
+            if (operationsRight + operationsLeft <= k) {
+                return true;
+            }
+
+            i++;
+            j++;
+        }
+
+        return false;
+    }
+
+
+    // boolean isPossible(int len,int arr[],long dis){
+    //     int i=0,j=len-1;
+    //     while(arr.length>j){
+            
+          
+    //             int target_idx=(j-i+1)/2;
+    //             long oper_left=0;
+    //             long oper_right=0;
+    //             if(target_idx!=0)
+    //             {
+    //             oper_left=Math.abs(((target_idx-i)*arr[target_idx])-(pre[target_idx-1]-((i>0)?pre[i-1]:0)));}
+
+    //             oper_right=Math.abs(((j-target_idx)*arr[target_idx])-(pre[j]-pre[target_idx]));
+    //             if((oper_left+oper_right)<=dis)return true;
+               
+    //         i++;  
+    //         j++;
+    //     }
+    //     return false;
+    // }
+
+    public int maxFrequencyScore(int[] nums, long k) {
+        //step1 Calculating
+        Arrays.sort(nums);
+        int n=nums.length;
+        pre=new long[n];
+        pre[0]=nums[0];
+        for(int i=1;i<n;i++)pre[i]=pre[i-1]+nums[i];
+
+        //step2 binary search
+        return binarySeach(nums,k);
+        
+
+    }
+}
