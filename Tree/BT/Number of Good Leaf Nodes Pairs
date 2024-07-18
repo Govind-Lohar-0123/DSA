@@ -1,7 +1,7 @@
 1]LCA with 
 2]LCA withour with path
 3]BFS using HASHMA BY MAKING GRAPH
-4]
+
 
 
 class Solution {
@@ -36,27 +36,35 @@ class Solution {
         
         Queue<Pair> q=new LinkedList<>();
         q.add(new Pair(node,0));
-        while(q.size()!=0){
-            Pair it=q.remove();
-            TreeNode root=it.node;
-            int dis=it.dis;
-            if(root!=node && root.left==null && root.right==null && map.containsKey(root) && dis<=d){
-                cnt++;
-                // System.out.print(root.val+" "+node.val);
+        int lvl=0;
+        while(q.size()!=0 && lvl<=d){
+           
+            int size=q.size();
+
+            while(size--!=0){
+
+                    Pair it=q.remove();
+                    TreeNode root=it.node;
+                    int dis=it.dis;
+                if(root!=node && root.left==null && root.right==null && map.containsKey(root) && dis<=d){
+                    cnt++;
+                    // System.out.print(root.val+" "+node.val);
+                }
+                //parent node push
+                if(map.containsKey(root) && vis.containsKey(map.get(root))==false && dis+1<=d){
+                    q.add(new Pair(map.get(root),dis+1));
+                    vis.put(map.get(root),0);
+                }
+                if(root.left!=null && vis.containsKey(root.left)==false && dis+1<=d){
+                    q.add(new Pair(root.left,dis+1));
+                    vis.put(root.left,0);
+                }
+                if(root.right!=null && vis.containsKey(root.right)==false && dis+1<=d){
+                    q.add(new Pair(root.right,dis+1));
+                    vis.put(root.right,0);
+                }
             }
-            //parent node push
-            if(map.containsKey(root) && vis.containsKey(map.get(root))==false){
-                q.add(new Pair(map.get(root),dis+1));
-                vis.put(map.get(root),0);
-            }
-            if(root.left!=null && vis.containsKey(root.left)==false){
-                  q.add(new Pair(root.left,dis+1));
-                vis.put(root.left,0);
-            }
-            if(root.right!=null && vis.containsKey(root.right)==false){
-                  q.add(new Pair(root.right,dis+1));
-                vis.put(root.right,0);
-            }
+            lvl++;
         }
         map.remove(node);
         return cnt;
