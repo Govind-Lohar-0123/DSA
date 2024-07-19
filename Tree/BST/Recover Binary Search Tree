@@ -1,3 +1,41 @@
+1]Simple Store In array in inorder and change val while travesing
+2]while traversing inorder maintail pre a b and perorm 
+3]using bst iterator
+
+
+class Solution {
+    // TreeNode prev=null;
+    TreeNode a=null;
+    TreeNode b=null;
+    TreeNode prev=null;
+   
+    
+    void solve(TreeNode root){
+        if(root==null)return ;
+        solve(root.left);
+            if(prev!=null && prev.val>root.val){
+                if(a==null)a=prev;
+                b=root;
+            }
+        prev=root;
+        solve(root.right);
+    }
+   
+    
+    public void recoverTree(TreeNode root) {
+       
+        solve(root);
+        if(a!=null && b!=null){
+          
+            int val=a.val;
+            a.val=b.val;
+            b.val=val;
+            
+        }
+        
+
+    }
+}
 /**
  * Definition for a binary tree node.
  * public class TreeNode {
