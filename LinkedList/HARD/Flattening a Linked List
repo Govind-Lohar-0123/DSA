@@ -53,3 +53,39 @@ ass GfG {
        return solve(root);
     }
 }
+class GfG {
+    Node solve(Node head){
+        // if(head==null || head.next==null)return head;
+        // Node temp=solve(head.next);
+        // return merge(head,temp);
+        if(head==null)return null;
+        Node prev=head;
+        Node curr=head.next;
+        while(curr!=null){
+             prev=merge(prev,curr);
+             curr=curr.next;
+        }
+        return prev;
+        
+        
+    }
+    Node merge(Node a,Node b){
+        Node res=null;
+        if(a==null)return b;
+        if(b==null)return a;
+        if(a.data<=b.data)
+        {   res=a;
+            res.bottom=merge(a.bottom,b);
+        }
+       else 
+        {   res=b;
+            res.bottom=merge(a,b.bottom);
+        }
+        return res;
+    }
+    Node flatten(Node root) {
+       return solve(root);
+    }
+}
+    
+        
