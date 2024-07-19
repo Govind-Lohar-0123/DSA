@@ -4,6 +4,30 @@ Approaches:-
 3]heap sort by add node in heap
 4]while loop n*n*n
 5]recursio n*n*m   o(N)
+6]with heap 
+
+class GfG {
+    Node flatten(Node root) {
+        PriorityQueue<Node> pq=new PriorityQueue<>((a,b)->(a.data-b.data));
+        Node curr=root;
+        while(curr!=null){
+            Node next=curr.next;
+            curr.next=null;
+            pq.add(curr);
+            curr=next;
+        }
+      
+        Node ans=new Node(0);
+        Node temp=ans;
+        while(pq.size()!=0){
+            Node node=pq.remove();
+           
+            if(node.bottom!=null)pq.add(node.bottom);
+            temp.bottom=node;
+            temp=temp.bottom;
+        }
+    return ans.bottom;
+    
 
 ass GfG {
     Node solve(Node head){
