@@ -1,3 +1,34 @@
+1]brute 
+2]Optimal
+class Solution {
+  
+    public long minimumOperations(int[] nums, int[] t) {
+        long ans=0;
+     
+        int j=0;
+        int n=nums.length;
+        while(j<n){
+            while(j<n && nums[j]==t[j])j++;
+            int prev=0;
+            int curr=0;
+            if(j<n){
+                int i=j;
+                int dir=(t[j]-nums[j]<0)?0:1;
+                int max=0;
+              
+                while(j<n && (((t[j]-nums[j])<0 && dir==0) || ((t[j]-nums[j])>0 && dir==1))){
+                    curr=Math.abs(nums[j]-t[j]);
+                    if(prev<curr)ans+=(curr-prev);
+                    j++;
+                    prev=curr;
+                }
+            }
+        }
+        return ans;
+        
+    }
+}
+
 class Solution {
     int findMinIdx(,int i,int j){
         int minIdx=i;
