@@ -1,0 +1,45 @@
+class Solution {
+    int findMinIdx(,int i,int j){
+        int minIdx=i;
+        long minVal=Integer.MAX_VALUE;
+        while(i<=j){
+          
+            if(dis<minVal){
+                minVal=dis;
+                minIdx=i;
+            }
+            i++;
+        }
+        return minIdx;
+    }
+    long getCount(int arr[],int t[],int i,int j,long sum ){
+        if(i>j)return 0;
+        int idx=findMinIdx(arr,t,i,j);
+        long dis=Math.abs(t[idx]-arr[idx])-sum;
+        return getCount(arr,t,i,idx-1,sum+dis)+getCount(arr,t,idx+1,j,sum+dis)+dis;
+
+    }
+    public long minimumOperations(int[] nums, int[] t) {
+        long ans=0;
+     
+        int j=0;
+        int n=nums.length;
+        while(j<n){
+            while(j<n && nums[j]==t[j])j++;
+            if(j<n){
+                int i=j;
+                int dir=(t[j]-nums[j]<0)?0:1;
+                int max=0;
+                while(j<n && (((t[j]-nums[j])<0 && dir==0) || ((t[j]-nums[j])>0 && dir==1))){
+                   
+                    j++;
+                }
+
+                ans+=getCount(nums,t,i,j-1,0);
+
+            }
+        }
+        return ans;
+        
+    }
+}
