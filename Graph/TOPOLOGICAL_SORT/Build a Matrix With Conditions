@@ -1,0 +1,64 @@
+class Solution {
+    ArrayList<ArrayList<Integer>> build(int edges[][],int k){
+        int n=edges.length;
+         ArrayList<ArrayList<Integer>> graph=new ArrayList<>();
+         for(int i=0;i<=k;i++){
+            graph.add(new ArrayList<>());
+         }
+         for(int it[] : edges){
+            graph.get(it[0]).add(it[1]);
+         }
+         return graph;
+    }
+    
+    boolean dfs(int u,int par,ArrayList<Integer>temp,ArrayList<ArrayList<Integer>>graph,boolean vis[],boolean temp_vis[]){
+        temp_vis[u]=true;
+        vis[u]=true;
+        for(int v : graph.get(u)){
+            if(vis[v]==false){
+                if(dfs(v,u,temp,graph,vis,temp_vis))return true;
+            }
+            else if(temp_vis[v]==true){
+                System.out.print(u);
+                return true;
+
+            }
+        }
+        temp_vis[u]=false;
+        temp.add(u);
+        return false;
+    }
+    public int[][] buildMatrix(int k, int[][] row, int[][] col) {
+         ArrayList<ArrayList<Integer>>  rowGraph=build(row,k);
+        ArrayList<ArrayList<Integer>>  colGraph=build(col,k);
+         ArrayList<Integer> rowTopo=new ArrayList<>();
+         ArrayList<Integer> colTopo=new ArrayList<>();
+         boolean vis1[]=new boolean[k+1];
+         boolean vis2[]=new boolean[k+1];
+         for(int i=1;i<=k;i++){
+            if(vis1[i]==false)if(dfs(i,-1,rowTopo,rowGraph,vis1,new boolean[k+1]))return new int[0][0];
+            if(vis2[i]==false)if(dfs(i,-1,colTopo,colGraph,vis2,new boolean[k+1]))return new int[0][0];
+         }
+        
+        
+        HashMap<Integer,Integer>map=new HashMap<>();
+        int n=colTopo.size();
+        int ans[][]=new int[k][k];
+        for(int i=0;i<n;i++){
+           
+            map.put(colTopo.get(n-i-1),i);
+        }
+
+
+        for(int i=0;i<n;i++){
+            int rowIdx=i;
+           
+            int colIdx=map.get(rowTopo.get(n-i-1));
+            
+            ans[rowIdx][colIdx]=rowTopo.get(n-i-1);
+        }
+        return ans;
+        
+
+    }
+}
