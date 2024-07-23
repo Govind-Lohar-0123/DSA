@@ -1,0 +1,37 @@
+class Solution {
+   
+    
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if(grid[0][0]==1)return -1;
+        PriorityQueue<int[]>pq=new PriorityQueue<>((a,b)->a[2]-b[2]);
+        int dis[][]=new int[100+1][100+1];
+        boolean vis[][]=new boolean[100+1][100+1];
+        for(int i=0;i<=100;i++)Arrays.fill(dis[i],Integer.MAX_VALUE);
+        pq.add(new int[]{0,0,1});
+        dis[0][0]=1;
+        int n=grid.length;
+        int m=grid[0].length;
+        while(pq.size()!=0){
+            int it[]=pq.remove();
+            int r=it[0];
+            int c=it[1];
+            int wt=it[2];
+            if(r==n-1 && c==m-1)return wt;
+            if(vis[r][c])continue;
+            vis[r][c]=true;
+            int nr[]={1,-1,0,0,1,-1,1,-1};
+            int nc[]={0,0,-1,1,-1,-1,1,1};
+            for(int i=0;i<8;i++){
+                int row=nr[i]+r;
+                int col=nc[i]+c;
+                if(row<n && row>=0 && col<m && col>=0 && grid[row][col]==0 && dis[row][col]>wt+1)
+                {
+                    dis[row][col]=wt+1;
+                    pq.add(new int[]{row,col,wt+1});
+                }
+            }
+
+        }
+        return -1;
+    }
+}
