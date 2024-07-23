@@ -1,38 +1,29 @@
------------BRUTE FORCE------------tle
 class Solution {
-    int min=0,max=0,temp_ans=0;
-    void getCount(int arr[],int k,int mid){
-        min=0;max=0;temp_ans=0;
-        for(int i=0;i<arr.length/2;i++){
-            int a=arr[i];
-            int b=arr[arr.length-i-1];
-            int minVal=Math.min(a,b);
-            int maxVal=Math.max(a,b);
-            int dis=Math.abs(a-b);
-            if(dis>mid){
-                max++;
-               if(((minVal-0) <=mid )|| (Math.abs(k-maxVal)<=mid))temp_ans++;
-               else temp_ans+=2;
-            }
-            else if(dis<mid){
-                min++;
-                if((k-minVal) >=mid || (maxVal-0)>=mid)temp_ans++;
-               else temp_ans+=2;
-            }
-
-        }
-    }
     public int minChanges(int[] nums, int k) {
+        // store curr diff in map ad max diff
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int maxDiff[]=new int[k+1];
         int n=nums.length;
-        int l=0,r=100000;
-        int ans=Integer.MAX_VALUE;
-        while(l<=r){
-            int mid=(l+r)>>1;
-            getCount(nums,k,mid);
-            if(min==max)return Math.min(ans,temp_ans);
-            else if(min>max)r=mid-1;
-            else l=mid+1;
-            ans=Math.min(ans,temp_ans);
+        for(int i=0;i<n/2;i++){
+            int diff=Math.abs(nums[i]-nums[n-i-1]);
+            map.put(diff,map.getOrDefault(diff,0)+1);
+            //max
+            int min=Math.min(nums[i],nums[n-i-1]);
+            int max=Math.max(nums[i],nums[n-i-1]);
+             diff=Math.max((k-min),(max-0));
+            maxDiff[diff]++;
+        }
+
+        for(int i=k-1;i>=0;i--){
+            maxDiff[i]=maxDiff[i+1]+maxDiff[i];
+        }
+        int ans=n;
+        for(Map.Entry<Integer,Integer> it : map.entrySet()){
+            int diff=it.getKey();
+            int pair=it.getValue();
+            int totalPair=maxDiff[diff];
+            int cnt=(totalPair-pair)+((n/2)-totalPair)*2;
+            ans=Math.min(ans,cnt);
         }
         return ans;
     }
