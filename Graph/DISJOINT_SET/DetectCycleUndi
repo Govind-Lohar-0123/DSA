@@ -1,0 +1,54 @@
+class DisjointSet{
+    int [] par,rank;
+    int components;
+    DisjointSet(int n){
+        components=n;
+        par=new int[n+1];
+        rank=new int[n+1];
+        for(int i=0;i<n;i++){
+            par[i]=i;
+            rank[i]=1;
+        }
+    }
+    public int getPar(int u){
+        if(par[u]==u)return u;
+        return par[u]=getPar(par[u]);
+    }
+    public void unionByRank(int u,int v){
+        int up=getPar(u);
+        int vp=getPar(v);
+        if(up==vp)return ;
+        if(rank[up]==rank[vp]){
+            par[vp]=up;
+            rank[up]++;
+        }
+        else if(rank[up]>rank[vp])par[vp]=up;
+        else par[up]=vp;
+        components--;
+    }
+}
+
+class Solution
+{
+    
+    public int detectCycle(int V, ArrayList<ArrayList<Integer>> adj)
+    {   int n=adj.size();
+        DisjointSet ds=new DisjointSet(n);
+        for(int u=0;u<n;u++){
+            for(int v : adj.get(u)){
+                if(u<v){
+                    int up=ds.getPar(u);
+                    int vp=ds.getPar(v);
+                    if(up==vp)return 1;
+                    ds.unionByRank(u,v);
+                }
+            }
+        }
+        return 0;
+    }
+}
+
+
+
+
+

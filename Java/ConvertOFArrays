@@ -1,0 +1,16 @@
+// -------------int to Integer[]---------
+int arr[]={1,2,3,4};
+    Integer[] what = Arrays.stream( arr ).boxed().toArray( Integer[]::new );
+    System.out.print(Arrays.toString(what));
+
+-----------ArrayList to Array-------------------
+   List<Integer> al = new ArrayList<Integer>();
+        al.add(10);
+        al.add(20);
+        al.add(30);
+        al.add(40);
+ 
+        Object[] objects = al.toArray();
+          Integer[] objects = al.toArray();
+ 
+    System.out.print(Arrays.toString(objects));

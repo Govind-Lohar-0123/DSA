@@ -1,0 +1,15 @@
+-----------------Iteratore Value for Each-----------------
+  List<User> list = Arrays.asList(u2, u1, u4, u3);
+  stream.forEach(System.out::println);
+ list.forEach(user -> System.out.println(user)); 
+ 
+---------------2d Array or Object Sort---------------
+        List<User> list = Arrays.asList(u2, u1, u4, u3); 
+        System.out.println("Before Sort:"); 
+        list.forEach(user -> System.out.println(user)); 
+  
+        Collections.sort(list, 
+                         Comparator.comparingDouble(User::getSalary)); 
+        System.out.println("\nAfterSort:"); 
+        list.forEach(user -> System.out.println(user)); 
+---------Map sort by value -------------------
