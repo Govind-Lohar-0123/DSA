@@ -1,0 +1,31 @@
+class Solution {
+    void insertionSort(int arr[]){
+        for(int i=0;i<arr.length;i++){
+            int j=i-1;
+            while(j>=0 && arr[j]>arr[j+1]){
+                int temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+                j--;
+            }
+        }
+    }
+    1]Best nlogn
+    2]avg nlog
+    3]wordt n^2
+    public int[] ShellSort(int[] nums) {
+        int gap=nums.length;
+        while(gap!=1){
+            gap=(gap)/2;
+            for(int i=0;i<nums.length-gap;i++){
+                if(nums[i]>nums[i+gap]){
+                    int tmp=nums[i];
+                    nums[i]=nums[i+gap];
+                    nums[i+gap]=tmp;
+                }
+            }
+        }
+        insertionSort(nums);
+        return nums;
+    }
+}

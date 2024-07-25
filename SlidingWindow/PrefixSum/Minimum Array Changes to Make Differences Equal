@@ -1,0 +1,30 @@
+class Solution {
+    public int minChanges(int[] nums, int k) {
+        // store curr diff in map ad max diff
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int maxDiff[]=new int[k+1];
+        int n=nums.length;
+        for(int i=0;i<n/2;i++){
+            int diff=Math.abs(nums[i]-nums[n-i-1]);
+            map.put(diff,map.getOrDefault(diff,0)+1);
+            //max
+            int min=Math.min(nums[i],nums[n-i-1]);
+            int max=Math.max(nums[i],nums[n-i-1]);
+             diff=Math.max((k-min),(max-0));
+            maxDiff[diff]++;
+        }
+
+        for(int i=k-1;i>=0;i--){
+            maxDiff[i]=maxDiff[i+1]+maxDiff[i];
+        }
+        int ans=n;
+        for(Map.Entry<Integer,Integer> it : map.entrySet()){
+            int diff=it.getKey();
+            int pair=it.getValue();
+            int totalPair=maxDiff[diff];
+            int cnt=(totalPair-pair)+((n/2)-totalPair)*2;
+            ans=Math.min(ans,cnt);
+        }
+        return ans;
+    }
+}
