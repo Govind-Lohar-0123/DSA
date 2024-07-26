@@ -1,0 +1,36 @@
+class Solution {
+    public int findTheCity(int n, int[][] edges, int thresh) {
+        int dis[][]=new int[n][n];
+
+       for(int i=0;i<n;i++){
+            Arrays.fill(dis[i],100000);
+            dis[i][i]=0;
+       }
+       for(int it[] : edges){
+            dis[it[0]][it[1]]=it[2];
+            dis[it[1]][it[0]]=it[2];
+       }
+       for(int via=0;via<n;via++){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    dis[i][j]=Math.min(dis[i][j],dis[i][via]+dis[via][j]);
+                }
+            }
+       }
+        int ans=0;
+        int cities=Integer.MAX_VALUE;
+       for(int i=0;i<n;i++){
+            int temp=0;
+            for(int j=0;j<n;j++){
+                if(dis[i][j]<=thresh)temp++;
+            }
+            if(temp<cities){
+                cities=temp;
+                ans=i;
+            }
+            else if(cities==temp)ans=i;
+            
+       }
+       return ans;
+    }
+}
