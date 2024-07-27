@@ -1,0 +1,38 @@
+class Solution {
+    public long minimumCost(String s, String t, char[] org, char[] change, int[] cost) {
+        //ake The Matrixx
+        long mod=(long)(10e12);
+        long dis[][]=new long[26][26];
+        for(int i=0;i<26;i++){
+            Arrays.fill(dis[i],mod);
+            dis[i][i]=0;
+        }
+        int n=org.length;
+        for(int i=0;i<n;i++){
+            int u=org[i]-'a';
+            int v=change[i]-'a';
+            int wt=cost[i];
+            dis[u][v]=Math.min(wt,dis[u][v]);
+        }
+
+        for(int vai=0;vai<26;vai++){
+            for(int i=0;i<26;i++){
+                for(int j=0;j<26;j++){
+                    dis[i][j]=Math.min(dis[i][j],dis[i][vai]+dis[vai][j]);
+                }
+            }
+        }
+    long ans=0;
+
+    
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)==t.charAt(i))continue;
+            long d=dis[s.charAt(i)-'a'][t.charAt(i)-'a'];
+            if(d<mod){
+                ans+=(d);
+            }
+            else return -1;
+        }
+        return ans;
+    }
+}
