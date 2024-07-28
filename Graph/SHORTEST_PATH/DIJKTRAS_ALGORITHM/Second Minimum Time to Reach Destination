@@ -1,0 +1,53 @@
+class Solution {
+    class Pair{
+        int dis, u;
+        Pair(int u,int d){
+            this.u=u;
+            this.dis=d;
+        }
+    }
+    public int secondMinimum(int n, int[][] edges, int time, int change) {
+        PriorityQueue<Pair>pq=new PriorityQueue<>((a,b)->(a.dis-b.dis));
+        ArrayList<ArrayList<Integer>>grid=new ArrayList<>();
+        for(int i=0;i<n+1;i++)grid.add(new ArrayList<>());
+        for(int it[] : edges){
+            grid.get(it[0]).add(it[1]);
+            grid.get(it[1]).add(it[0]);
+        }
+        int dis1[]=new int[n+1];
+        int dis2[]=new int[n+1];
+        Arrays.fill(dis1,Integer.MAX_VALUE);
+        Arrays.fill(dis2,Integer.MAX_VALUE);
+        dis1[1]=0;
+        pq.add(new Pair(1,0));
+        boolean vis[]=new boolean[n+1];
+        while(pq.size()!=0){
+            Pair p=pq.remove();
+         
+            if(vis[p.u])continue;
+            // if(dis1[p.u]!=Integer.MAX_VALUE && dis2[p.u]!=Integer.MAX_VALUE) # find Which case
+            //     vis[p.u]=true; 
+            int dis=p.dis;
+            int currDis=((dis/change)%2==0)?dis:(dis+(change)-(dis%change));
+           
+            currDis+=time;
+            for(int v : grid.get(p.u)){
+                if(vis[v]==false){
+                   
+                    if(dis1[v]>currDis){
+                        // dis2[v]=dis1[v];
+                        dis1[v]=currDis;
+                        pq.add(new Pair(v,dis1[v]));
+                    }
+                    else if(dis1[v]!=currDis && dis2[v]>currDis)
+                    {   dis2[v]=currDis;
+                        pq.add(new Pair(v,dis2[v]));
+                    }
+                }
+            }
+
+        }
+        return Math.max(dis1[n],dis2[n]);
+        
+    }
+}
