@@ -1,5 +1,12 @@
 1]with stack
 2]without stack
+3]left cout of b and right cout of a both add for each i and take minimum except curr index
+[a,b,a,b,b,a,a]
+idx->0 b->0 ,a->3 =>3
+idx->1 b->0 ,a->3 =>3
+idx->2 b->1 , a->2 =>3
+for all i take minim from them
+
 #include <bits/stdc++.h>
 class Solution {
 public:
