@@ -1,0 +1,123 @@
+1]with dp
+2]bottom up
+3]memaiz 
+
+see very importat these approach
+
+
+
+
+
+
+
+class Solution {
+public:
+    int dp[1001];
+    // int solve(int idx,int w,int h,int sw,vector<vector<int>>& books){
+    //     // if(idx>=books.size())return h;
+    //     // if(dp[idx][w]!=-1)return dp[idx][w];
+    //     // int ans=INT_MAX;
+    //     // int remHeight=max(0,books[idx][1]-h);
+    //     // int remWidth=w-books[idx][0];
+    //     // if(remWidth>=0)
+    //     //     ans=solve(idx+1,remWidth,max(h,books[idx][1]),sw,books);
+    //     // return dp[idx][w]=min(ans,h+solve(idx+1,sw-books[idx][0],books[idx][1],sw,books));
+
+    //     int n=books.size();
+    //     for(int i=n;i>=0;i--){
+    //         h=0;
+    //         for(int j=w;j>=0;j--){
+    //             if(i>=n) dp[i][j]=h;
+    //             else {
+    //                 int ans=INT_MAX;
+    //                 int remWidth=j-books[i][0];
+    //                 if(remWidth>=0)
+    //                 {    ans=dp[i+1][remWidth];
+    //                       h=max(h,books[i][1]);
+    //                 }
+    //                 dp[i][j]=min(ans,h+dp[i+1][sw-books[i][0]]);
+    //                 h=books[i][1];
+    //             }
+    //         }
+    //     }
+    //     return dp[0][w];
+
+    // }
+    int solve(int i,int sw,vector<vector<int>>& books){
+        // if(i>=books.size())return 0;
+        // if(dp[i]!=-1)return dp[i];
+        // int ans=INT_MAX;
+        // int width=0,maxH=0;
+        int n=books.size();
+        // for(int j=i;j<n;j++){
+        //     width+=books[j][0];
+        //     if(width>sw)break;
+        //     maxH=max(maxH,books[j][1]);
+        //     ans=min(solve(j+1,sw,books)+maxH,ans);
+        // }
+        // return dp[i]=ans;
+
+        for(int i=n-1;i>=0;i--){
+           
+            int ans=INT_MAX;
+            int width=0,maxH=0;
+            
+            for(int j=i;j<n;j++){
+                width+=books[j][0];
+                if(width>sw)break;
+                maxH=max(maxH,books[j][1]);
+                ans=min(dp[j+1]+maxH,ans);
+            }
+            dp[i]=ans;
+        }
+      return dp[0];
+       
+    }
+    int minHeightShelves(vector<vector<int>>& books, int sw) {
+        memset(dp,0,sizeof(dp));
+        // return solve(0,sw,0,sw,books);
+        return solve(0,sw,books);
+    }
+};
+
+
+
+
+class Solution {
+public:
+    int dp[1001][1001];
+    int solve(int idx,int w,int h,int sw,vector<vector<int>>& books){
+        // if(idx>=books.size())return h;
+        // if(dp[idx][w]!=-1)return dp[idx][w];
+        // int ans=INT_MAX;
+        // int remHeight=max(0,books[idx][1]-h);
+        // int remWidth=w-books[idx][0];
+        // if(remWidth>=0)
+        //     ans=solve(idx+1,remWidth,max(h,books[idx][1]),sw,books);
+        // return dp[idx][w]=min(ans,h+solve(idx+1,sw-books[idx][0],books[idx][1],sw,books));
+
+        int n=books.size();
+        for(int i=n;i>=0;i--){
+            h=0;
+            for(int j=w;j>=0;j--){
+                if(i>=n) dp[i][j]=h;
+                else {
+                    int ans=INT_MAX;
+                    int remWidth=j-books[i][0];
+                    if(remWidth>=0)
+                    {    ans=dp[i+1][remWidth];
+                          h=max(h,books[i][1]);
+                    }
+                    dp[i][j]=min(ans,h+dp[i+1][sw-books[i][0]]);
+                    h=books[i][1];
+                }
+            }
+        }
+        return dp[0][w];
+
+    }
+    int minHeightShelves(vector<vector<int>>& books, int sw) {
+        memset(dp,0,sizeof(dp));
+        return solve(0,sw,0,sw,books);
+    }
+};
