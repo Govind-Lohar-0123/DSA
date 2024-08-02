@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<long long> ans;
+    vector<long> solve(int node,vector<vector<int>>& child, int par,  vector<int>& cost){
+        vector<long> temp,temp2;
+        for(auto c:child[node]){
+            if(c!=par){
+                temp = solve(c, child, node, cost);
+                for(auto x:temp){
+                    temp2.push_back(x);
+                }
+            }
+        }
+        temp2.push_back(cost[node]);
+        sort(temp2.begin(), temp2.end());
+        if(temp2.size()<3){
+            //if enough nodes  are not present in currents subtree
+            ans[node] = 1;
+            return temp2;
+        }
+        int n = temp2.size();
+        long z = 0;
+        //case 1 : 3 largset
+        long op1 = (long)temp2[n - 1] * (long)temp2[n - 2] * (long)temp2[n - 3];
+        //case 2 : Largset and 2 smallest
+        long op2 = (long)temp2[n - 1] * (long)temp2[0] * (long)temp2[1];
+        ans[node] = max(z, max(op1,op2));  // if negative then make it 0
+        if(temp2.size()<=5){
+            return temp2;
+        }
+        else{
+            return {temp2[n - 1], temp2[n - 2], temp2[n - 3], temp2[0], temp2[1]};
+        }
+    }
+    vector<long long> placedCoins(vector<vector<int>>& edges, vector<int>& cost) {
+        int n = cost.size();
+        vector<vector<int>> child(n);
+        for (auto e:edges){
+            child[e[0]].push_back(e[1]);
+            child[e[1]].push_back(e[0]);
+        }
+        ans.resize(n);
+        solve(0, child, -1, cost);
+        return ans; 
+    }
+};
