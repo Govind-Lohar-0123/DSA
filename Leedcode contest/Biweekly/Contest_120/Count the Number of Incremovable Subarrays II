@@ -1,0 +1,29 @@
+1]Binary Search With i j 
+
+class Solution {
+    int upper_bound(int x,int l,int arr[]){
+        int r=arr.length-1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            if(arr[mid]<=x)l=mid+1;
+            else r=mid-1;
+        }
+        return l;
+    }
+    public long incremovableSubarrayCount(int[] arr) {
+        int i=0;
+        int n=arr.length;
+        int j=n-1;
+        while(i<n-1 && arr[i]<arr[i+1])i++;
+        while(j>0 && arr[j-1]<arr[j])j--;
+        if(i==n-1 || j==0)return (n*(n+1))/2;
+        long ans=(n-j);
+        while(i!=-1){
+            int idx=upper_bound(arr[i],j,arr);
+            ans+=(n-idx)+1;
+            i--;
+        }
+        return ans+1;
+
+    }
+}
