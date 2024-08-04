@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int solve(vector<int> &colors,int size){
+         int i=0,j=1;
+        int clr=colors[0];
+        int n=colors.size();
+        
+        int ans=0;
+        while(j<n && i<n){
+            if(clr==colors[j]){
+                if(j<i)break;
+                i=j;
+            }
+            int s=(j<i)?((j+1)+(n-i)):(j-i+1);
+            if(s==size){
+                ans++;
+                i++;
+            }
+            clr=colors[j];
+            j=(j+1)%n;
+        }
+        return ans;
+    
+    }
+    vector<int> numberOfAlternatingGroups(vector<int>& colors, vector<vector<int>>& queries) {
+        vector<int>ans;
+        
+       for(vector<int> it : queries){
+            int type=it[0];
+            if(type==1)ans.push_back(solve(colors,it[1]));
+            else colors[it[1]]=it[2];
+       }
+       return ans;
+    }
+};
