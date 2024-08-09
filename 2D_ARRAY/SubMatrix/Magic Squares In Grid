@@ -1,0 +1,59 @@
+class Solution {
+public:
+    bool isMagicSquare(int r1,int r2,int c1,int c2,vector<vector<int>>& grid){
+        int sum=-1;
+        bitset<10>bit;
+        for(int i=r1;i<=r2;i++){
+            int temp=0;
+            for(int j=c1;j<=c2;j++){
+                if(grid[i][j]>9 || grid[i][j]==0)return false;
+                if(bit.test(grid[i][j]))return false;
+                bit.set(grid[i][j]);
+                temp+=grid[i][j];
+            }
+            if(sum==-1 || sum==temp)sum=temp;
+            else return false;
+        }
+        for(int j=c1;j<=c2;j++){
+            int temp=0;
+            for(int i=r1;i<=r2;i++){
+                temp+=grid[i][j];
+            }
+            if(sum!=temp)return false;
+            
+        }
+        int i=r1,j=c1;
+        int temp=0;
+        while(i<=r2){
+            temp+=grid[i][j];
+            i++;j++;
+        }
+        if(temp!=sum)return false;
+        i=r1,j=c2;
+        temp=0;
+        while(i<=r2){
+            temp+=grid[i][j];
+            i++;j--;
+        }
+        if(temp!=sum)return false;
+        return true;
+        
+        
+    }
+    int numMagicSquaresInside(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        int ans=0;
+        int r1=0,r2=2;
+        while(r1<=n-3){
+            int c1=0,c2=2;
+            while(c1<=m-3){
+                ans+=(isMagicSquare(r1,r2,c1,c2,grid))?1 : 0;
+                c1++;c2++;
+            }
+            r1++;r2++;
+        }
+        return ans;
+
+    }
+};
