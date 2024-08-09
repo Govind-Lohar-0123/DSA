@@ -1,0 +1,24 @@
+class Solution {
+public:
+    
+
+    vector<vector<int>> spiralMatrixIII(int n, int m, int rStart, int cStart) {
+        vector<vector<int>>dir={{0,1},{1,0},{0,-1},{-1,0}};
+        vector<vector<int>>ans;
+        int step=0;
+        ans.push_back({rStart,cStart});
+        int d=0;
+        while(ans.size()<n*m){
+            if(d==0 || d==2)step++;
+
+            for(int count=0;count<step;count++){
+                rStart+=dir[d][0];
+                cStart+=dir[d][1];
+                if(rStart>=0 && rStart<n && cStart>=0 && cStart<m)
+                    ans.push_back({rStart,cStart});
+            }
+            d=(d+1)%4;
+        }
+        return ans;
+    }
+};
