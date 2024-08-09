@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int winningPlayerCount(int n, vector<vector<int>>& pick) {
+        unordered_map<int,int>map1;// palyer
+        
+       
+        int ans=0;
+        for(vector<int> it : pick){
+            if(map1.find(it[0])!=map1.end())continue;
+            int cnt=0;
+            for(int i=0;i<pick.size();i++){
+                if(it[0]==pick[i][0] && pick[i][1]==it[1])cnt++;
+            }
+            if(cnt>=it[0]+1){
+                ans++;
+                map1[it[0]]=it[1];
+            }
+           
+            
+        }
+        return ans;
+
+
+    }
+};
