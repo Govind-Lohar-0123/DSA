@@ -1,0 +1,76 @@
+class Solution {
+public:
+    
+    void dfs(int row,int col,vector<vector<int>> & grid,vector<vector<bool>> & vis,int n,int m){
+        vis[row][col]=true;
+   
+      
+        int nr[]={-1,1,0,0};
+        int nc[]={0,0,1,-1};
+        
+        for(int i=0;i<4;i++){
+            int r=nr[i]+row;
+            int c=nc[i]+col;
+            if(r>=0 && c>=0 && r<n && c<m && grid[r][c]==1 && vis[r][c]==false){
+                dfs(r,c,grid,vis,n,m);
+            }
+        }
+    }
+
+    // int countIsland(vector<vector<int>>& grid){
+    //      int n=grid.size();
+    //      int m=grid[0].size();
+    //      int comp=0;
+    //      vector<vector<bool>>vis(n,vector<bool>(m,0));
+    //       for(int i=0;i<n;i++){
+    //         for(int j=0;j<m;j++){
+    //             if(grid[i][j]==1 && vis[i][j]==false){
+    //                 comp++;
+    //                 dfs(i,j,grid,vis,n,m);
+    //             }
+    //         }
+    //     }
+    //     return comp;
+    // }
+    int minDays(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        // int comp=countIsland(grid);
+        int comp=0;
+       
+         vector<vector<bool>>vis(n,vector<bool>(m,0));
+          for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1 && vis[i][j]==false){
+                    comp++;
+                    dfs(i,j,grid,vis,n,m);
+                }
+            }
+        }
+        if(comp>1 || comp==0)return 0;
+       
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                   grid[i][j]=0;
+                     int comp=0;
+                        // vector<vector<bool>>vis(n,vector<bool>(m,0));
+                        for(vector<bool> &it : vis)fill(it.begin(),it.end(),0);
+                        for(int k=0;k<n;k++){
+                            for(int l=0;l<m;l++){
+                                if(grid[k][l]==1 && vis[k][l]==false){
+                                    comp++;
+                                    dfs(k,l,grid,vis,n,m);
+                                }
+                            }
+                        }
+                    if(comp>1 || comp==0)return 1;
+                    grid[i][j]=1;
+                }
+            }
+        }
+       
+        return 2;
+    }
+};
