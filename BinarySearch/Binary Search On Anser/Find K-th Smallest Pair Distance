@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int smallestDistancePair(vector<int>& nums, int k) {
+        int n=nums.size();
+        sort(begin(nums),end(nums));
+        int len=(nums[n-1]-nums[0])+1;
+        int map[len];
+        fill_n(map,len,0);
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int diff=nums[j]-nums[i];
+                map[diff]++;
+            }
+        }
+        for(int i=1;i<len;i++)map[i]+=map[i-1];
+
+        auto idx=lower_bound(map,map+len,k);
+        int ind=(idx-map);
+        if(idx!=map+len)return ind;
+        else return -1;
+        // int idx=-1;
+        // while(k!=0){
+        //     idx++;
+        //     k-=map[idx];
+        //     k=max(k,0);
+            
+        // }
+        // return idx;
+
+    }
+};
