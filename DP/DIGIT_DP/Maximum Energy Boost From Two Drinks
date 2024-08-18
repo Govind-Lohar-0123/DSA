@@ -1,0 +1,18 @@
+class Solution {
+public:
+    long long maxEnergyBoost(vector<int>& a, vector<int>& b) {
+        int n=a.size();
+        vector<vector<long long>>dp(2,vector<long long>(n+1,0));
+        for(int i=1;i<=n;i++){
+            // take a
+            dp[0][i]=dp[0][i-1]+a[i-1];
+            // take b
+            dp[1][i]=dp[1][i-1]+b[i-1];
+
+            // not take a
+            dp[0][i]=max(dp[0][i],dp[1][i-1]);
+            dp[1][i]=max(dp[1][i],dp[0][i-1]);
+        }
+        return max(dp[0][n],dp[1][n]);
+    }
+};
