@@ -1,0 +1,101 @@
+class Solution {
+public:
+    bool isDivisibleBy7(string s){
+        int n=s.length();
+        long sum=0;
+        reverse(s.begin(),s.end());
+        for(int i=0;i<n;i+=3){
+            string t =s.substr(i,3);
+            reverse(t.begin(),t.end());
+            int num=stoi(t);
+            if(i%2==0)sum+=num;
+            else sum-=num;
+        }
+        return (sum%7==0)?1:0;
+    }
+    string largestPalindrome(int n, int k) {
+        if(n==1){
+            switch(k){
+                case 1 :return "9";
+                case 2 :return "8";
+                case 3 :return "9";
+                case 4 :return "8";
+                case 5 :return "5";
+                case 6 :return "6";
+                case 7 :return "7";
+                case 8 :return "8";
+                case 9 :return "9";
+            }
+        }
+        if(n==2){
+            switch(k){
+                case 1 :return "99";
+                case 2 :return "88";
+                case 3 :return "99";
+                case 4 :return "88";
+                case 5 :return "55";
+                case 6 :return "66";
+                case 7 :return "77";
+                case 8 :return "88";
+                case 9 :return "99";
+            }
+        }
+        if(n==3){
+            switch(k){
+                case 1 :return "999";
+                case 2 :return "898";
+                case 3 :return "999";
+                case 4 :return "888";
+                case 5 :return "595";
+                case 6 :return "888";
+                case 7 :return "959";
+                case 8 :return "888";
+                case 9 :return "999";
+            }
+        }
+        string s="";
+        for(int i=0;i<n;i++)s+="9";
+        if(k==3 || k==1 || k==9)return s;
+        else if(k==2){
+            s[0]='8';
+            s[n-1]='8';
+        }
+        else if(k==4){
+            s[0]='8';s[1]='8';s[n-1]='8';s[n-2]='8';
+        }
+        else if(k==5){
+            s[0]='5';
+            s[n-1]='5';
+        }
+        else if(k==6){
+            int m=n*9;
+            m-=2;
+            s[0]='8';s[n-1]='8';
+            if(m%3==1){
+                if(n%2==1)s[n/2]='8';
+                else{
+                    s[n/2]='7';
+                    s[n/2-1]='7';
+                }
+            }
+        }
+        else if(k==7){
+            
+            for(int i='9';i>='0';i--){
+                if(n%2==1)s[n/2]=i;
+                else {s[n/2]=i;s[n/2-1]=i;}
+                if(isDivisibleBy7(s))break;
+            }
+            
+        }
+        else {
+            s[0]='8';
+            s[1]='8';
+            s[2]='8';
+            s[n-3]='8';
+            s[n-2]='8';
+            s[n-1]='8';
+        }
+        return s;
+    }
+};
