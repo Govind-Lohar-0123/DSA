@@ -1,0 +1,24 @@
+class Solution {
+public:
+    long long maxPoints(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<long long>prev(m+1,0);
+        for(int j=0;j<m;j++)prev[j]=grid[0][j];
+        for(int i=1;i<n;i++){
+            vector<long long>curr(m+1,0);
+            // left to right to find max
+            for(int j=0;j<m;j++){
+                if(j==0)curr[j]=prev[j]+grid[i][j];
+                else curr[j]=max(prev[j],(curr[j-1]-grid[i][j-1])-1)+grid[i][j];
+            }
+            // right to left to find max
+            for(int j=m-2;j>=0;j--){
+               
+                curr[j]=max(curr[j],(curr[j+1]-grid[i][j+1]-1)+grid[i][j]);
+            }
+            prev=curr;
+        }
+        return *max_element(begin(prev),end(prev));
+    }
+};
