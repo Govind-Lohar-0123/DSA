@@ -1,0 +1,36 @@
+class Solution {
+public:
+    long dp[1001][1001];
+    long solve(int n,int currA,int clip){
+        // if(currA+clip>n)return 1000;
+        // if(dp[currA][clip]!=-1)return dp[currA][clip];
+        // if(n==currA+clip)return 1;
+        // long ans=1000;
+        // // copy all
+        // if(currA!=clip)ans=solve(n,currA,currA)+1;
+        // ans=min(ans,solve(n,currA+clip,clip)+1);
+        // return dp[currA][clip]=ans;
+        
+        for(int i=n-1;i>=0;i--){
+            for(int j=n;j>=0;j--){
+                 if(i+j>n)dp[i][j]= 1000;
+                 else if(n==i+j)dp[i][j]=1;
+                 else {
+                    long ans=1000;
+                    // copy all
+                    if(i!=j)ans=dp[i][i]+1;
+                    ans=min(ans,dp[i+j][j]+1);
+                    dp[i][j]=ans;
+                }
+        
+            }
+        }
+        return dp[1][1];
+    
+    }
+    int minSteps(int n) {
+        if(n==1)return 0;
+        memset(dp,0,sizeof(dp));
+        return solve(n,1,1)+1;
+    }
+};
