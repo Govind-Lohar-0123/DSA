@@ -1,0 +1,26 @@
+class Solution {     
+public:
+   
+   int dp[2001][51][51];
+    int mod=1000000007;
+    int solve(int idx,vector<int>&nums,int prev1,int prev2){
+        
+        if(idx>=nums.size())return 1 ;
+        int ans=0;
+        if(dp[idx][prev1][prev2]!=-1)return dp[idx][prev1][prev2];
+        
+        for(int i=nums[idx];i>=prev1;i--){
+            int diff=nums[idx]-(i);
+            if(diff>prev2)break;
+            ans=(ans+solve(idx+1,nums,i,diff))%mod;
+        }
+       
+        return dp[idx][prev1][prev2]=ans%mod;
+    }
+    int countOfPairs(vector<int>& nums) {
+        int n=nums.size();
+        int arr[n];
+        memset(dp,-1,sizeof(dp));
+        return solve(0,nums,0,50);
+    }
+};
