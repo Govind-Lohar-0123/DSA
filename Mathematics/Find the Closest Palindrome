@@ -1,0 +1,35 @@
+class Solution {
+public:
+
+    long getNum(long firstHalfNum,bool isEven){
+        long num=firstHalfNum;
+        if(isEven==false)firstHalfNum/=10;
+        while(firstHalfNum!=0){
+            num=(num*10)+firstHalfNum%10;
+            firstHalfNum/=10;
+        }
+        return num;
+    }
+    string nearestPalindromic(string s) {
+        int n=s.size();
+        int mid=(n%2==0)?n/2 : n/2+1;
+        long firstHalfNum=stol(s.substr(0,mid));
+        vector<long>temp;
+        temp.push_back(getNum(firstHalfNum,(n%2==0)));
+        temp.push_back(getNum(firstHalfNum+1,(n%2==0)));
+        temp.push_back(getNum(firstHalfNum-1,(n%2==0)));
+        temp.push_back((long)pow(10,n)+1);
+        temp.push_back((long)pow(10,n-1)-1);
+        long long curr=stoll(s);
+        long ans=LONG_MAX;
+        for(long &it : temp){
+            if(it==curr)continue;
+            long dis=abs(it-curr);
+            if(dis<abs(ans-curr))ans=it;
+            else if(dis==abs(ans-curr))ans=min(it,ans);
+
+        }
+        return to_string(ans);
+
+    }
+};
