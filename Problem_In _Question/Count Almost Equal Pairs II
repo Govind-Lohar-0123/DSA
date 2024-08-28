@@ -1,0 +1,54 @@
+class Solution {
+public:
+   
+    bool isSame(int a,int b){
+        vector<pair<int,int>>v;
+        while(a!=0 || b!=0){
+            int d1=a%10;
+            int d2=b%10;
+            if(d1!=d2)v.push_back({d1,d2});
+            a/=10;
+            b/=10;
+            
+
+        }
+        if(v.size()==1 || v.size()>4)return false;
+        if(v.size()==0)return true;
+
+        //for every value we check
+        
+        int n=v.size();
+        int cnt=0;
+        for(pair<int,int>& p : v){
+            
+            if(p.first==p.second)continue;
+            bool flag=false;
+            for(pair<int,int> &it:v){
+                if(p.second==it.first){
+                   
+                    swap(p.first,it.first);
+                  
+                    cnt++;
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag==false || cnt==3)return false;
+        }
+        
+       
+        return true;
+    }
+    int countPairs(vector<int>& nums) {
+        int ans=0;
+      
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+              if(nums[i]==nums[j])ans++;
+               else if(isSame(nums[i],nums[j]))ans++;
+            }
+        }
+        return ans;
+    }
+};
