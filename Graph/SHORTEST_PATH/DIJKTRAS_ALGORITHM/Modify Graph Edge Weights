@@ -1,0 +1,128 @@
+class Solution {
+public:
+    typedef long long ll;
+    const int LARGE_VALUE = 2e9;
+    typedef pair<long, long> P;
+
+    ll DijkstraAlgo(vector<vector<int>>& edges, int n, int s, int e) {
+        priority_queue<pair<ll,ll>,vector<pair<ll,ll>>,greater<>>pq;
+        unordered_map<ll, vector<pair<ll, ll>>> graph; //u -> (v, wt)
+          for(vector<int> &it : edges){
+            if(it[2]==-1)continue;
+            graph[it[0]].push_back({it[1],it[2]});
+            graph[it[1]].push_back({it[0],it[2]});
+        }
+        vector<ll> dis(n, INT_MAX);
+        dis[s]=0;
+        pq.push({0,s});
+        vector<bool>vis(n,false);
+       
+        while(pq.size()!=0){
+            pair<ll,ll>it=pq.top();
+            pq.pop();
+            if(vis[it.second]==true)continue;
+            vis[it.second]=true;
+            for(pair<ll,ll> &ngbr : graph[it.second]){
+
+                ll d=it.first+ngbr.second;
+                if( vis[ngbr.first]==false && dis[ngbr.first]>d){
+                    dis[ngbr.first]=d;
+                    pq.push({d,ngbr.first});
+                }
+            }
+        }
+        return dis[e];
+
+
+        
+    }
+
+    vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int source, int destination, int target) {
+        ll currShortestDist = DijkstraAlgo(edges, n, source, destination);
+
+        if(currShortestDist < target) {
+            return {};
+        }
+
+        bool matchedTarget = (currShortestDist == target);
+
+        for(vector<int>& edge : edges) {
+            if(edge[2] == -1) {
+
+                edge[2] = (matchedTarget == true) ? LARGE_VALUE : 1; //assign lowest number i.e. 1
+
+                if(matchedTarget != true) {
+                    ll newShortestDist = DijkstraAlgo(edges, n, source, destination);
+
+                    if(newShortestDist <= target) {
+                        matchedTarget = true;
+                        edge[2] += (target - newShortestDist);
+                    }
+                }
+            }
+        }
+
+        if(matchedTarget == false) {
+            return {};
+        }
+        return edges;
+    }
+};
+
+// class Solution {
+// public:
+
+   
+//  int shortPath( vector<vector<int>> & edges,int s,int e,int n){
+//         priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>>pq;
+//         vector<vector<vector<int>>>graph(n,vector<vector<int>>());
+//           for(vector<int> &it : edges){
+//             graph[it[0]].push_back({it[1],it[2]});
+//             graph[it[1]].push_back({it[0],it[2]});
+//         }
+//         long dis[n];
+//         fill_n(dis,n,INT_MAX);
+//         dis[s]=0;
+//         pq.push({0,s});
+//         bool vis[n];
+//         memset(vis,false,sizeof(vis));
+//         while(pq.size()!=0){
+//             pair<int,int>it=pq.top();
+//             pq.pop();
+//             if(vis[it.second])continue;
+//             vis[it.second]=true;
+//             for(vector<int> ngbr : graph[it.second]){
+//                 long d=it.first+ngbr[1];
+//                 if(vis[ngbr[0]]==false && dis[ngbr[0]]>d){
+//                     dis[ngbr[0]]=d;
+//                     pq.push({d,ngbr[0]});
+//                 }
+//             }
+//         }
+//         return dis[e];
+
+//     }
+//     vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int s, int d, int t) {
+       
+//         for(vector<int> &it : edges){
+//             if(it[2]==-1)it[2]=100000000;
+//         }
+       
+//         int dis=shortPath(edges,s,d,n);
+//         if(dis<t)return {};
+//         if(dis==t)return edges;
+
+//         for(vector<int>&it : edges){
+//             if(it[2]==100000000)it[2]=1;
+//             dis=shortPath(edges,s,d,n);
+//             if(dis==t)return edges;
+//             else if(dis<t){
+//                 it[2]+=(t-dis);
+//                 return edges;
+//             }
+//         }
+//          return {};
+//     }
+   
+    
+// };
