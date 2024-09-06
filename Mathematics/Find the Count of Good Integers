@@ -1,0 +1,75 @@
+using ll=long long;
+
+class Solution {
+public:
+   ll fact[11];
+    unordered_map<string,int>map;
+    ll getTotalPer(string &s){
+        int n=s.size();
+        ll total=fact[n];
+         vector<int>freq(10,0);
+       
+        
+        for(int i=0;i<n;i++){
+            freq[s[i]-'0']++;
+        }
+        string temp="";
+        for(int i=0;i<10;i++){
+            int cnt=freq[i];
+            temp+=('0'+ cnt);
+            if(cnt==0)continue;
+            total=total/fact[cnt];
+        }
+        if(map.find(temp)!=map.end())return 0;
+        map.insert({temp,1});
+        if(freq[0]==0)return total;
+
+        
+       ll a = fact[n-1]; 
+       a = a/fact[freq[0]-1];
+
+        for(int i=1;i<10;i++){
+            int cnt=freq[i];
+            
+            if(cnt==0)continue;
+            a=a/fact[cnt];
+        }
+
+        total=total-a;
+        return total;
+        
+    }
+    ll getCount(string s,int n,int k){
+        string temp=s.substr(0,n/2);
+        reverse(begin(temp),end(temp));
+        s+=temp;
+        ll num=stol(s);
+        if(num%k!=0)return 0;
+        return getTotalPer(s);
+        
+    }
+// unordered_set<int>set;
+    ll solve(int idx,string &s,int n,int k)
+    {
+        if(idx>=((n%2==0) ? n/2 : (n/2 + 1)))return getCount(s,n,k);
+        ll ans=0;
+        for(int j=0;j<=9;j++){
+            if(idx==0 && j==0)continue;
+            s[idx]=char(j+'0');
+            ans+=solve(idx+1,s,n,k);
+           
+            
+        }
+        return ans;
+    }
+    ll countGoodIntegers(int n, int k) {
+        //fint factorial
+       
+        
+        fact[0]=1;fact[1]=1;
+        for(int i=2;i<=10;i++)fact[i]=fact[i-1]*i;
+        string s((n%2==0) ? n/2 : (n/2 + 1),'0');
+        
+        return solve(0,s,n,k);
+    }
+};
