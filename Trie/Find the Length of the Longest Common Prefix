@@ -1,0 +1,70 @@
+class Trie{
+    public:
+   
+    class Node{
+        public:
+            vector<Node*>child;
+            Node(){
+                child=vector<Node*>(10,NULL);
+            }
+            void addKey(int idx){
+                this->child[idx]=new Node();
+            }
+            Node* getKey(int idx){
+                return this->child[idx];
+            }
+            bool containsKey(int idx){
+                return (this->child[idx]!=NULL);
+            }
+    };
+    Node* root=NULL;
+    Trie(){
+        root=new Node();
+    }
+
+    void build(string word){
+        Node* curr=root;
+        for(int i=0;i<word.size();i++){
+            int idx=word[i]-'0';
+            if(curr->containsKey(idx)==false)
+                curr->addKey(idx);
+            curr=curr->getKey(idx);
+        }
+        
+    }
+    int findLen(string word){
+        Node* curr=root;
+        for(int i=0;i<word.size();i++){
+            int idx=word[i]-'0';
+            if(curr->containsKey(idx)==false)
+               return i;
+            curr=curr->getKey(idx);
+        }
+        return word.size();
+        
+    }
+
+   
+};
+
+
+class Solution {
+public:
+
+    int longestCommonPrefix(vector<int>& arr1, vector<int>& arr2) {
+        Trie tr;
+        int ans=0;
+        for(const auto it : arr2){
+            string s=to_string(it);
+           
+            tr.build(s);
+            
+        }
+        for(const auto it : arr1){
+            string s=to_string(it);
+            ans=max(ans,tr.findLen(s));
+        }
+        return ans;
+        
+    }
+};
