@@ -1,0 +1,28 @@
+// class Solution {
+//   public:
+//     // Function to check whether the list is palindrome.
+//     bool isPalindrome(Node *head) {
+//         if(head==NULL ||head->next==NULL)return true;
+//         Node* slow=head;
+//         Node* fast=head;
+//         Node* prev=NULL;
+//         while(fast!=NULL && fast->next!=NULL){
+//             fast=fast->next->next;
+//             Node* next=slow->next;
+//             slow->next=prev;
+//             prev=slow;
+//             slow=next;
+//         }
+//         prev->next=NULL;
+//         if(fast!=NULL)slow=slow->next;
+//         Node* l=prev;
+//         Node* r=slow;
+//         while(l!=NULL){
+//             if(l->data!=r->data)return false;
+//             l=l->next;
+//             r=r->next;
+//         }
+//         return true;
+        
+//     }
+// };
