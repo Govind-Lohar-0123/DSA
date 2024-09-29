@@ -1,0 +1,116 @@
+struct Node{
+    int cnt;
+    list<string>keys;
+    Node*prev;
+    Node*next;
+    Node(int c){
+        cnt=c;
+        prev=nullptr;
+        next=nullptr;
+    }
+};
+
+class AllOne {
+public:
+    unordered_map<string,Node*>umap;
+    Node* head;//head->next will give min value
+    Node* tail;//tail will give max value
+    AllOne() {
+        head=new Node(0);
+        tail=head;
+    }
+    //1->2->3->4
+    void addNode(Node* curr,int cnt){
+        Node* next=curr->next;
+        Node* newNode=new Node(cnt);
+        newNode->prev=curr;
+        curr->next=newNode;
+     
+        if(next!=nullptr){
+            newNode->next=next;
+            next->prev=newNode;
+        }
+        if(newNode->next==nullptr)tail=newNode;
+
+    }
+    
+    void deleteNode(Node* curr){
+       
+       
+        if(curr->next->next!=nullptr)
+           curr->next->next->prev=curr;
+        curr->next=curr->next->next;
+       
+        if(curr->next==nullptr)tail=curr;
+    }
+    void inc(string key) {
+        if(umap.find(key)==umap.end()){ // key is not present in my map
+            if(head->next==nullptr || head->next->cnt!=1){
+                // i need to add new node 
+                addNode(head,1);
+            }
+            //i need to insert key in my key list
+            head->next->keys.push_front(key);
+            // add in the map
+            umap[key]=head->next;
+
+
+        }
+        else{
+            // key is alread in my map
+            Node* currNode=umap[key];
+            int currCnt=currNode->cnt;
+            if(currNode->next==nullptr || currNode->next->cnt!=currCnt+1){
+                // that the is not present in my list
+                addNode(currNode,currCnt+1);
+            }
+            currNode->next->keys.push_back(key);
+            umap[key]=currNode->next;
+            currNode->keys.remove(key);
+            if(currNode->keys.size()==0){
+                
+                deleteNode(currNode->prev);//to delet the currNode
+            }
+        }
+    }
+    
+    void dec(string key) {
+        
+        Node* currNode=umap[key];
+        int currCnt=currNode->cnt;
+        if(currNode->prev==nullptr || currNode->prev->cnt!=currCnt-1){
+                // that the is not present in my list
+                addNode(currNode->prev,currCnt-1);
+        }
+        if(currCnt!=1){
+            currNode->prev->keys.push_back(key);
+            umap[key]=currNode->prev;
+        }
+        else umap.erase(key);
+        currNode->keys.remove(key);
+        if(currNode->keys.size()==0){
+            // that only one key mean
+           
+            deleteNode(currNode->prev);//to delet the currNode
+        }
+    }
+    
+    string getMaxKey() {
+        if(head==tail)return "";
+        return tail->keys.front();
+    }
+    
+    string getMinKey() {
+        if(head==tail)return "";
+        return head->next->keys.front();
+    }
+};
+
+/**
+ * Your AllOne object will be instantiated and called as such:
+ * AllOne* obj = new AllOne();
+ * obj->inc(key);
+ * obj->dec(key);
+ * string param_3 = obj->getMaxKey();
+ * string param_4 = obj->getMinKey();
+ */
