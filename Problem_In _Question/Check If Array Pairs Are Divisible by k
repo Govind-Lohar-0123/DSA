@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool canArrange(vector<int>& arr, int k) { //why not working in O(N)*root(N)
+        int n=arr.size();
+        bool vis[n];
+        memset(vis,false,sizeof(vis));
+        for(int i=0;i<n;i++){//o(n)
+           long long a=arr[i];
+            if(vis[i]==true)continue;
+            bool flag=false;
+            for(int j=i+1;j<n;j++){//(n)
+                if(vis[j])continue;
+                long long b=arr[j];
+                if((a+b)%k==0){
+                    vis[j]=true;
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag==false)return false;
+        }
+        return true;
+    }
+};
