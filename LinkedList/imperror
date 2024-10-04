@@ -1,16 +1,56 @@
-// Case 2: Deleting the head node
-    if (head->data == key) {
-        // Find the last node to update its next pointer to the new head
-        Node* last = head;
-        while (last->next != head) {
-            last = last->next;
-        }
+class Solution {
+  public:
+    // Function to reverse a circular linked list
+    Node* reverse(Node* head) {
+        if (head == NULL || head->next == head)
+            return head;
 
-        // Update head and fix the last node's next pointer
-        Node* temp = head;
-        head = head->next;  // Move head to the next node
-        last->next = head;  // Last node points to new head
+        Node* prev = NULL;
+        Node* current = head;
+        Node* next;
+        Node* init = head;
 
-        delete temp;  // Delete the old head
+        do {
+            next = current->next;
+            current->next = prev;
+            prev = current;
+            current = next;
+        } while (current != init);
+
+        head->next = prev;
+        head = prev;
         return head;
     }
+
+    // Function to delete a node from the circular linked list
+    Node* deleteNode(Node* head, int key) {
+        if (head == NULL)
+            return head;
+
+        if (head->next == head && head->data == key) {
+         delete head;
+        return NULL; // The list becomes empty after deletion
+       }
+       if(head->data==key)head=head->next;
+       
+       Node* curr=head;
+       
+       while(curr->next!=head && curr->next->data!=key)
+        {    curr=curr->next;}
+            
+        if(curr->next->data!=key)return head;
+        Node *temp=curr->next;
+        curr->next = curr->next->next;
+            
+        
+        
+        delete temp;
+        
+        
+        return head;
+    }
+};
+
+
+
+
