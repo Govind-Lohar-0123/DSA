@@ -1,3 +1,50 @@
+
+1]variable size sliding window
+2]finxed size slifin window
+
+
+
+
+
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        int map1[26];
+        int map2[26];
+        int cnt=0;
+        int size=0;
+        int k=0;
+        for(char &ch : s1){
+            map1[ch-'a']++;
+            size++;
+        }
+        for(int i=0;i<26;i++){
+            if(map1[i]!=0)k++;
+        }
+        
+        
+       
+        int n=s2.size();
+        int i=0,j=0;
+        while(j<n){
+            int ch=s2[j]-'a';
+            map2[ch]++;
+            if(map2[ch]==map1[ch])cnt++;
+            if((j-i+1)==size){
+                if(cnt==k)return true;
+                map2[s2[i]-'a']--;
+                if(map1[s2[i]-'a']==map2[s2[i]-'a']+1)cnt--;
+                i++;
+            }
+            
+            j++;
+        }
+        return false;
+    }
+};
+
+
+
 class Solution {
 public:
     bool checkInclusion(string s1, string s2) {
