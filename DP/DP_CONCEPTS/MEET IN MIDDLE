@@ -1,0 +1,84 @@
+/*
+
+*******************Approaches***************
+1]We can all Subset and take Sum and min(ans,((sum-sum1)-sum1))
+tc->O(2^N)
+sc->O(2^N)
+whete N->30
+
+It will Show TLE as well as MLE
+
+2]We can User Suset Sum Bottom Up Approach 
+But the Problem there negative Elmeent which i can not take in negtive index
+
+This entire Appraoch is Very Important 
+3]MEET IN MIDDLE
+in Which First We divide our array into 2parts 
+we induviusa generate all the subset ans soon......
+tc->O(2^n *log(2^n));
+sc->O(2^n);
+where n->N/2
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+class Solution {
+public:
+    vector<vector<int>>left,right;
+
+    void allSubSet(vector<int>& nums){
+        int N=nums.size();
+        int n=N/2;
+        left=vector<vector<int>>(n+1,vector<int>());
+        right=vector<vector<int>>(n+1,vector<int>());
+        for(int mask=0;mask<(1<<n);mask++){
+            int sz=0,l=0,r=0;
+            for(int i=0;i<n;i++){
+                if((mask&(1<<i))==0)continue;
+                    sz++;
+                    l+=nums[i];
+                    r+=nums[i+n];
+                }
+            left[sz].push_back(l);
+            right[sz].push_back(r);
+        }
+        
+    }
+    
+    
+    int minimumDifference(vector<int>& nums) {
+        allSubSet(nums);
+        int sum=accumulate(nums.begin(),nums.end(),0);
+        int N=nums.size();
+        int n=N/2;
+        // Sort All RIght Side Values TO Use Binary Search
+        for(int sz=0;sz<=n;sz++){
+            sort(right[sz].begin(),right[sz].end());
+        }
+        int ans=INT_MAX;
+        for(int sz=0;sz<=n;sz++){
+            for(int &a : left[sz]){
+                //left->sz right->n-sz;
+                int b=(sum-2*a)/2;
+                int rsz=n-sz;
+                
+                auto itr=lower_bound(right[rsz].begin(),right[rsz].end(),b);
+                if(itr!=right[rsz].end())ans=min(ans,abs(sum-(2*(a+(*itr)))));
+                if(itr!=right[rsz].begin())ans=min(ans,abs(sum-(2*(a+(*(--itr))))));
+
+               
+            }
+        }
+        return ans;
+
+    }
+};
