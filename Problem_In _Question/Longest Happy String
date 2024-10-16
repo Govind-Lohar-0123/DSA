@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int A,B,C;
+    string temp="";
+    string ans="";
+    string dp[101][101][101][5][5];
+    void solve(int a,int b,int c,int prev1,int prev2){
+		if(ans.size()<temp.size()){
+          dp[a][b][c][prev1-'a'][prev2-'a']=ans=temp;
+        }
+        
+        if(dp[a][b][c][prev1-'a'][prev2-'a']!="F"){
+            return ;
+        }
+        if(a!=0 && ((prev1!=prev2) || (prev1!='a'))){
+            temp.push_back('a');
+            solve(a-1,b,c,prev2,'a');
+            temp.pop_back();
+        }
+        if(b!=0 && ((prev1!=prev2) || (prev1!='b'))) {
+            temp.push_back('b');
+            solve(a,b-1,c,prev2,'b');
+            temp.pop_back();
+        }
+        if(c!=0 && ((prev1!=prev2) || (prev1!='c'))){
+            temp.push_back('c');
+            solve(a,b,c-1,prev2,'c');
+            temp.pop_back();
+        }
+    }
+    string longestDiverseString(int a, int b, int c) {
+       A=a,B=b,C=c;
+      for(int i=0;i<=100;i++)
+      {  for(int j=0;j<=100;j++){
+            for(int k=0;k<=100;k++){
+                for(int l=0;l<=4;l++){
+                    for(int m=0;m<=4;m++){
+                        dp[i][j][k][l][m]="F";
+                    }
+                }
+            }
+        }
+      }
+	   solve(a,b,c,'d','e');
+       return ans;
+    }
+};
+
