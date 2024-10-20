@@ -1,0 +1,114 @@
+
+/*
+        Approaches
+
+1]Using Stack Space
+tc->o(N)
+sc->o(N)
+
+2]Using without Stack Space but technique is same (pointer )
+tc->o(N)
+sc->o(1);
+
+
+
+
+*/
+
+//tc->o(N)
+//sc->o(N)
+class Solution {
+public:
+
+    bool getBoolean(char ch){
+       
+        return (ch=='f')?false:true;
+    }
+
+    string solve(int j,string &s){
+        if(j>=s.size())return "";
+        string temp=solve(j+1,s);
+        if(s[j]=='|' ||s[j]=='&'||s[j]=='!')return temp;
+        if(s[j]==',')return temp;
+        if(s[j]!='(')return s[j] + temp;
+        else{int i=0;
+                char op=s[j-1];
+                bool flag=getBoolean(temp[i]);
+                while(i!=temp.size() && temp[i]!=')'){
+                   
+                    bool currCh=getBoolean(temp[i]);i++;
+                    
+                    if(op=='|')flag|=currCh;
+                    else if(op=='&')flag &=currCh;
+                    else flag=(!flag);
+                }
+                temp[i]=((flag)?'t' : 'f');
+                
+            return temp.substr(i,(temp.size()-i));
+                
+        }
+        
+    }
+
+    // with using stack
+    // bool solve(string &s){
+    //     stack<char>st;
+    //     int n=s.size();
+    //     for(int i=n-1;i>=0;i--){
+    //         char ch=s[i];
+    //         if(ch==',')continue;
+    //         if(ch!='(')st.push(ch);
+    //         else{
+    //             char op=s[i-1];
+    //             bool flag=getBoolean(st.top());
+    //             while(st.size()!=0 && st.top()!=')'){
+                   
+    //                 bool currCh=getBoolean(st.top());st.pop();
+                    
+    //                 if(op=='|')flag|=currCh;
+    //                 else if(op=='&')flag &=currCh;
+    //                 else flag=(!flag);
+    //             }
+    //             st.pop();//remove ) char from stack
+    //             st.push((flag)?'t' : 'f');
+    //             i--;
+    //         }
+    //     }
+    //     return getBoolean(st.top());
+	// }
+
+
+    ///without using stack
+    //  bool solve(string &s){
+        
+    //     int n=s.size();
+    //     int j=n-1,i=n;
+    //     while(j>=0){
+    //         char ch=s[j];
+    //         if(ch==','){j--;continue;};
+    //         if(ch!='(')s[--i]=ch;
+    //         else{
+    //             char op=s[j-1];
+    //             bool flag=getBoolean(s[i]);
+    //             while(i!=n && s[i]!=')'){
+                   
+    //                 bool currCh=getBoolean(s[i]);i++;
+                    
+    //                 if(op=='|')flag|=currCh;
+    //                 else if(op=='&')flag &=currCh;
+    //                 else flag=(!flag);
+    //             }
+    //             i++;//remove ) char from stack
+    //             i--;
+    //             s[i]=((flag)?'t' : 'f');
+    //             j--;
+    //         }
+    //         j--;
+    //     }
+    //     return getBoolean(s[i]);
+	// }
+  bool parseBoolExpr(string s) {
+       
+       return getBoolean(solve(0,s)[0]);
+    }
+};
