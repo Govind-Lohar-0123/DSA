@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int>fillNsrAndNlr(vector<int>&arr,bool flag){
+        int n=arr.size();
+        vector<int>temp(n,0);
+        temp[n-1]=n;
+        for(int i=n-2;i>=0;i--){
+            int j=i+1;
+            while(j!=n && ((flag)?(arr[i]<=arr[j]) : (arr[i]>=arr[j])))
+                j=temp[j];
+            temp[i]=j;
+        }
+        return temp;
+    }
+    
+    long long subArrayRanges(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>nsr=fillNsrAndNlr(nums,true);
+        vector<int>nlr=fillNsrAndNlr(nums,false);
+        long long ans=0;
+      
+        auto getSubarrayRange=[&](int idx){
+            int i=idx,j=idx;
+            long long ans=0;
+            while(i!=n || j!=n){
+                int minVal=nums[i];
+                int maxVal=nums[j];
+                long long cnt=(min(nsr[i],nlr[j])-max(i,j));
+                ans+=(cnt*(maxVal-minVal));
+                if(nsr[i]<nlr[j])i=nsr[i];
+                else if(nsr[i]>nlr[j])j=nlr[j];
+                else {i=nsr[i],j=nlr[j];}
+            }
+            return ans;
+        };
+        
+
+        for(int i=0;i<n;i++){
+            ans+=getSubarrayRange(i);
+        }
+        return ans;
+    }
+};
