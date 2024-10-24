@@ -1,38 +1,43 @@
 class Solution {
-    int nsr[]=null;
-    void fillNSR(int arr[]){
-        int n=arr.length;
-        nsr=new int[n];
-        nsr[n-1]=n;
+public:
+    vector<int>fillNsrAndNlr(vector<int>&arr,bool flag){
+        int n=arr.size();
+        vector<int>temp(n,0);
+        temp[n-1]=n;
         for(int i=n-2;i>=0;i--){
-            if(arr[i]>arr[i+1])nsr[i]=i+1;
-            else {
-                int j=nsr[i+1];
-                while(j!=n && arr[i]<=arr[j])
-                    j=nsr[j];
-                nsr[i]=j;
-                
-            }
+            int j=i+1;
+            while(j!=n && ((flag)?(arr[i]<=arr[j]) : (arr[i]>=arr[j])))
+                j=temp[j];
+            temp[i]=j;
         }
+        return temp;
     }
-
-    public int sumSubarrayMins(int[] arr) {
-        fillNSR(arr);
+    
+    long long subArrayRanges(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>nsr=fillNsrAndNlr(nums,true);
+        vector<int>nlr=fillNsrAndNlr(nums,false);
+        long long ans=0;
+      
+        auto getSubarrayRange=[&](int idx){
+            int i=idx,j=idx;
+            long long ans=0;
+            while(i!=n || j!=n){
+                int minVal=nums[i];
+                int maxVal=nums[j];
+                long long cnt=(min(nsr[i],nlr[j])-max(i,j));
+                ans+=(cnt*(maxVal-minVal));
+                if(nsr[i]<nlr[j])i=nsr[i];
+                else if(nsr[i]>nlr[j])j=nlr[j];
+                else {i=nsr[i],j=nlr[j];}
+            }
+            return ans;
+        };
         
-        int mod=(1000000007);
-        int sum=0;
-        for(int i=0;i<arr.length;i++){
-            int j=nsr[i];
-            int k=i;
-            while(j!=arr.length){
-                int temp=((j-k)*arr[k])%mod;
-                sum=(sum+temp)%mod;
-                k=j;
-                j=nsr[j];
-            }
-            int temp=((j-k)*arr[k])%mod;
-            sum=(sum+temp)%mod;
+
+        for(int i=0;i<n;i++){
+            ans+=getSubarrayRange(i);
         }
-        return sum;
+        return ans;
     }
-}
+};
