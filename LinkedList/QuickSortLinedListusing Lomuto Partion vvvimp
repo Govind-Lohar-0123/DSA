@@ -1,0 +1,49 @@
+1]i can also do using lomuto first pivot 
+2]i can also do using horars partion from both
+
+
+
+//Lumotu Partion from Back
+class Solution {
+  public:
+    void quickSort(Node* s,Node* e){
+        if(s==NULL || s==e  || e->next==s)return ;
+        Node * pivot=getPivot(s,e);
+        quickSort(s,pivot);
+        if(pivot!=NULL && pivot==s)
+            quickSort(pivot->next,e);
+        else if(pivot!=NULL && pivot->next!=NULL)
+            quickSort(pivot->next->next,e);
+        
+    }
+    Node* getPivot(Node* head,Node* tail){
+        int val=tail->data;
+        Node* prev=head;
+        Node* curr=head;
+        Node* idx=head;
+        while(curr!=tail){
+            if(curr->data<=val){
+                int temp=idx->data;
+                idx->data=curr->data;
+                curr->data=temp;
+                prev=idx;
+                idx=idx->next;
+            }
+            curr=curr->next;
+        }
+        int temp=idx->data;
+        idx->data=curr->data;
+        curr->data=temp;
+        return prev;
+    }
+    struct Node* quickSort(struct Node* head) {
+        Node* tail=head;
+        while(tail!=NULL && tail->next!=NULL)
+            tail=tail->next;
+       quickSort(head,tail);
+       return head;
+    }
+    
+    
+    
+    
