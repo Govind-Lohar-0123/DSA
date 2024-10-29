@@ -20,7 +20,7 @@ class Solution {
         if(s==NULL || s==e  || e->next==s)return ;
         Node * pivot=getPivot(s,e);
         quickSort(s,pivot);
-        if(pivot!=NU)quickSort(pivot->next,e);
+        quickSort(pivot->next,e);
       }
     Node* getPivot(Node* head,Node* tail){
         int val=tail->data;
