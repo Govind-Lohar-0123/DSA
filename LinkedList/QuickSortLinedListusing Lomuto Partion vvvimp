@@ -12,10 +12,16 @@ class Solution {
         quickSort(s,pivot);
         if(pivot!=NULL && pivot==s)
             quickSort(pivot->next,e);
-        else if(pivot!=NULL && pivot->next!=NULL)
+        else if(pivot!=NULL && pivot->next!=NULL)      
             quickSort(pivot->next->next,e);
         
     }
+    void quickSort(Node* s,Node* e){
+        if(s==NULL || s==e  || e->next==s)return ;
+        Node * pivot=getPivot(s,e);
+        quickSort(s,pivot);
+        if(pivot!=NU)quickSort(pivot->next,e);
+      }
     Node* getPivot(Node* head,Node* tail){
         int val=tail->data;
         Node* prev=head;
