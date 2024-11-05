@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int dp[100000+1];
+    int solve(int i,string &s,vector<int>&pre){
+        if(i>=s.size())return 0;
+        
+        int ans=INT_MAX;
+        if(dp[i]!=-1)return dp[i];
+        int prev=(i!=0)?pre[i-1] : 0;
+        for(int k=i+1;k<s.size();k+=2){
+            int len=(k-i+1);
+            int zeros=(len-(pre[k]-prev));
+            int ones=len-zeros;
+            int temp=solve(k+1,s,pre) + min(ones,zeros);
+            ans=min(ans,temp);
+
+        }
+        return dp[i]=ans;
+    }
+    int minChanges(string s) {
+        int n=s.size();
+        memset(dp,-1,sizeof(dp));
+        vector<int>pre(n,0);
+        pre[0]=s[0]-'0';
+        for(int i=1;i<n;i++)pre[i]=pre[i-1]+s[i]-'0';
+        return solve(0,s,pre);
+    }
+};
