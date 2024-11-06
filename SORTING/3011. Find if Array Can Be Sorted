@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool canSortArray(vector<int>& arr) {
+        int n=arr.size();
+        vector<int>bits;
+        for(int i=0;i<n;i++)bits.push_back(__builtin_popcount(arr[i]));
+        int prevMax=0;
+        int currMax=arr[0];
+        for(int i=1;i<n;i++){
+            
+            if(bits[i-1]==bits[i])
+                currMax=max(currMax,arr[i]);
+            else {
+                prevMax=currMax;
+                currMax=arr[i];
+                
+            }
+            if(prevMax>arr[i])return false;
+        }
+       
+        return true;
+    }
+};
