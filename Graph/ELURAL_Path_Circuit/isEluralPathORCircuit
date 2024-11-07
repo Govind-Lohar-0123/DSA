@@ -1,0 +1,55 @@
+
+Steps to solve
+1]check is connted or not 
+2]EP->oddDegree count is exacty 2 
+3]EC->when all vertex degree is even
+
+
+class Solution {
+public:
+	void DFS(int u,vector<int>adj[],vector<bool>&vis){
+	    vis[u]=true;
+	    for(int v : adj[u]){
+	        if(vis[v]==false)   
+	            DFS(v,adj,vis);
+	    }
+	}
+    bool isConnected(int n,vector<int>adj[]){
+        //find nonZeroDegree vertex to check is connted or not
+        int nonZeroDegree=-1;
+        for(int i=0;i<n;i++){
+            if(adj[i].size()==0)continue;
+            nonZeroDegree=i;
+            break;
+        }
+        
+        //Start dfs from nonZeroDegreeVetes to visit nodes
+        if(nonZeroDegree==-1)return true;
+        vector<bool>vis(n,false);
+        DFS(nonZeroDegree,adj,vis);
+        
+        //check unvisted vertex has more than zero degree or not
+        for(int i=0;i<n;i++){
+            if(vis[i]==false && adj[i].size()>0)
+            return false;
+        }
+        return true;
+    }
+	
+	
+	int isEulerCircuit(int n, vector<int>adj[]){
+	    
+	    if(isConnected(n,adj)==false)return 0;
+	    
+	    int oddDegreeCount=0;
+	    for(int i=0;i<n;i++){
+	        if(adj[i].size()%2==0)continue;
+	        oddDegreeCount++;
+	    }
+	  
+	    if(oddDegreeCount==0)return 2; //Elural Circuit
+	    else if(oddDegreeCount==2)return 1;//Elural Path
+	    return 0; //Nothing
+	   
+	}
+};
