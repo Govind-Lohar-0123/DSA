@@ -1,0 +1,80 @@
+class Node{
+    public:
+    vector<Node*>child;
+    Node(){
+        child=vector<Node*>(2,NULL);
+    }
+};
+
+
+
+class Solution {
+public:
+    Node* root;
+    Solution(){
+        root=new Node();
+    }
+
+    void buildTrie(int n){
+        Node * curr=root;
+        for(int i=31;i>=0;i--){
+            int bit=0;
+            if(((1<<i)&(n))>=1)bit=1;
+            
+            if(curr->child[bit]==NULL)
+                curr->child[bit]=new Node();
+            
+            
+            curr=curr->child[bit];
+        }
+        
+    
+    }
+
+    int getMaxXor(int n){
+        Node * curr=root;
+        int ans=0;
+    
+        for(int i=31;i>=0;i--){
+            int currBit=0;
+            if(((1<<i)&(n))>=1)currBit=1;
+            
+            int flipBit=!(currBit);
+            
+            if(curr->child[flipBit]!=NULL){
+                ans=(flipBit<<i)|(ans);
+                curr=curr->child[flipBit];
+
+            }
+            else {
+             
+                ans=(currBit<<i)|(ans);
+                   curr=curr->child[currBit];
+            }
+            
+        }
+    
+        
+        
+        return ans;
+    }
+    
+    
+    vector<int> getMaximumXor(vector<int>& nums, int maxBit) {
+        int n=nums.size();
+        int k=(1<<maxBit);
+        for(int i=0;i<k;i++)//10^7
+            buildTrie(i);
+        vector<int>ans(n,0);
+        int totalXor=0;
+        for(int &it : nums)totalXor^=it;
+        ans[0]=getMaxXor(totalXor);
+        
+        for(int i=n-1;i>=1;i--){//{10^5*31{
+            totalXor^=nums[i];
+            ans[n-i]=getMaxXor(totalXor);
+        }
+        return ans;
+
+    }
+};
