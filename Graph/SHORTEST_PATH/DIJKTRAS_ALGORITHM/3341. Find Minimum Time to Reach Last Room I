@@ -1,0 +1,44 @@
+class Solution {
+public:
+
+struct comp{
+    bool operator()(const auto &a,const auto &b){
+        return a[2]>b[2];
+    }
+};
+    int minTimeToReach(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+        vector<vector<bool>>vis(n,vector<bool>(m,false));
+        vector<vector<int>>dis(n,vector<int>(m,INT_MAX));
+        
+        priority_queue<vector<int>,vector<vector<int>>,comp>pq;
+        dis[0][0]=0;
+        //{i,j,t}
+        pq.push({0,0,0});
+        int dx[4]={1,-1,0,0};
+        int dy[4]={0,0,1,-1};
+        while(pq.size()!=0){
+            auto u=pq.top();pq.pop();
+            int i=u[0],j=u[1],time=u[2];
+            if(vis[i][j]==true)continue;
+            vis[i][j]=true;
+            dis[i][j]=time;
+            // go for all neighbour 
+            for(int k=0;k<4;k++){
+                int row=dx[k]+i;
+                int col=dy[k]+j;
+                if(row>=0 && col>=0 && row<n && col<m){
+                    int nextTime=max(grid[row][col]+1,time+1);
+                    if(dis[row][col]> nextTime && vis[row][col]==false){
+                        pq.push({row,col,nextTime});
+                    }
+                }
+            }
+            
+        }
+        return dis[n-1][m-1];
+        
+
+    }
+};
