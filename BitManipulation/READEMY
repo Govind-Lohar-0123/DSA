@@ -1,1 +1,2 @@
 to find how many need to represent->floor(log base 2 (n) + 1);
+to flip the bit 2^n-1
