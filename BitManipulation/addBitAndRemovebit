@@ -1,0 +1,23 @@
+  int bit[32];
+    void addBinaryNum(int num){
+        for(int i=0;i<32;i++){
+            int currBit=0;
+            if(((1<<i)&num)>=1)currBit=1;
+           bit[i]+=currBit;
+        }
+        
+    }
+    int removeBinaryNum(int num){
+        long ans=0;
+        
+
+        for(int i=0;i<32;i++){
+            int curr=0;
+            if(((1<<i)&num)>=1)curr=1;
+            bit[i]-=curr;
+            if(bit[i]==0)continue;
+            long x=(1<<i);
+            ans+=x;
+        }
+        return ans;
+    }
