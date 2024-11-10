@@ -1,0 +1,115 @@
+class Solution {
+public:
+    
+    // int bit[32];
+    // void addBinaryNum(int num){
+    //     for(int i=0;i<32;i++){
+    //         int currBit=0;
+    //         if(((1<<i)&num)>=1)currBit=1;
+    //        bit[i]+=currBit;
+    //     }
+        
+    // }
+    int getDecimalNum(vector<int>&bit){
+        long ans=0;
+        for(int i=0;i<=30;i++){
+            if(bit[i]==0)continue;
+            long x=(1<<i);
+            ans+=x;
+        }
+        return ans;
+    }
+
+    int getSubOR(vector<vector<int>>&preBit,int l,int r){
+        
+            vector<int>bit(32,0);
+            for(int i=0;i<=30;i++){
+                bit[i]=preBit[r][i];
+                bit[i]-=(l>0)?preBit[l-1][i] : 0;
+                
+            }
+            return getDecimalNum(bit);
+        
+    }
+    void fillPreffixBit(vector<vector<int>>&preBit,vector<int>&arr){
+        int n=arr.size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=30;j++){
+                int currBit=0;
+                if(((1<<j)&arr[i])>=1)currBit=1;
+                preBit[i][j]+=currBit;
+                preBit[i][j]+=(i>0)?preBit[i-1][j] :0 ;
+            }
+        }
+    }
+
+    // int removeBinaryNum(int num){
+    //     long ans=0;
+        
+
+    //     for(int i=0;i<32;i++){
+    //         int curr=0;
+    //         if(((1<<i)&num)>=1)curr=1;
+    //         bit[i]-=curr;
+    //         if(bit[i]==0)continue;
+    //         long x=(1<<i);
+    //         ans+=x;
+    //     }
+    //     return ans;
+    // }
+    int getAtLeastKOR(int i,int r,vector<int>&arr,int k,vector<vector<int>>&preBit){
+        int l=i;
+        r=arr.size()-1;
+        int ans=-1;
+        while(l<=r){
+            int mid=(l+r)/2;
+            
+            int orVal=getSubOR(preBit,i,mid);
+            
+            if(orVal>=k){
+                r=mid-1;
+                ans=mid;
+            }
+            else l=mid+1;
+        }
+        
+        return ans;
+    }
+    int minimumSubarrayLength(vector<int>&arr, int k) {
+       int n=arr.size();
+       int len=n+1;
+    
+       vector<vector<int>>preBit(n,vector<int>(32,0));
+       fillPreffixBit(preBit,arr);
+       
+       for(int i=0;i<n;i++){//nlogn
+            int r=getAtLeastKOR(i,n,arr,k,preBit);
+            if(r==-1)continue;
+            len=min((r-i+1),len);
+           
+       }
+       return (len>n)?-1:len;
+    }
+    // int minimumSubarrayLength(vector<int>&nums, int k) {
+    //     memset(bit,0,sizeof(bit));
+    //     int i=0,j=0;
+    //     int n=nums.size();
+    //     long len=-1;
+    //     int ans=0;
+    //     while(j<n)
+    //     {
+    //         ans=(ans|nums[j]);
+    //         addBinaryNum(nums[j]);
+    //         while(i<=j && ans>=k)
+    //          { if(len==-1 || len>(j-i+1)){
+                
+    //                 len=(j-i+1);
+    //             }
+    //             ans=removeBinaryNum(nums[i++]);
+                
+    //          }   
+    //         j++;
+    //     }
+    //     return len;
+    // }
+};
