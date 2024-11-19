@@ -1,0 +1,36 @@
+using ll=long long;
+class Solution {
+public:
+  
+ll getMaxSum(vector<unordered_map<int,int>>&preMap,int i,int j){
+	ll sum=0;
+	for(auto [k,v] : preMap[j]){
+		int freq=v;
+		if(i!=0 && preMap[i-1].find(k)!=preMap[i-1].end())v-=preMap[i-1][k];
+		if(v>1)return 0;
+        if(v==0)continue;
+		sum+=k;
+	}
+   return sum;
+}
+ll maximumSubarraySum(vector<int>& arr, int k) {
+ 	int n=arr.size();
+	vector<unordered_map<int,int>>preMap(n);
+	//calculate map
+	for(int i=0;i<n;i++){
+	    preMap[i][arr[i]]++;
+	    if(i==0)continue;
+		for(auto [k,v] : preMap[i-1]){
+		     preMap[i][k]+=v;
+		}
+	}
+	ll ans=0;
+	
+	//iterate for every elemet and get max sum
+	for(int i=0;i<=n-k;i++){
+	    ll sum=getMaxSum(preMap,i,i+k-1);
+	    ans=max(ans,sum);
+	}
+	return ans;
+	}
+};
