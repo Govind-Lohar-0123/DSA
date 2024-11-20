@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool isValid(vector<int>map,int k){
+        
+        if(map[0]>=k && map[1]>=k && map[2]>=k)return true;
+        return false;
+    }
+    int takeCharacters(string s, int k) {
+        int n=s.size();
+        
+       
+        if(k==0)return 0;
+        int ans=INT_MAX;
+        vector<int>map(3,0);
+        int i=0,j=0;
+       
+        while(i<n){
+            map[s[j]-'a']++;
+            while(((i<n && ((j==n-1) || (j<=i))) && isValid(map,k))){
+                int len=(j-i+1);
+                if(j<i)len=(n-i)+j+1;
+                ans=min(ans,len);
+                map[s[i++]-'a']--;
+            }
+            if(isValid(map,k) && i==n)ans=min(ans,j+1);
+            if(i==0 && j==n-1) return -1;
+            j=(j+1)%n;
+            
+        }
+        
+        
+        return (ans==INT_MAX)?-1 : ans;
+    }
+};
