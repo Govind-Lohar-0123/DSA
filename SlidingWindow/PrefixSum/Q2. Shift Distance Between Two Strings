@@ -1,0 +1,40 @@
+using ll=long long;
+class Solution {
+public:
+    ll shiftDistance(string s, string t, vector<int>& nextCost, vector<int>& prevCost) {
+        int n=s.size();
+        ll ans=0;
+        vector<ll>next(26,0),prev(26,0);
+        next[0]=nextCost[0];
+        prev[0]=prevCost[0];
+        for(int i=1;i<26;i++){
+            next[i]=next[i-1]+nextCost[i];
+            prev[i]=prev[i-1]+prevCost[i];
+        }
+        
+        for(int i=0;i<n;i++){
+            int ch1=s[i]-'a';
+            int ch2=t[i]-'a';
+            ll preSum=0;
+            ll nextSum=0;
+            if(ch1>ch2){
+                nextSum=next[25];
+                nextSum-=((ch1>0)? next[ch1-1]:0);
+                nextSum+=(ch2>0)?next[ch2-1]:0;
+                preSum=prev[ch1]-prev[ch2];
+                
+            }
+            else if(ch2>ch1){
+                nextSum=next[ch2-1];
+                nextSum-=(ch1>0)?next[ch1-1]:0;
+                preSum=prev[ch1];
+                preSum+=prev[25];
+                preSum-=prev[ch2];
+               
+            }
+           
+            ans+=min(preSum,nextSum);
+        }
+        return ans;
+    }
+};
