@@ -1,0 +1,33 @@
+class Solution {
+  public:
+  
+  
+    int LPS(string &s1){
+        int n=s1.size();
+        
+        vector<int>lps(n,0);
+        lps[0]=0;
+        int preff=0,suff=1;
+        while(suff<n){
+            if(s1[suff]==s1[preff]){
+                preff++;
+                lps[suff++]=preff;
+            }
+            else {
+                if(preff==0)lps[suff++]=0;
+                else preff=lps[preff-1];
+                
+            }
+        }
+        return lps[n-1];
+        
+    }
+    int minChar(string& s1) {
+       int n=s1.size();
+       string s2=s1;
+        reverse(s2.begin(),s2.end());
+        string s=s1 + "$" + s2;
+        int len=LPS(s);
+        return (n-len); 
+    }
+};
