@@ -1,0 +1,40 @@
+class Solution {
+  public:
+    int ans=0;
+    void mergeSort(int l,int r,vector<int>&arr){
+        if(l==r)return;
+        int mid=(l+r)/2;
+        mergeSort(l,mid,arr);
+        mergeSort(mid+1,r,arr);
+        merge(l,mid,r,arr);
+        
+    }
+    
+    void merge(int l,int mid,int r,vector<int>&arr){
+        int i=l,j=mid+1;
+        int n=mid;
+        int m=r;
+        int k=0;
+        vector<int>temp((r-l+1),0);
+        while(i<=n && j<=m){
+            if(arr[i]<=arr[j])temp[k++]=arr[i++];
+            else{
+                int cnt=(n-i+1);
+                ans+=cnt;
+                temp[k++]=arr[j++];
+            }
+        }
+        while(i<=n)temp[k++]=arr[i++];
+        while(j<=m)temp[k++]=arr[j++];
+        
+        for(int i=0;i<temp.size();i++){
+            arr[i+l]=temp[i];
+        }
+        return ;
+    }
+    
+    int inversionCount(vector<int> &arr) {
+        mergeSort(0,arr.size()-1,arr);
+        return ans;
+    }
+};
