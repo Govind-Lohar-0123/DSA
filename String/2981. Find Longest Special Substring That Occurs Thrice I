@@ -1,0 +1,142 @@
+class Node{
+    public:
+    vector<Node*>child;
+    int freq;
+    Node(){int n=26;
+        child=vector<Node*>(26,NULL);
+        freq=0;
+    }
+};
+
+
+
+class Solution {
+public:
+    Node *root;
+
+    int findMaxLen(Node *root){
+        
+        int ans=0;
+        for(int i=0;i<26;i++){
+            if(root->child[i]==NULL  || root->child[i]->freq<=2)continue;
+            int temp=findMaxLen(root->child[i])+1;
+           ans=max(ans,temp);
+        }
+        return ans;
+    }
+    
+    int maximumLength(string s) {
+        root=new Node();
+        int n=s.size();
+        for(int i=0;i<n;i++){
+            Node *curr=root;
+            for(int j=i;j<n;j++){
+                if(s[i]!=s[j])break;
+                int ch=s[j]-'a';
+                if(curr->child[ch]==NULL)curr->child[ch]=new Node();
+                curr=curr->child[ch];
+                curr->freq++;
+            }
+        }
+
+        int ans=findMaxLen(root);
+        return (ans==0)?-1:ans;        
+    }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class Solution {
+// public:
+//     int getLen(string s,int l,int r){
+        
+//         int n=s.size();
+//         int m=(r-l+1);
+//         int i=l+1,j=l+1;
+//         int cnt=0;
+      
+//         while(j<n){
+//             if(s[l]!=s[j])i=j+1;
+//             int len=(j-i+1);
+//             if(len==m)cnt++;
+//             if(len>m)return true;
+//             j++;
+//         }
+//         return cnt>=2;
+//     }
+//     int maximumLength(string s) {
+//        int n=s.size();
+//        int i=0,j=0;
+//        int ans=-1;
+       
+//        while(j<n){
+//             if(j>0 && s[j]!=s[j-1])i=j;
+//             int len=(getLen(s,i,j))?(j-i+1): -1;
+//             ans=max(ans,len);
+//             j++;
+//        }
+//        return ans;
+//     }
+
+    
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// class Solution {
+// public:
+//     int maximumLength(string s) {
+//         int n=s.size();
+//         int ans=-1;
+//         unordered_map<string,int>map;
+//         for(int i=0;i<n;i++){ //o(n)
+//             string t="";
+//             for(int j=i;j<n;j++){ //o(n)
+//                 if(t.size()>0 && (t[t.size()-1]!=s[j]))break;
+//                 t+=s[j];
+//                 map[t]++;//o(n)
+//             }
+//         }
+//         for(auto &it : map){ //o(n^2)
+//             if(it.second<=2)continue;
+//             int l=it.first.size();
+//             ans=max(ans,l);
+//         }
+//         return ans;
+//     }
+
+//     //tc-> o(n^3)
+//     //tc-> o(n^2)
+// };
