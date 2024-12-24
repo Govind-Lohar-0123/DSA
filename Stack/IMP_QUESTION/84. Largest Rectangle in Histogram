@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void findNSR(vector<int>&arr,vector<int>&temp){
+	int n=temp.size();
+	temp[n-1]=n;
+	for(int i=n-2;i>=0;i--){
+	int j=i+1;
+	while(j!=n && arr[i]<=arr[j])j=temp[j];
+	temp[i]=j;
+}
+
+
+   }
+void findNSL(vector<int>&arr,vector<int>&temp){
+	int n=temp.size();
+	temp[0]=-1;
+	for(int i=1;i<n;i++){
+	int j=i-1;
+	while(j!=-1 && arr[i]<=arr[j])j=temp[j];
+	temp[i]=j;
+}
+
+
+ }
+
+
+    int largestRectangleArea(vector<int>& arr) {
+       int n=arr.size();
+	 vector<int>nsr(n,0);
+	 vector<int>nsl(n,0);
+	 findNSR(arr,nsr);
+       findNSL(arr,nsl);
+	  int ans=0;
+	for(int i=0;i<n;i++){
+	int r=nsr[i];
+	int l=nsl[i];
+	int w=(r-l-1);
+	int h=arr[i];
+	ans=max(ans,(w*h));
+}
+return ans;
+    }
+};
+
