@@ -1,0 +1,23 @@
+class StockSpanner {
+public:
+    vector<int>nsl,arr;
+    StockSpanner() {
+        nsl=vector<int>();
+    }
+    
+    int next(int price) {
+        arr.push_back(price);
+        int n=arr.size();
+        int i=n-1;
+        int j=i-1;
+        while(j!=-1 && arr[i]>=arr[j])j=nsl[j];
+        nsl.push_back(j);
+        return (i-nsl[i]);
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
