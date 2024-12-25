@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int n=0,m=0;
+    int getDiameter(int u,int p,unordered_map<int,vector<int>>&graph,int &d){
+        int ans=0;
+        int maxEl=0;
+        for(int v : graph[u]){
+            if(v==p)continue;
+            int temp=getDiameter(v,u,graph,d);
+            ans=max(ans,maxEl+temp);
+            maxEl=max(maxEl,temp);
+        }
+        d=max(ans,d);
+        return maxEl+1;
+    }
+    
+
+    unordered_map<int,vector<int>>build(vector<vector<int>>edges,bool flag){
+          unordered_map<int,vector<int>>graph;
+          int n=0;
+          for(auto &it : edges){
+                if(graph.find(it[0])==graph.end())graph[it[0]]=vector<int>();
+                if(graph.find(it[1])==graph.end())graph[it[1]]=vector<int>();
+                graph[it[0]].push_back(it[1]);
+                graph[it[1]].push_back(it[0]);
+                n=max({n,it[0],it[1]});
+          }
+          if(flag)this->n=n;
+          else this->m=n;
+          return graph;
+    }
+    int minimumDiameterAfterMerge(vector<vector<int>>& edges1, vector<vector<int>>& edges2) {
+        unordered_map<int,vector<int>>graph1=build(edges1,true);
+        unordered_map<int,vector<int>>graph2=build(edges2,false);
+        int d1=0;
+        int d2=0;
+        getDiameter(0,-1,graph1,d1);
+        getDiameter(0,-1,graph2,d2);
+        
+        int ans=INT_MAX;
+        ans=max(d1,d2);
+        d1=(d1+1)/2;
+        d2=(d2+1)/2;
+        ans=max(ans,(d1+d2+1));
+        return ans;
+
+    }
+};
