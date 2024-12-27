@@ -1,0 +1,80 @@
+class Node{
+public :
+	int val;
+	Node* next;
+    Node* prev;
+    Node(int v){
+        this->val=v;
+        this->next=NULL;
+        this->prev=NULL;
+    }
+};
+
+class LRUCache {
+public:
+    int size=0,cap=0;
+    unordered_map<int,Node*>map1;
+    unordered_map<Node*,int>map2;
+
+    Node* head=NULL;
+    Node* tail=NULL;
+    LRUCache(int capacity) {
+        this->cap=capacity;
+        this->head=new Node(-1); 
+        this->tail=new Node(-2);
+        head->next=tail;
+        tail->prev=head;
+    }
+
+    void insert(int k,int v,Node* newNode){
+        if(size<cap){
+            map1[k]=newNode;
+            map2[newNode]=k;
+            Node* prev=tail->prev;
+            prev->next=newNode;
+            tail->prev=newNode;
+            newNode->next=tail;
+            newNode->prev=prev;
+            size++;
+        }
+        else{
+            deleteNode(head->next);
+            insert(k,v,newNode);
+        }
+	
+    }
+    void update(int k,int v){
+        Node *curr=map1[k];
+        deleteNode(curr);
+        curr->val=v;
+        insert(k,v,curr);
+	
+    }
+    void deleteNode(Node* currNode){
+        if(head->next==tail)return;
+        currNode->prev->next=currNode->next;
+        currNode->next->prev=currNode->prev;
+        map1.erase(map2[currNode]);
+        map2.erase(currNode);
+        size--;
+    }
+    int get(int key) {
+        if(map1.find(key)==map1.end())return -1;
+        int val=map1[key]->val;
+        update(key,val);
+        return val;
+     }
+    
+    
+    
+    void put(int k ,int v) {
+        if(map1.find(k)==map1.end()){
+	       insert(k,v,new Node(v));
+        }
+        else {
+            update(k,v);
+        }
+    }
+};
+
+
