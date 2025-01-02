@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool isVowel(char ch){
+        return (ch=='a' || ch=='e' || ch=='i' || ch=='o' || ch=='u');
+    }
+    vector<int> vowelStrings(vector<string>& arr, vector<vector<int>>& q) {
+        int n=arr.size();
+        vector<int>preSum(n,0);
+        if(isVowel(arr[0][0]) && isVowel(arr[0][arr[0].size()-1]))
+            preSum[0]=1;
+        for(int i=1;i<n;i++){
+            preSum[i]=preSum[i-1];
+            if(isVowel(arr[i][0]) && isVowel(arr[i][arr[i].size()-1]))
+                preSum[i]++;
+        }
+
+        vector<int>ans;
+        for(auto &it : q){
+            int l=it[0];
+            int r=it[1];
+            long long subCnt=(l!=0)?(preSum[r]-preSum[l]) : preSum[r];
+            ans.push_back(subCnt);
+        }
+        return ans;
+    }
+};
