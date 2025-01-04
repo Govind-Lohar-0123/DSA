@@ -1,0 +1,49 @@
+using tpl=tuple<int,int>;
+class TaskManager {
+public:
+    priority_queue<tpl>pq;
+    unordered_map<int,pair<int,int>>umap;
+
+    TaskManager(vector<vector<int>>& tasks) {
+        for(auto &it : tasks){
+            pq.push({it[2],it[1]});
+            umap[it[1]]={it[2],it[0]};
+        }
+    }
+    
+    void add(int userId, int taskId, int priority) {
+        pq.push({priority,taskId});
+        umap[taskId]={priority,userId};
+    }
+    
+    void edit(int taskId, int newPriority) {
+        pq.push({newPriority,taskId});
+        umap[taskId].first=newPriority;
+    }
+    
+    void rmv(int taskId) {
+        umap.erase(taskId);
+    }
+    
+    int execTop() {
+        while(pq.size()!=0){
+            auto [p,taskId]=pq.top();pq.pop();
+            if(umap.find(taskId)==umap.end())continue;
+            auto [pr,userId]=umap[taskId];
+            if(p!=pr)continue;
+            umap.erase(taskId);
+            return userId;
+        }
+        return -1;
+        
+    }
+};
+
+/**
+ * Your TaskManager object will be instantiated and called as such:
+ * TaskManager* obj = new TaskManager(tasks);
+ * obj->add(userId,taskId,priority);
+ * obj->edit(taskId,newPriority);
+ * obj->rmv(taskId);
+ * int param_4 = obj->execTop();
+ */©leetcode
