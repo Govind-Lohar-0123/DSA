@@ -1,0 +1,4 @@
+Step 1:- Make LPS Array of the string which we have to match
+Step 2:- Start matching s with p using preff and suff pointer 
+and as soos as preff index become equal to p.size() it means i got my string to find index do (suff-preff) (o-basedindex)
+and i you have match number string for when preff match and do preff=lps[preff-1];
