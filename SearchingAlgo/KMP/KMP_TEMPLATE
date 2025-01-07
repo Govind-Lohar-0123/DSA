@@ -1,0 +1,62 @@
+
+vector<int> fillLPS(string &p){
+    int n=p.size();
+    vector<int>lps(n,0);
+    int preff=0;
+    int suff=1;
+    while(suff<n){
+        if(p[suff]==p[preff]){
+            preff++;
+            lps[suff]=preff;
+            suff++;
+        }
+        else{
+            if(preff==0)lps[suff++]=0;
+            else preff=lps[preff-1];
+        }
+    }
+    return lps;
+}
+bool KMP(string &s,string &p){
+    int n=s.size();
+    int m=p.size();
+    vector<int>lps= fillLPS(p);
+    int preff=0;
+    int suff=0;
+    while(suff<n && preff<m){
+        if(s[suff]==p[preff]){
+            preff++;
+            suff++;
+        }
+        else{
+            if(preff==0)suff++;
+            else preff=lps[preff-1];
+        }
+    }
+    return (preff>=m);
+}
+
+
+
+class Solution {
+public:
+
+
+
+    vector<string> stringMatching(vector<string>& words) {
+        int n=words.size();
+        vector<string>ans;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i==j)continue;
+                bool isPresent=KMP(words[j],words[i]);
+                if(isPresent){
+                    ans.push_back(words[i]);
+                    break;
+                }
+            }
+            
+        }
+        return ans;
+    }
+};
