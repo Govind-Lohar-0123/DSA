@@ -1,0 +1,81 @@
+using ll=long long;
+using P=pair<ll,ll>;
+
+
+//By myself code written 
+//worst case o(n*m) to avoid this we use double hashing
+void RabinKarp(string &s ,string &p,vector<int>&ans){
+    ll n=s.size();
+    ll m=p.size();
+    if(m>n)return ;
+    // to redix 
+    ll RADIX1=26;
+    ll RADIX2=27;
+    
+    //mod
+    ll MOD1=(1e9+7);
+  
+   
+    ll patternHash=0;
+    ll textHash=0;
+    ll POW1=1;
+   
+    for(int i=0;i<m-1;i++){
+        int ch1=p[i]-'a';
+        int ch2=s[i]-'a';
+        patternHash=((patternHash+(ch1*POW1)%MOD1)%MOD1);
+        textHash=((textHash+(ch2*POW1)%MOD1)%MOD1);
+        POW1=(POW1*RADIX1)%MOD1;
+        
+    }
+    
+    ll i=0,j=m-1;
+    while(j<n){
+        
+        for(int k=0;k<m;k++){
+            if(p[k]!=s[k+i])break;
+            if(k==m-1)ans.push_back(i+1);
+        }
+
+        // slide the window
+        if((j-i+1)==m){
+            textHash=(textHash)/RADIX1;
+            textHash-=s[i]-'a';
+            i++;
+            if(j+1<n){
+               textHash=((textHash+((s[j+1]-'a')*POW1)%MOD1)%MOD1);
+            }
+        }
+        j++;
+    }
+    return ;
+
+
+
+
+
+    
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+class Solution
+
+{
+    public:
+        vector <int> search(string pattern, string text)
+        {vector<int>ans;
+              RabinKarp(text,pattern,ans);
+              return ans;
+        }
+     
+};
