@@ -1,0 +1,65 @@
+1]Simple 
+2]HashMap
+3]Trie
+
+
+class Node{
+    public:
+    vector<int>temp;
+    vector<Node*>child;
+    Node(){
+        this->child=vector<Node*>(26,NULL);
+    }
+};
+
+class Solution{
+public:
+    Node* root;
+    vector<vector<string>>ans;
+    Solution(){
+        root=new Node();
+    }
+    void build(string &word,int i){
+        Node* curr=root;
+        for(char &it : word){
+            int idx=(it-'a');
+            if(curr->child[idx]==NULL) curr->child[idx]=new Node();
+            curr=curr->child[idx];
+            curr->temp.push_back(i);
+        }
+        
+    }
+    
+    void search(string &preffix,string arr[]){
+        Node* curr=root;
+        for(char &it : preffix){
+            int idx=(it-'a');
+            if(curr->child[idx]==NULL){
+              ans.push_back({"0"});  
+              return ;
+            } 
+            curr=curr->child[idx];
+        }
+        vector<string>t;
+        for(int &it : curr->temp){
+            t.push_back(arr[it]);
+        }
+        ans.push_back(t);
+        
+        
+    }
+    vector<vector<string>> displayContacts(int n, string arr[], string s)
+    {
+        sort(arr,arr+n);
+        for(int i=0;i<n;i++){
+            if(i!=0 && arr[i]==arr[i-1])continue;
+            build(arr[i],i);
+        }
+        string t="";
+        for(char &it : s){
+            t.push_back(it);
+            search(t,arr);
+        }
+        return ans;
+    }
+};
