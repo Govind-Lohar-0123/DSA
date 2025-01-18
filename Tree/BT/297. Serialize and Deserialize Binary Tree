@@ -1,0 +1,93 @@
+===============C++ CODE=========================
+class Codec {
+public:
+  
+    string s="";
+    void preOrder(TreeNode* root){
+        if(root==NULL) {s+="2000/";return ;}
+        s+=to_string(root->val) + "/";
+        preOrder(root->left);
+        preOrder(root->right);
+    }
+    string serialize(TreeNode* root) {
+        this->s="";
+        
+        preOrder(root);
+  
+       return s;
+    }
+    string getStr(string &s,int &i){
+        string t="";
+        while(i<s.size() && s[i]!='/')t.push_back(s[i++]);
+        return t;
+    }
+    // Decodes your encoded data to tree.
+    int idx=-1;
+    TreeNode* buildTree(string &s){
+        idx++;
+        string temp=getStr(s,idx);
+        
+        if(idx>=s.size() || temp=="2000")return NULL;
+        TreeNode* newNode=new TreeNode(stoi(temp));
+        newNode->left=buildTree(s);
+        newNode->right=buildTree(s);
+        return newNode;
+    }
+    TreeNode* deserialize(string data) {
+        idx=-1;
+       return buildTree(data);
+    }
+};
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser, deser;
+// TreeNode* ans = deser.deserialize(ser.serialize(root));
+
+==============Java Code========
+
+
+public class Codec {
+    String s="";
+
+    void preOrder(TreeNode root){
+        if(root==null){
+            s+="2000/";
+            return ;
+        }
+        s+=root.val+"/";
+        preOrder(root.left);  
+        preOrder(root.right);  
+    }
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        this.s="";
+        preOrder(root);
+        return s;
+
+    }
+    String getStr(String s){
+        String t="";
+        while(idx<s.length() && s.charAt(idx)!='/')t+=s.charAt(idx++);
+        return t;
+    }
+    int idx=-1;
+    TreeNode buildTree(String  s){
+        idx++;
+        String temp=getStr(s);
+        if(idx>=s.length() || temp.equals("2000"))return null;
+        TreeNode newNode =new TreeNode(Integer.parseInt(temp));
+        newNode.left=buildTree(s);
+        newNode.right=buildTree(s);
+        return newNode;
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        return buildTree(data);
+    }
+}
+
+// Your Codec object will be instantiated and called as such:
+// Codec ser = new Codec();
+// Codec deser = new Codec();
+// TreeNode ans = deser.deserialize(ser.serialize(root));
