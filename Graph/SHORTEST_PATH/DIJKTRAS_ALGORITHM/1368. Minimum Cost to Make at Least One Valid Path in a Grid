@@ -1,3 +1,6 @@
+
+===================C++ CODE=================================
+
 using T=tuple<int,int,int>;
 class Solution {
 public:
@@ -35,3 +38,53 @@ public:
       return solve(0,0,grid);
     }
 };
+=========================================JAVA CODE===================================================
+class Solution {
+    int dr[]={1,-1,0,0};
+    int dc[]={0,0,-1,1};
+    int dir[]={3,4,2,1};
+    class Pair{
+        int r,c,dis;
+        Pair(int d,int r,int c){
+            this.r=r;
+            this.c=c;
+            this.dis=d;
+        }
+    }
+    int solve(int i,int j,int [][] grid){
+        PriorityQueue<Pair> pq = new PriorityQueue<>((p1, p2) ->p1.dis-p2.dis);
+        int n=grid.length;
+        int m=grid[0].length;
+        boolean vis[][]=new boolean[n][m];
+        int dis[][]=new int[n][m];
+        for(i=0;i<n;i++)Arrays.fill(dis[i],Integer.MAX_VALUE);
+        pq.offer(new Pair(0,0,0));
+        dis[0][0]=0;
+        while(pq.size()!=0){
+            Pair p=pq.peek();pq.poll();
+            if(p.r==n-1 && p.c==m-1)return p.dis;
+            if(vis[p.r][p.c])continue;
+            vis[p.r][p.c]=true;
+            for(i=0;i<4;i++){
+                int nr=dr[i]+p.r;
+                int nc=dc[i]+p.c;
+                if(nr>=0 && nc>=0 && nr<n && nc<m){
+                    int wt=((dir[i] !=grid[p.r][p.c])?1:0 ) + p.dis;
+                    if(vis[nr][nc]==false && dis[nr][nc]>wt){
+                        dis[nr][nc]=wt;
+                        pq.offer(new Pair(wt,nr,nc));
+                    }
+                }
+            }
+
+        }
+
+        
+return 0;
+
+    }
+    public int minCost(int[][] grid) {
+        return solve(0,0,grid);
+
+    }
+}
