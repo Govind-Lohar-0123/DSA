@@ -1,3 +1,63 @@
+
+=======================JAVA CODE=================================
+class Solution {
+    class Pair{
+        int lvl,r,c;
+        Pair(int l,int r,int c){
+            this.lvl=l;
+            this.r=r;
+            this.c=c;
+        }
+    }
+    public int trapRainWater(int[][] arr) {
+        int n=arr.length;
+        int m=arr[0].length;
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)-> a.lvl - b.lvl);
+        boolean vis[][]=new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(i==0 || j==0 || i==n-1 || j==m-1){
+                    vis[i][j]=true;
+                    pq.offer(new Pair(arr[i][j],i,j));
+                }
+            }
+        }
+        int ans=0;
+        int dr[]={1,-1,0,0};
+        int dc[]={0,0,1,-1};
+       
+        while(pq.size()!=0){
+            Pair p=pq.peek();pq.poll();
+            for(int i=0;i<4;i++){
+                int nr=dr[i]+p.r;
+                int nc=dc[i]+p.c;
+                if(nr>=0 && nc>=0 && nr<n && nc<m && vis[nr][nc]==false){
+                    int water=Math.max(0,arr[p.r][p.c]-arr[nr][nc]);
+                    ans+=water;
+                    arr[nr][nc]+=water;
+                    pq.offer(new Pair(arr[nr][nc],nr,nc));
+                    vis[nr][nc]=true;
+                }
+
+            }
+        }
+        return ans;
+
+    }
+}
+
+
+
+=================C++ CODE====================
+
+
+
+
+
+
+
+
+
 using T=tuple<int,int,int>;
 class Solution {
 public:
