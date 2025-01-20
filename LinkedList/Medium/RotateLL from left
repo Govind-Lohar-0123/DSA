@@ -69,3 +69,33 @@ ode* rotate(Node* head, int k)
   
     return head; 
 } 
+
+lass Solution {
+  public:
+    Node* rotate(Node* head, int k) {
+        Node* curr=head;
+        int n=0;
+        Node* tail=head;
+        while(curr!=NULL){
+            tail=curr;
+            n++;
+            curr=curr->next;
+        }
+        k=k%n;
+        if(k==0)return head;
+        
+       
+    curr=head;
+    while(k!=0){
+        Node* next=curr->next;
+        curr->next=NULL;
+        tail->next=curr;
+        curr=next;
+        tail=tail->next;
+        k--;
+        
+    }
+    return curr;
+        
+    }
+};
