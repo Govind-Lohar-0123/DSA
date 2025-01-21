@@ -1,0 +1,27 @@
+
+class Solution {
+    public long gridGame(int[][] grid) {
+        int m=grid[0].length;
+        long rowOneSum=0;
+        long rowTwoSum=0;
+        for(int i=0;i<m;i++){
+            rowOneSum+=grid[0][i];
+            rowTwoSum+=grid[1][i];
+        }
+        long r1=0;
+        long r2=Long.MAX_VALUE;
+        long cumSum1=0;
+        long cumSum2=0;
+
+        for(int i=0;i<m;i++){
+            cumSum1+=grid[0][i];
+            long sum1=rowOneSum-cumSum1;
+            long sum2=cumSum2;
+            
+            r2=Math.min(r2,Math.max(sum1,sum2));
+            cumSum2+=grid[1][i];
+        }
+        return r2;
+
+    }
+}
