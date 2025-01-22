@@ -1,0 +1,46 @@
+lass Solution {
+  public:
+    Node * reverse(Node* head){
+        Node* prev=NULL;
+        Node * curr=head;
+        while(curr!=NULL){
+            Node* next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+    Node* addTwoLists(Node* num1, Node* num2) {
+        int carry=0;
+        int sum=0;
+        num1=reverse(num1);
+        num2=reverse(num2);
+        Node* tail=NULL;
+        Node* head=NULL;
+        
+        while(num1!=NULL || num2!=NULL){
+            int val1=(num1==NULL) ? 0 : num1->data;
+            int val2=(num2==NULL) ? 0 : num2->data;
+            
+            sum=(val1+val2) + carry;
+            Node * temp=(num1==NULL) ? num2 : num1;
+            temp->data=(sum%10);
+            if(head==NULL)head=temp;
+            else tail->next=temp;
+            tail=temp;          
+            carry=(sum/10);
+            
+            if(num1!=NULL)num1=num1->next;
+            if(num2!=NULL)num2=num2->next;
+        }
+        tail->next=NULL;
+        if(carry==1)tail->next=new Node(1);
+        
+        head=reverse(head);
+        while(head!=NULL && head->data==0)head=head->next;
+        if(head==NULL)return new Node(0);
+        return head;
+        
+    }
+};
