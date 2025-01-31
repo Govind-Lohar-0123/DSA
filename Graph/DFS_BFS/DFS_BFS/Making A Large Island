@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int dr[4]={-1,1,0,0};
+    int dc[4]={0,0,-1,1};
+    int clr=2;
+    int solve(int r,int c,vector<vector<int>>&grid){
+        int ans=0;
+        grid[r][c]=clr;
+        for(int i=0;i<4;i++){
+            int nr=dr[i]+r;
+            int nc=dc[i]+c;
+            if(nr>=0 && nc>=0 && nr<grid.size() && nc<grid[0].size() && grid[nr][nc]==1){
+                ans+=solve(nr,nc,grid);
+            }
+        }
+        return ans+1;
+    }
+    int largestIsland(vector<vector<int>>& grid) {
+        int n=grid.size();
+        int m=grid[0].size();
+
+        unordered_map<int,int>map;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==1){
+                    map[clr]=solve(i,j,grid);
+                    clr++;
+                }
+            }
+        }
+        int ans=0;
+        bool flag=false;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                int temp=1;
+                if(grid[i][j]==0){
+                    flag=true;
+                    unordered_set<int>set;
+                    for(int k=0;k<4;k++){
+                        int nr=dr[k]+i;
+                        int nc=dc[k]+j;
+                        if(nr>=0 && nc>=0 && nr<n && nc<m && grid[nr][nc]!=0){
+                            set.insert(grid[nr][nc]);
+                        }
+                    }
+                    for(int it : set)temp+=map[it];
+
+                    ans=max(ans,temp);
+                }
+            }
+        }
+        if(flag==false)ans=(n*m);
+        return ans;
+
+
+    }
+};
