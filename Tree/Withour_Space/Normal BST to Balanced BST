@@ -1,0 +1,49 @@
+W
+class Solution {
+public:
+    Node* head = NULL;
+    Node* prev = NULL;
+
+    int solve(Node* root) {
+        if (root == NULL) return 0;
+
+        int left = solve(root->left);
+
+        // Process current node
+        if (head == NULL) {
+            head = root;  // First node becomes the head
+        } else {
+            prev->right = root;  // Link previous node to current node
+        }
+
+        root->left = NULL; // Ensure left is NULL (for right-skewed structure)
+        prev = root;  // Move prev pointer
+
+        int right = solve(root->right);
+
+        return left + right + 1; // Return total node count
+    }
+
+
+    
+    
+    Node* convert(int n){
+        if(n<=0 || head==NULL)return NULL;
+        
+        Node*left=convert(n/2);
+        Node *root=head;
+        root->left=left;
+        head=head->right;
+        root->right=convert(n-n/2-1);
+        return root;
+    }
+    Node* buildBalancedTree(Node* root)
+    {
+        
+    	int n=solve(root);
+    	
+    return convert(n);
+      
+    // 	return convert(root,n);
+    }
+};
