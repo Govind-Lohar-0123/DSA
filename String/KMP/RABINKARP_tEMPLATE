@@ -1,0 +1,64 @@
+#define ll long long
+const ll MOD = 1e9 + 7;
+const ll BASE = 26;  // Base for hashing
+
+class Solution {
+    ll getHash(const string& s, int m) {
+        ll hashValue = 0;
+        ll power = 1; // BASE^0 = 1
+        
+        for (int i = m - 1; i >= 0; i--) {
+            int ch = s[i] - 'a';
+            hashValue = (hashValue + (power * ch) % MOD) % MOD;
+            power = (power * BASE) % MOD;
+        }
+        return hashValue;
+    }
+
+public:
+    vector<int> search(string pattern, string text) {
+        int n = text.size();
+        int m = pattern.size();
+        if (m > n) return {};
+
+        vector<int> ans;
+        ll patHash = getHash(pattern, m);
+        ll textHash = getHash(text, m);
+
+        ll power = 1;
+        for (int i = 1; i < m; i++) {
+            power = (power * BASE) % MOD;
+        }
+
+        int i = 0, j = m - 1;
+
+        while (j < n) {
+            
+            if(i!=0) textHash = (textHash + (text[j] - 'a')) % MOD;
+                
+            
+            if (textHash == patHash) {
+                bool flag = true;
+                for (int k = 0; k < m; k++) {
+                    if (text[i + k] != pattern[k]) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) ans.push_back(i + 1);
+            }
+            
+            textHash = (textHash - ((text[i] - 'a') * power) % MOD + MOD) % MOD;
+            textHash = (textHash * BASE) % MOD;
+            // Rolling hash update: remove leftmost character and add new rightmost character
+            i++;j++;
+                
+               
+            
+
+            
+            
+        }
+        return ans;
+    }
+};
