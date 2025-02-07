@@ -1,0 +1,105 @@
+class AVLTree{
+   
+    public:
+        int getHeight(Node* root){
+            if(root==NULL)return 0;
+            return root->height;
+        }
+        
+        int getBalanceFactor(Node* root){
+            //to get balamnce take dofferen
+            if(root==NULL)return 0;
+            return (getHeight(root->left) - getHeight(root->right));
+        }
+        
+        Node* createNode(int k){
+            Node * newNode=new Node(k);
+            newNode->height=1;
+            return newNode;
+        }
+        
+        Node* rightRotation(Node *root){
+            Node* y=root;
+            Node *x=root->left;
+            Node *t2=x->right;
+            
+            y->left=t2;
+            x->right=y;
+            
+            y->height=max(getHeight(y->left) , getHeight(y->right)) +1;
+            x->height=max(getHeight(x->left) , getHeight(x->right)) +1;
+            return x;
+            
+        }
+        Node* leftRotation(Node *root){
+            Node* y=root;
+            Node *x=root->right;
+            Node *t2=x->left;
+            
+            y->right=t2;
+            x->left=y;
+            
+            y->height=max(getHeight(y->left) , getHeight(y->right)) +1;
+            x->height=max(getHeight(x->left) , getHeight(x->right)) +1;
+            return x;
+            
+        }
+        
+        Node* insert(Node* root,int k){
+            if(root==NULL)return createNode(k);
+            
+            if(root->data > k)
+                root->left=insert(root->left,k);
+                
+            else if(root->data<k)
+                root->right=insert(root->right,k);
+            
+            root->height=max(getHeight(root->left) , getHeight(root->right)) +1;
+            
+            //chaeck balance factor
+            
+            int bf=getBalanceFactor(root);
+            
+            
+            if(bf>1 && root->left->data > k) //right rotation
+                return rightRotation(root);
+                
+            if(bf<-1 && root->right->data < k) //left rotaton
+                return leftRotation(root);
+                
+            if(bf>1 && root->left->data < k) //left right rotation
+              {    root->left=leftRotation(root->left);
+                  return rightRotation(root);
+                   
+              }
+            if(bf<-1 && root->right->data > k) //right left rotation
+              {    root->right=rightRotation(root->right);
+                   return leftRotation(root);
+                   
+              }
+              return root;
+        }
+        
+    
+};
+
+
+class Solution{
+  public:
+  
+  
+   void solve(Node* root){
+       if(root==NULL)return ;
+       solve(root->left);
+            cout<<root->data << " ";
+       solve(root->right);
+   }
+    Node* insertToAVL(Node* node, int key)
+    {
+        AVLTree obj;
+      
+        Node * root=obj.insert(node,key);
+        
+        return root;
+    }
+};
