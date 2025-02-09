@@ -1,0 +1,37 @@
+class Solution {
+public: 
+   typedef tuple<int,string> T ;
+    unordered_set<string>set;
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+       int n=wordList.size();
+       
+        //step 1 insert all word in set
+        for(string &it : wordList)set.insert(it);//O(5*10^3 * 10)
+        if(set.find(endWord)==set.end())return 0;
+        // change char and push in queue
+        
+        priority_queue<T,vector<T>,greater<>>pq;
+        pq.push({1,beginWord});
+        
+        while(pq.size()!=0){  //O(5*10^3 * 10)
+            auto [cnt,s]=pq.top();pq.pop();//O(long(5*10^3 * 10))
+            if(s==endWord)return cnt; //O(10)
+            // got and change char
+            int m=s.size();
+            for(int i=0;i<m;i++){  //O(10)
+                    string t=s; //O(10)
+                for(char ch ='a' ; ch<='z';ch++){ //O(26)
+                    t[i]=ch;
+                    if(set.find(t)==set.end())continue; //O(10)
+                    pq.push({cnt+1,t}); //Olong(5*10^3 * s)
+                    set.erase(t); //O(10)
+                }
+            
+            }
+            
+        }
+        return 0;
+        
+	 //O(5*10^3 * 10)* ( O(long(5*10^3 * 10))  + O(10 * 26 )*long(5*10^3 * s) )
+    }
+};
