@@ -1,0 +1,63 @@
+class Solution {
+    
+  public:
+    string findOrder(vector<string> &words) {
+        int n=words.size();
+        int ind[26]={0};
+        unordered_map<char,vector<char>>graph;
+        int map[26]={0};
+       
+       for(int i=0;i<n;i++){
+            string &s1=words[i];
+           for(char ch : s1)map[ch-'a']++;
+           
+        }  
+        // make the grapg
+        for(int i=0;i<n-1;i++){
+            string &s1=words[i];
+            string &s2=words[i+1];
+            int j=0;
+            int m=min(s1.size(),s2.size());
+            while(j<m && s1[j]==s2[j])j++;
+            if(j<s1.size() && j<s2.size()){
+                 
+                graph[s1[j]].push_back(s2[j]);
+                ind[s2[j]-'a']++;
+            }
+            else if(j<s1.size())return "";
+        }  
+        
+        
+        
+        
+        queue<char>q;
+        string ans="";
+        for(int i=0;i<26;i++){
+            if(ind[i]==0 && map[i]>0)q.push(char(i + 'a'));
+        }
+        
+        int vis[26]={0};
+        while(q.size()!=0){
+            char u=q.front();q.pop();
+            ans.push_back(u);
+            vis[u-'a']=true;
+           
+            for(char v : graph[u]){
+                ind[v-'a']--;
+                if(ind[v-'a']==0){
+                    q.push(v);
+                }
+            }
+        }
+        for(int i=0;i<26;i++){
+            if(map[i]>0){
+                if(vis[i]==0)return "";
+            }
+        }
+        return ans;
+        
+        
+        
+        
+    }
+};
