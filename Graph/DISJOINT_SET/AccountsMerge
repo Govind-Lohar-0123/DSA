@@ -1,0 +1,71 @@
+class DisjointSet{
+    vector<int>par,rank;
+    public :
+    DisjointSet(int n){
+        par.resize(n+1,0);
+        rank.resize(n+1,1);
+        for(int i=0;i<n;i++)par[i]=i;
+    }
+
+    int getPar(int u){
+        if(par[u]==u)return u;
+        return par[u]=getPar(par[u]);
+    }
+
+    void unionByRank(int u,int v){
+        int up=getPar(u);
+        int vp=getPar(v);
+        if(up==vp)return ;
+        if(rank[up]==rank[vp]){
+            par[vp]=up;
+            rank[up]++;
+        }
+        else if(rank[up]>rank[vp])par[vp]=up;
+        else par[up]=vp;
+    }
+
+
+
+};
+
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n =accounts.size();
+        // i am storing all email of them
+        unordered_map<string,vector<int>>emailMap;
+        for(int i=0;i<n;i++){
+            for(int j=1;j<accounts[i].size(); j++){
+                emailMap[accounts[i][j]].push_back(i);
+            }
+        }
+        //make dsu for all index to make merge
+        DisjointSet *ds=new DisjointSet(n);
+        for(auto &[k,vec] : emailMap){
+            int u=vec[0];
+            for(int v : vec)ds->unionByRank(u,v);
+        }
+
+        // make the set and store all index
+        unordered_map<int,unordered_set<string>>map;
+        for(int v=0;v<n;v++){
+            int vp=ds->getPar(v);
+            for(int i=1;i<accounts[v].size();i++){
+                map[vp].insert(accounts[v][i]);
+            }
+        }
+
+        vector<vector<string>>ans;
+        for(auto &[k,st] : map){
+            vector<string>temp;
+            temp.push_back(accounts[k][0]);
+            vector<string>t(st.begin(),st.end());
+            sort(t.begin(),t.end());
+            for(string &it : t)temp.push_back(it);
+            ans.push_back(temp);
+        }
+        return ans;
+
+
+    }
+};
