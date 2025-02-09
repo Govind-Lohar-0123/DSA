@@ -1,0 +1,32 @@
+#include <bits/stdc++.h>
+using namespace std;
+using T = pair<int, int>;
+
+class Solution {
+public:
+    int spanningTree(int n, vector<vector<int>> adj[]) {
+        priority_queue<T, vector<T>, greater<T>> pq;
+        vector<bool> vis(n, false);
+        pq.push({0, 0});  // {weight, node}
+        int ans = 0;
+
+        while (!pq.empty()) {
+            int dis = pq.top().first;
+            int u = pq.top().second;
+            pq.pop();
+
+            if (vis[u]) continue;  // Skip if already visited
+            vis[u] = true;
+            ans += dis;
+
+            for (auto &it : adj[u]) {
+                int v = it[0];
+                int wt = it[1];
+                if (!vis[v]) {
+                    pq.push({wt, v});
+                }
+            }
+        }
+        return ans;
+    }
+};
