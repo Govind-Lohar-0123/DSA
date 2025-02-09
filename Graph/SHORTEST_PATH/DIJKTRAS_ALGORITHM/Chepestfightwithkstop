@@ -1,0 +1,42 @@
+Note:-neight we can use vis or priorityquee becuase of this wxmaple
+
+[[0,1,5],[1,2,5],[0,3,2],[3,1,2],[1,4,1],[4,2,1]]
+src=0,dst=2,k=2; 
+dry run then understand
+
+
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k)   {
+        unordered_map<int,vector<vector<int>>>graph;
+        for(auto it : flights){
+            int u=it[0];
+            int v=it[1];
+            int wt=it[2];
+            graph[u].push_back({wt,v});
+        }
+    int ans=INT_MAX;
+        queue<tuple<int,int,int>>pq;
+        
+        vector<int>dis(n,INT_MAX);
+        dis[src]=0;
+        pq.push({0,src,0});
+        while(pq.size()!=0){ 
+            auto [wt,u,step]=pq.front();pq.pop();
+           
+            if(u==dst)ans=min(ans,wt);
+            if(step>k)continue;
+            // vis[u]=true;
+            for(auto &it : graph[u]){
+                int v=it[1];
+                int d=it[0];
+                if( dis[v]>wt + d){
+                    dis[v]=wt+d;
+                    pq.push({dis[v],v,step+1});
+                }
+            }
+        }
+        return ans ==INT_MAX ?-1 :ans ;
+
+    }
+};
