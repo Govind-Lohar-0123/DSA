@@ -1,0 +1,49 @@
+// please dry on expmale
+class Solution {
+  public:
+    bool vis[21]={false};
+    bool solve(int u,int clr,int m,unordered_map<int,vector<int>>&graph,vector<int>&color){
+        color[u]=clr;
+        
+        for(int v : graph[u]){
+            vis[v]=true;
+            if(color[v]==clr)return false;
+            if(color[v]==0){
+                for(int c=1;c<=m;c++){
+                    if(c==clr)continue;
+                    if(solve(v,c,m,graph,color)==false)  //it means v node has same color we need to check other color
+                        color[v]=0;                     
+                         
+                    else break;  //it mean color is done so please break otherwise it will keep on changinf the color will give you wrong ans
+                                
+                    
+                }
+                if(color[v]==0)return false; // it mean the v is not able to take any color we need chnage parent colot
+                
+            }
+        }
+        return true;
+    }
+    bool graphColoring(int n, vector<pair<int, int>>& edges, int m) {
+      vector<int>color(n,0);
+      
+      unordered_map<int,vector<int>>graph;
+      for(auto &it : edges){
+          int u=it.first;
+          int v=it.second;
+          if(u==v)continue;
+          graph[u].push_back(v);
+          graph[v].push_back(u);
+      }
+      for(int i=0;i<n;i++){
+          if(vis[i])continue;
+          vis[i]=true;
+          if(solve(i,1,m,graph,color)==false)return false;
+      }
+      
+      return true;
+     
+     
+      
+    }
+};
