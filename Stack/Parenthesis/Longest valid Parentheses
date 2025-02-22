@@ -1,0 +1,35 @@
+class Solution {
+  public:
+    int maxLength(string& s) {
+        int n=s.size();
+        stack<int>st;
+        int ans=0;
+        vector<int>valid(n,-1);
+        for(int i=0;i<n;i++){
+            if(s[i]=='(')st.push(i);
+            else{
+                if(st.size()!=0){
+                    int j=st.top();
+                    st.pop();
+                    valid[j]=i;
+                }
+            }
+        }
+        
+        int idx=0;
+        while(idx<n){
+            int temp=0;
+            if(valid[idx]==-1){
+                idx++;
+                continue;
+            }
+            while(idx<n && valid[idx]!=-1){
+                temp+=(valid[idx]-idx+1);
+                idx=valid[idx]+1;
+            }
+            ans=max(ans,temp);
+        }
+        return ans;
+        
+    }
+};
