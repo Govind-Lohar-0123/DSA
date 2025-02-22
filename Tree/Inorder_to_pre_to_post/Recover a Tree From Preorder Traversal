@@ -1,0 +1,60 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int idx=0;
+    vector<int>preSum;
+
+    int getValue(int i,string &s){
+        int res=0;
+        while(i<s.size() && s[i]!='-'){
+            int digit=s[i]-'0';
+            res=(res*10)+digit;
+            i++;
+        }
+        return res;
+    }
+    int getNextIndex(int i,string &s){
+        while(i<s.size() && s[i]!='-')i++;
+       
+        return i-1;
+    }
+    
+    TreeNode* solve(int depth,int i,string &s)
+    {
+        if(i>=s.size() || s[i]=='-')return NULL;
+        if(i!=0 && s[i-1]!='-')return NULL;           //-345
+        if((preSum[i]-preSum[idx]-1)>0)return NULL;
+        int val=getValue(i,s);
+        i=getNextIndex(i,s);
+        idx=i;
+        TreeNode* newNode=new TreeNode(val);
+
+        newNode->left=solve(depth+1,depth+idx+2,s);
+        newNode->right=solve(depth+1,depth+idx+2,s);
+        return newNode;
+    }
+    TreeNode* recoverFromPreorder(string s) {
+        preSum.resize(s.size(),0);
+        int n=s.size();
+        
+        for(int i=0;i<n;i++){
+            if(i!=0)preSum[i]=preSum[i-1];
+            preSum[i]+=(s[i]!='-')?1 : 0;
+            int val=preSum[i];
+            while(i<n && s[i]!='-')preSum[i++]=val;
+            while(i<n && s[i]=='-')preSum[i++]=val;
+            i--;
+        }
+        return solve(0,0,s);
+    }
+};
