@@ -1,0 +1,53 @@
+using ll=long long;
+class Solution {
+public:
+    vector<int>path;
+    vector<bool>vis;
+    bool getPath(int u,int p,int bob,unordered_map<int,vector<int>>&graph){
+        path.push_back(u);
+        if(u==bob)return true;
+
+        for(int v : graph[u]){
+            if(v==p)continue;
+            if(getPath(v,u,bob,graph))return true;
+        }
+
+        path.pop_back();
+        return false;
+    }
+
+    ll solve(int u,int p,int j,vector<int>&amt,unordered_map<int,vector<int>>&graph){
+        ll ans=amt[u];
+        
+        if(j>=0 && u==path[j])ans=amt[u]/2;
+        if(vis[u])ans=0;
+        if(j>=0)vis[path[j]]=true;
+        ll temp=INT_MIN;
+        for(int v : graph[u]){
+            if(v==p)continue;
+            temp=max(temp,solve(v,u,j-1,amt,graph));
+        }
+        if(j>=0)vis[path[j]]=false;
+        return ((temp==INT_MIN)? 0 : temp)  + ans;
+    }
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amt) {
+        int n=amt.size();
+        vis.resize(n,0);
+	
+        unordered_map<int,vector<int>>graph;
+        for(auto &it : edges){
+            graph[it[0]].push_back(it[1]);
+            graph[it[1]].push_back(it[0]);
+        }
+        getPath(0,-1,bob,graph);
+        return (int)solve(0,-1,path.size()-1,amt,graph);
+    }
+};
+
+
+
+
+
+
+
+
