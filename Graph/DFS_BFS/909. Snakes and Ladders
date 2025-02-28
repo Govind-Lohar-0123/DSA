@@ -1,0 +1,60 @@
+class Solution {
+public:
+    unordered_map<int,pair<int,int>>map;
+   
+   
+    
+    int solve(int curr,vector<vector<int>>& grid){
+       queue<int>q;
+       int n=grid.size();
+       n=(n*n);
+   
+       int dis[21*21];
+       fill(dis,dis+(21*21),1000);
+       dis[1]=0;
+       q.push(curr);
+       
+       while(q.size()!=0){
+          int curr=q.front();q.pop();
+          int d=dis[curr];
+          
+          if(curr==n)return d;
+          
+          for(int k=(curr+1);k<=min(curr+6,n);k++){
+               int r=map[k].first;
+               int c=map[k].second;
+               int dest=(grid[r][c]==-1)?k : grid[r][c];
+               
+                if(dis[k]<=d+1 || dis[dest]<=d+1)continue;
+                q.push(dest);
+                dis[dest]=d+1;
+              
+               
+
+          }
+         
+       }
+       return -1;
+
+    }
+    int snakesAndLadders(vector<vector<int>>& grid) {
+       
+        int n=grid.size();
+        
+        int num=1;
+        bool isTurn=true;
+        for(int i=n-1;i>=0;i--){
+            
+            for(int j=0;j<n && isTurn;j++){
+                map[num++]={i,j};
+            }
+            for(int j=n-1;j>=0 && isTurn==false;j--){
+                map[num++]={i,j};
+            }
+            isTurn=(!isTurn);
+        }
+      
+        return solve(1,grid);
+   
+    }
+};
