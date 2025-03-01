@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        int m=n-1;
+        int fact=1;
+        for(int i=2;i<=m;i++)fact*=i;
+        vector<int>arr;
+        for(int i=1;i<=n;i++)arr.push_back(i);
+        string ans;
+
+        while(true){
+            int len=arr.size();
+            int idx=ceil((double)k/fact);
+            idx=idx%len;
+            idx--;
+            if(idx==-1)idx=len-1;
+            ans.push_back(char(arr[idx] + '0'));
+            if(m==0)return ans;
+            fact=fact/(m--);
+            arr.erase(arr.begin() + idx);
+        }
+        return ans;
+    }
+};
