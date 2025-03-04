@@ -1,0 +1,57 @@
+when i pass the vector  as dp in methods it shows tle 
+when i pass the array like  as dp in method it works well
+when i use the vector as dp outside the method then it shows tle
+when i use the array like dp as dp outside the method then it shows tle
+
+
+
+using ll = long long;
+ll val = (1e8);
+
+class Solution {
+public:
+    vector<ll> preSum;
+    
+    ll solve(int i, int k, int canContinue, vector<int>& arr, int m, vector<vector<vector<ll>>>&dp) {     
+        int t = k;
+        int n = arr.size();
+        
+        for (i = n; i >= 0; i--) {
+            for (k = 0; k <= t; k++) {
+                for (canContinue = 0; canContinue < 2; canContinue++) {
+                    if (i >= n && k == 0) dp[i][k][canContinue] = 0;
+                    else if (i >= n || k < 0) dp[i][k][canContinue] = -20000000;
+                    else {
+                        ll op1 = -20000000;
+                        if (canContinue == 1) op1 = dp[i + 1][k][1] + arr[i];
+
+                        ll op2 = -20000000;
+                        if (i + m <= n) {
+                            int j = i + m - 1;
+                            ll sum = preSum[j] - (i > 0 ? preSum[i - 1] : 0);
+                            op2 = (k != 0) ? dp[j + 1][k - 1][1] + sum : -20000000;
+                        }
+
+                        ll op3 = dp[i + 1][k][0];
+                        dp[i][k][canContinue] = max({op1, op2, op3});
+                    }
+                }
+            }
+        }
+
+        return dp[0][t][0];
+    }
+
+    int maxSum(vector<int>& nums, int k, int m) {
+       vector<vector<vector<ll>>>dp(2002,vector<vector<ll>>(2001,vector<ll>(2,0)));
+        preSum.resize(nums.size(), 0);
+        preSum[0] = nums[0];
+
+        for (int i = 1; i < nums.size(); i++) {
+            preSum[i] = preSum[i - 1] + nums[i];
+        }
+
+        // memset(dp, 0, sizeof(dp)); // Initialize dp array
+        return (int)solve(0, k, 0, nums, m, dp); // Pass dp as an array
+    }
+};
