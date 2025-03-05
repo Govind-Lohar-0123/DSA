@@ -1,0 +1,53 @@
+class Solution {
+  public:
+  
+    int solve(string &str,unordered_map<string ,int>&map){
+        queue<string>q;
+        int ans=0;
+        q.push(str);
+	    int lvl=0;
+        while(q.size()!=0){
+    	    int size=q.size();
+    	    lvl++;
+    	    while(size--!=0){
+    
+        	      string &s=q.front();q.pop(); // when i take using referrcen then give error
+        	     
+        	      int n=s.size();
+        	    
+                  for(int i=0;i<n;i++){
+        		      string t;
+                      for(int j=0;j<n;j++){
+            			if(i==j)continue;
+            			t.push_back(s[j]);
+            		   }
+                		 if(map.find(t)!=map.end()){
+                			map.erase(t);
+                			q.push(t);
+                		 }
+    	   
+                    }
+
+	            }
+	        }
+return lvl;
+    }
+    int longestStrChain(vector<string>& words) {
+        unordered_map<string,int>map;
+         sort(words.begin(), words.end(), [](const auto& a, const auto& b) {
+            int n1=a.size();
+            int n2=b.size();
+            return n1<n2; 
+        });
+        int n=words.size();
+        for(int i=0;i<n;i++)map[words[i]]=i;
+        queue<int>q;
+        int ans=0;
+        for(int i=n-1;i>=0;i--){
+            if(map.find(words[i])==map.end())continue;
+            ans=max(ans,solve(words[i],map));
+        }
+        return ans;
+        
+    }
+};
