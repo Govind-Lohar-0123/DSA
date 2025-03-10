@@ -1,0 +1,95 @@
+using ll=long long;
+class Solution {
+public:
+    int getIdx(char ch){
+        if(ch=='a')return 0;
+        if(ch=='e')return 1;
+        if(ch=='i')return 2;
+        if(ch=='o')return 3;
+        if(ch=='u')return 4;
+        return -1;
+
+    }
+    int k;
+     vector<vector<int>>freq;
+    inline int getCountOfVowel(int l,int r,bool flag){
+        int cnt=0;
+        int sum=0;
+        for(int i=0;i<5;i++){
+            int val=(l!=0)?(freq[r][i]-freq[l-1][i]) : freq[r][i];
+            sum+=val;
+            if(val>0)cnt++;
+        }
+       
+        return (flag) ? cnt : sum;
+     }
+     int getUpperBound(int i){
+        
+        int ans=-1;
+        int l=i;
+        int r=freq.size()-1;
+        while(l<=r){
+            int mid=(l+r)>>1;
+            int cntVowel=getCountOfVowel(i,mid,true);
+            int cntCons=(mid-i+1)-getCountOfVowel(i,mid,false);
+            if(cntVowel>=5){
+                if(cntCons==k){
+                    l=mid+1;
+                    ans=mid;
+                }
+                else if(cntCons>k)r=mid-1;
+                else l=mid+1;
+            }
+            else l=mid+1;
+
+        }
+        return ans;
+
+    }
+    int getLowerBound(int i){
+        
+        int ans=-1;
+        int l=i;
+        int r=freq.size()-1;
+        while(l<=r){
+            int mid=(l+r)>>1;
+           int cntVowel=getCountOfVowel(i,mid,true);
+            int cntCons=(mid-i+1)-getCountOfVowel(i,mid,false);
+            if(cntVowel>=5){
+                if(cntCons==k){
+                    r=mid-1;
+                    ans=mid;
+                }
+                else if(cntCons>k)r=mid-1;
+                else l=mid+1;
+            }
+            else l=mid+1;
+
+        }
+        return ans;
+
+    }
+   
+    long long countOfSubstrings(string word, int k) {
+        this->k=k;
+        int n=word.size();
+        freq.resize(n,vector<int>(5,0));
+        for(int i=0;i<n;i++){
+            char ch=word[i];
+            int idx=getIdx(ch);
+            if(idx!=-1)freq[i][idx]++;
+            for(int j=0;j<5 && i!=0 ;j++){
+                freq[i][j]+=freq[i-1][j];
+            }
+        }
+
+        ll ans=0;
+        for(int i=0;i<n;i++){
+            int l=getLowerBound(i);
+            int r=getUpperBound(i);
+          
+            if(l!=-1 && r!=-1)ans+=(r-l+1);
+        }
+        return ans;
+    }
+};
