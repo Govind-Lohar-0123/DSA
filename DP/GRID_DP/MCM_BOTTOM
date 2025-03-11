@@ -1,0 +1,28 @@
+ int matrixMultiplication(vector<int> &arr) {
+           // Create a DP table to store the minimum number of operations
+           int N=arr.size();
+    vector<vector<int>> dp(N, vector<int>(N, -1));
+
+    // Initialize the diagonal elements of the DP table to 0
+    for (int i = 0; i < N; i++) {
+        dp[i][i] = 0;
+    }
+
+    // Loop for the length of the chain
+    for (int i = N-1;i>=1 ; i--) {
+        for (int j=i+1;j<N;j++) {
+            
+            dp[i][j] = INT_MAX;
+
+            // Try different partition points to find the minimum
+            for (int k = i; k < j; k++) {
+                int cost = dp[i][k] + dp[k + 1][j] + arr[i - 1] * arr[k] * arr[j];
+                dp[i][j] = min(dp[i][j], cost);
+            }
+        }
+    }
+
+    // The result is stored in dp[1][N-1]
+    return dp[1][N - 1];
+
+    }
