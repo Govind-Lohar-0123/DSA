@@ -1,0 +1,98 @@
+using P=pair<int,int>;
+class SegmentTree{
+    vector<int>seg;
+    int n;
+    public :
+    SegmentTree(int n){
+        this->n=n;
+        seg.resize(4*n+2,0);
+    }
+
+    void build(int idx,int low,int high,vector<P>&temp){
+        if(low==high){
+            seg[idx]=low;
+            return ;
+        }
+
+        int mid=(low+high)>>1;
+        build(2*idx+1,low,mid,temp);
+        build(2*idx+2,mid+1,high,temp);
+        int idx1=2*idx+1;
+        int idx2=2*idx+2;
+        if(temp[seg[idx1]].second<temp[seg[idx2]].second)seg[idx]=seg[idx1];
+        else seg[idx]=seg[idx2];
+        return ;
+    }
+    int query(int idx,int low,int high,int l,int r,vector<P>&temp){
+        
+
+        // No overllappr 
+        if(high < l || r < low)return n;
+
+        // complate overllap
+        if(l<=low && high<=r)return seg[idx];
+
+        // looking for partial overllap
+        int mid=(low+high)>>1;
+        
+        int left=query(2*idx+1 ,low,mid,l,r,temp);
+        int right=query(2*idx+2 ,mid+1,high,l,r,temp);
+        if(left==n)return right;
+        if(right==n)return left;
+        return (temp[left].second <temp[right].second) ? left : right;
+        
+    }
+    void update(int idx,int low,int high,int i,int val,vector<P>&temp){
+    
+        if(low==high){
+            temp[i].second=val;
+            return ;
+        }
+        
+        int mid=(low+high)>>1;
+        if(mid>=i)update(2*idx+1,low,mid,i,val,temp);
+        else update(2*idx+2,mid+1,high,i,val,temp);
+        int idx1=2*idx+1;
+        int idx2=2*idx+2;
+       if(temp[seg[idx1]].second<temp[seg[idx2]].second)seg[idx]=seg[idx1];
+        else seg[idx]=seg[idx2];
+    
+    }
+
+
+};
+
+class Solution {
+public:
+    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) {
+        int n=fruits.size();   
+        vector<pair<int,int>>temp; // make pair to sort bucket with index
+        SegmentTree seg(n);
+        for(int i=0;i<n;i++){
+            temp.push_back({baskets[i],i});
+        }
+        int ans=0;
+        sort(temp.begin(),temp.end());
+        seg.build(0,0,n-1,temp); // builded the seg tree
+        for(int i=0;i<n;i++){
+            auto it = lower_bound(temp.begin(), temp.end(), fruits[i], 
+                [](const pair<int, int> &a, int val) {
+                    return a.first < val;
+                });
+
+            int l = it - temp.begin(); // Convert iterator to index
+            int r=n-1;
+            
+            int idx=seg.query(0,0,n-1,l,r,temp);
+           
+            if(idx==n || temp[idx].second==INT_MAX)ans++;
+            else {
+                seg.update(0,0,n-1,idx,INT_MAX,temp);
+            }
+        }
+        return ans;
+
+
+
+    }
+};
