@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Node {
+public:
+    int minIdx;
+    unordered_map<int,Node*>child;
+    Node(){
+        this->minIdx=-1;
+        
+    }
+};
+
+class Solution {
+public:
+    Node* root = nullptr;
+    
+    Solution() {
+        root = new Node();
+    }
+
+    void insertWord(string &word, int idx, vector<string>& arr) {
+        int n = word.size();
+        Node* curr = root;
+        
+        for (int i = n - 1; i >= 0; i--) {
+            int ch = word[i] - 'a';  // Mapping 'a' to 0, 'b' to 1, ..., 'z' to 25
+            if (curr->child.find(ch)==curr->child.end()) {
+                curr->child[ch] = new Node();  // Dynamically allocate new Node if not present
+            }
+            curr = curr->child[ch];
+            
+            int currIdx = curr->minIdx;
+            int nextIdx = (currIdx == -1) ? idx : ((arr[currIdx].size() > arr[idx].size()) ? idx : currIdx);
+            curr->minIdx = nextIdx;
+        }
+    }
+
+    int getMinIdx(string &word) {
+        int n = word.size();
+        Node* curr = root;
+
+        for (int i = n - 1; i >= 0; i--) {
+            int ch = word[i] - 'a';
+            if (curr->child.find(ch)==curr->child.end()) {
+                break;
+            }
+            curr = curr->child[ch];
+        }
+
+        return curr->minIdx;
+    }
+
+    vector<int> stringIndices(vector<string>& wordsContainer, vector<string>& wordsQuery) {
+        int n = wordsContainer.size();
+        vector<int> ans;
+        int minIdx = 0;
+
+        for (int i = 0; i < n; i++) {
+            insertWord(wordsContainer[i], i, wordsContainer);
+            if (wordsContainer[minIdx].size() > wordsContainer[i].size()) {
+                minIdx = i;
+            }
+        }
+
+        for (int i = 0; i < wordsQuery.size(); i++) {
+            int idx = getMinIdx(wordsQuery[i]);
+            if (idx == -1) {
+                ans.push_back(minIdx);
+            } else {
+                ans.push_back(idx);
+            }
+        }
+
+        return ans;
+    }
+};
