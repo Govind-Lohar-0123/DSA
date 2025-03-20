@@ -1,0 +1,24 @@
+using ll=long long;
+class Solution {
+  public:
+    int dp[1001][201][3];
+    int solve(int i,int k,int turn,vector<int>&arr){
+        if(k==0)return 0; // no opertation is still remaining;
+        if(i>=arr.size())return 0;// i have my while arr
+        if(dp[i][k][turn]!=-1)return dp[i][k][turn];
+        int take=0;
+        int skip=0;
+        if(turn==0 || turn==2){
+            take= -arr[i] + solve(i+1,k,1,arr);
+        }
+        else take=arr[i] + solve(i+1,k-1,2,arr);
+        
+        skip=solve(i+1,k,turn,arr);
+        return dp[i][k][turn]=max(skip,take);
+    }
+    int maxProfit(vector<int>& prices, int k) {
+        memset(dp,-1,sizeof(dp));
+        return solve(0,k,0,prices);
+        
+    }
+};
