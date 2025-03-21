@@ -1,0 +1,78 @@
+class Solution {
+public:
+vector<int>temp;
+unordered_map<int,vector<int>>buildGraph(vector<string>& rcp,vector<vector<string>>& ind){ 	
+	unordered_map<string,int>rcpMap;
+    
+	int n=rcp.size();
+	int m=ind.size();
+    for(int i=0;i<n;i++){
+        rcpMap[rcp[i]]=i;
+    }
+            temp.resize(n,0);
+	unordered_map<int,vector<int>>graph;
+	
+	for(int i=0;i<n;i++){
+	for(int j=0;j<ind[i].size();j++){
+		auto &s=ind[i][j];
+	if(rcpMap.find(s)!=rcpMap.end()){
+	graph[rcpMap[s]].push_back(i);
+	temp[i]++;
+}
+}
+
+}
+	return graph;
+
+
+}
+
+vector<int> getTopoSort( unordered_map<int,vector<int>>&graph,int v){
+	
+	queue<int>q;
+	for(int i=0;i<temp.size();i++){
+	if(temp[i]!=0) continue ;
+	q.push(i);
+	
+
+}
+
+vector<int>topoOrder;
+while(q.size()!=0){
+	int u= q.front();q.pop();
+	topoOrder.push_back(u);
+	for(int v : graph[u]){
+	temp[v]--;
+	if(temp[v]==0)q.push(v);
+}
+
+}
+return topoOrder;
+	
+	
+
+
+}
+  
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+	      unordered_set<string>splSet(supplies.begin(),supplies.end());
+  	      unordered_map<int,vector<int>>graph=buildGraph(recipes,ingredients);
+	      vector<int>topoSort=getTopoSort(graph,recipes.size());
+
+	    vector<string>ans;
+	   for(int  i : topoSort){
+		bool isPossible=true;
+for(const auto&it : ingredients[i]){
+	if(splSet.find(it)==splSet.end()){
+		isPossible=false;
+	break;
+}
+}
+
+if(isPossible==false)continue;
+splSet.insert(recipes[i]);
+ans.push_back(recipes[i]);
+   }
+	   return ans;
+    }
+};
