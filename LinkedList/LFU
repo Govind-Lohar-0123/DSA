@@ -1,3 +1,80 @@
+#include <unordered_map>
+#include <map>
+#include <list>
+using namespace std;
+
+class Node {
+public:
+    int freq, val, k;
+    Node(int k, int v, int f) {
+        this->freq = f;
+        this->val = v;
+        this->k = k;
+    }
+};
+
+class LFUCache {
+public:
+    unordered_map<int, list<Node*>::iterator> map1; // key -> iterator to node in map2
+    map<int, list<Node*>> map2;  // freq -> list of nodes with same freq
+    int cap;
+
+    LFUCache(int capacity) { this->cap = capacity; }
+
+    int get(int k) {
+        if (map1.find(k) == map1.end()) 
+            return -1; // Key not found
+        
+        int val = (*map1[k])->val; // Get value from node
+        insert(k, val, (*map1[k])->freq); // Move node to higher freq
+        return val;
+    }
+
+    void insert(int k, int v, int f) {
+        // Evict least frequently used (LFU) node if capacity is full
+        if (map1.size() == cap && map1.find(k) == map1.end()) {
+            int minFreq = map2.begin()->first;  // Get min frequency
+            auto& dll = map2[minFreq];
+
+            Node* toRemove = dll.back(); // Least recently used node with minFreq
+            map1.erase(toRemove->k); 
+            dll.pop_back(); 
+
+            if (dll.empty()) 
+                map2.erase(minFreq); // Remove empty freq list
+
+            delete toRemove; // Free memory
+        }
+
+        // If key already exists, remove old node
+        if (map1.find(k) != map1.end()) {
+            auto it = map1[k]; // Iterator to existing node
+            auto& dll = map2[f]; // Reference to list
+
+            dll.erase(it); // O(1) removal
+            if (dll.empty()) 
+                map2.erase(f); // Remove empty list
+            map1.erase(k);
+        }
+
+        f++; // Increase frequency
+
+        // Create new node and insert
+        Node* newNode = new Node(k, v, f);
+        map2[f].push_front(newNode); // Add to front for LRU handling
+        map1[k] = map2[f].begin(); // Store iterator to new node
+    }
+
+    void put(int k, int v) {
+        if (cap == 0) return; // Edge case: No capacity
+        
+        int freq = (map1.find(k) == map1.end()) ? 0 : (*map1[k])->freq;
+        insert(k, v, freq);
+    }
+};
+
+
+
 import java.util.* ;
 import java.io.*; 
 
