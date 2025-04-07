@@ -1,0 +1,56 @@
+class Router {
+public:
+    int sz;
+    set<vector<int>>set;
+    queue<vector<int>>q;
+    Router(int memoryLimit) {
+        this->sz=memoryLimit;
+    }
+    
+    bool addPacket(int s, int d, int t) {
+        if(sz==0)return false;
+        vector<int> P={s,d,t};
+        if(set.find(P)!=set.end())return false;
+        if(set.size()==sz){
+            auto &it=q.front();
+            set.erase(it);
+            q.pop();
+        }
+
+        set.insert(P);
+        q.push(P);
+        
+        return true;
+    }
+    
+    vector<int> forwardPacket() {
+        if(q.size()==0)return{};
+        auto P=q.front();
+        set.erase(P);
+        q.pop();
+        return P;
+    }
+    
+    int getCount(int d, int st, int et) {
+        int cnt=0;
+        for(const auto &P : set){
+            
+            int t=P[2];
+            int dest=P[1];
+            if(dest==d && st<= t && t<=et){
+                
+                
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+};
+
+/**
+ * Your Router object will be instantiated and called as such:
+ * Router* obj = new Router(memoryLimit);
+ * bool param_1 = obj->addPacket(source,destination,timestamp);
+ * vector<int> param_2 = obj->forwardPacket();
+ * int param_3 = obj->getCount(destination,startTime,endTime);
+ */
