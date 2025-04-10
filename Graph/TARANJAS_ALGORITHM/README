@@ -1,5 +1,52 @@
 Problem Where i Stuck :-
 Why we are taking two array for timer:-
 Ans:- this example to dry it
-[[0,1],[0,2],[1,4],[2,4],[2,5],[5,1]]
+[[0,1],[0,2],[1,4],[2,4],[2,3],[3,1]]
 you will understand why are doing that 
+and the smae dry run for why we can not keep like minTime[u]=minTime[v] direct insrread keeping min()
+this exmaple with show each and every case 
+
+
+class Solution{
+    public:
+   set<vector<int>>st;
+    int timer=0;
+    vector<int>currTime,minTime;
+    void solve(int u,int p,unordered_map<int,vector<int>>&graph){
+        currTime[u]=timer;
+        minTime[u]=timer++;
+        
+        
+        for(int v : graph[u]){
+            if(v==p)continue;
+          
+            if(currTime[v]==-1){
+                 
+                solve(v,u,graph);
+                if(currTime[u]<minTime[v]){
+                    cout<<currTime[u] << minTime[v]<<endl;
+                     st.insert({u,v});
+                }
+                // minTime[u]=min(minTime[u],minTime[v]);        // you can remove it    
+                
+            }
+            // else minTime[u]=minTime[v]; // why you are not able to do that same example in github readme you can keep 
+            // min()like or 
+            minTime[u]=min(minTime[u],minTime[v]);
+        }
+        
+        
+    }
+     vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        unordered_map<int,vector<int>>graph;
+        for(const auto&it : connections){
+            graph[it[0]].push_back(it[1]);
+            graph[it[1]].push_back(it[0]);
+        }
+        currTime.resize(n,-1);
+        minTime.resize(n,-1);
+       
+       solve(0,-1,graph);
+       return {st.begin(),st.end()};
+    }
+};
