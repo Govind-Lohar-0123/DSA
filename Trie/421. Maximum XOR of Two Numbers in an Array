@@ -1,3 +1,73 @@
+USING C++
+class Node{
+  public:
+   vector<Node*>child;
+  Node(){
+      child.resize(2,NULL);
+      
+  } 
+};
+
+class Solution {
+  public:
+   Node* root=NULL;
+    Solution(){
+     root=new Node();
+  }
+
+
+void insert(int it){
+    Node* curr=root;
+    for(int i=31;i>=0;i--){
+       int bit=0;
+      if(((1<<i)&it ) > 0)bit=1;
+      if(curr->child[bit]==NULL)curr->child[bit]=new Node();
+     curr=curr->child[bit]; 
+  } 
+
+}
+
+int query(int it){
+    Node* curr=root;
+    int ans=0;  
+    for(int i=31;i>=0;i--){
+          int bit=0;
+          if(((1<<i)&it)  > 0)bit=1;
+       
+          if(curr->child[!bit]!=NULL){
+              ans=((1<<i)|ans);
+             curr=curr->child[!bit];
+          }
+         else curr=curr->child[bit]; 
+    }
+    
+    
+    return ans;
+}
+
+    int maxXor(vector<int> &arr) {
+        int n=arr.size();
+  
+         for(int it : arr)insert(it);
+            int ans=0; 
+         for(int it :  arr){
+         	ans=max(ans,query(it));
+          }
+  
+        return ans;
+        
+    }
+};
+
+
+
+
+
+
+
+
+
+USING JAVA
 class Node{
     Node links[]=new Node[2];
 
