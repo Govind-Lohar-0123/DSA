@@ -1,0 +1,52 @@
+
+============================================================APPROCHE 1==========================================================
+class Solution {
+public:
+
+   
+    Node* connect(Node* root) {
+        if(root==NULL)return root;
+        queue<Node*>q;
+      q.push(root);
+        while(q.size()!=0){
+            int size=q.size();
+            Node* prev=NULL;
+            while(size--){
+                Node* it=q.front();q.pop();
+                
+                if(prev!=NULL)prev->next=it;
+                prev=it;
+                if(it->left!=NULL)q.push(it->left);
+                if(it->right!=NULL)q.push(it->right);
+            }
+        }        
+return root;
+
+    }
+};
+
+======================================================Approche:-2 =======================================================
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if (!root) return NULL;
+
+        Node* leftmost = root;
+
+        while (leftmost->left != NULL) {
+            Node* head = leftmost;
+
+            while (head != NULL) {
+                head->left->next = head->right;
+                if (head->next != NULL)
+                    head->right->next = head->next->left;
+
+                head = head->next;
+            }
+
+            leftmost = leftmost->left;
+        }
+
+        return root;
+    }
+};
