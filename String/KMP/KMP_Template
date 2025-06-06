@@ -2,3 +2,60 @@ Step 1:- Make LPS Array of the string which we have to match
 Step 2:- Start matching s with p using preff and suff pointer 
 and as soos as preff index become equal to p.size() it means i got my string to find index do (suff-preff) (o-basedindex)
 and i you have match number string for when preff match and do preff=lps[preff-1];
+
+class Solution {
+  public:
+    vector<int> LPS(string &s1){
+        int n=s1.size();
+        
+        vector<int>lps(n,0);
+        lps[0]=0;
+        int preff=0,suff=1;
+        while(suff<n){
+            if(s1[suff]==s1[preff]){
+                preff++;
+                lps[suff++]=preff;
+            }
+            else {
+                if(preff==0)lps[suff++]=0;
+                else preff=lps[preff-1];
+                
+            }
+        }
+        return lps;
+        
+    }
+    
+    vector<int> findIndex(string &a,string &b,vector<int>&lps){
+        vector<int>index;
+        int n=a.size();
+        int m=b.size();
+        
+        int preff=0,suff=0;
+        while(suff<n){
+            if(a[suff]==b[preff]){
+                preff++;
+                suff++;
+            }
+            if(preff==m){
+                index.push_back((suff-preff)+1);
+                preff=lps[preff-1];
+            }
+            
+            else if(suff<n && a[suff]!=b[preff]){
+                if(preff==0)suff++;
+                else preff=lps[preff-1];
+            }
+        }
+        return index;
+        
+    }
+    vector<int> search(string &pat, string &txt) {
+        vector<int>lps=LPS(pat);
+        
+        int n=pat.size();
+        int m=txt.size();
+        return findIndex(txt,pat,lps);
+        
+    }
+};
