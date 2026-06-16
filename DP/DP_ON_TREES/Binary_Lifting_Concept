@@ -1,0 +1,109 @@
+// To solve problem like find kth ancetors 
+
+//JAVA CODE
+class TreeAncestor {
+
+    int [][]ancestor;
+    int []parent;
+    
+    public TreeAncestor(int n, int[] parent) {
+        this.parent=parent;
+        this.buildAncestorDP(n);    
+    }
+    public void buildAncestorDP(int n){
+        double log2=Math.log(n)/Math.log(2);
+        int m=(int)(log2) + 1;
+        ancestor=new int[n][m];
+
+        //for node fillin ancestor[node][0]
+        for(int node=0;node<n;node++){
+            ancestor[node][0]=parent[node];
+        }
+
+        // now fillinf remaing
+        for(int j=1;j<m;j++){
+            for(int node=0;node<n;node++){
+                if(ancestor[node][j-1]!=-1){
+                    ancestor[node][j]=ancestor[ancestor[node][j-1]][j-1];
+                }
+                else ancestor[node][j]=-1;
+                
+            }
+        }
+
+
+    }
+    
+    public int getKthAncestor(int node, int k) {
+        
+        for(int j=ancestor[0].length-1;j>=0;j--){
+
+            if((k & (1<<j))==0)continue;
+             node=ancestor[node][j];
+             if(node==-1)return node;
+        }
+        return node;
+    }
+}
+
+/**
+ * Your TreeAncestor object will be instantiated and called as such:
+
+//C++ CODE
+
+class TreeAncestor {
+public:
+    vector<vector<int>>ancestor;
+    vector<int>parent;
+
+    TreeAncestor(int n, vector<int>& parent) {
+        this->parent=parent;
+        buildAncestorDP(n);
+    }
+
+    void buildAncestorDP(int n){
+        int m=log2(n) + 1;
+        ancestor.resize(n,vector<int>(m,-1));
+        
+
+        // base condition
+        for(int node=0;node<n;node++){
+            ancestor[node][0]=parent[node];
+        }
+
+        for(int j=1;j<m;j++){
+            for(int node=0;node<n;node++){
+                if(ancestor[node][j-1]!=-1){
+                    ancestor[node][j]=ancestor[ancestor[node][j-1]][j-1];
+                }
+                else ancestor[node][j]=-1;
+            }
+        }
+    }
+
+
+    
+    int getKthAncestor(int node, int k) {
+        
+        for(int j=ancestor[0].size()-1;j>=0;j--){
+
+            if((k & (1<<j))==0)continue;
+
+            node=ancestor[node][j];
+            if(node==-1)return node;
+        }
+        return node;
+    }
+};
+
+/**
+ * Your TreeAncestor object will be instantiated and called as such:
+ * TreeAncestor* obj = new TreeAncestor(n, parent);
+ * int param_1 = obj->getKthAncestor(node,k);
+ */
+
+
+
+ * TreeAncestor obj = new TreeAncestor(n, parent);
+ * int param_1 = obj.getKthAncestor(node,k);
+ */
